@@ -53,7 +53,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="LOGIN"
-        style="@style/login_button"
+        style="@style/button_fullwidth"
         />
     <RelativeLayout
         android:layout_width="fill_parent"

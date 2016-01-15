@@ -36,7 +36,7 @@
         <item name="android:paddingLeft">6dp</item>
     </style>
 
-    <style name="login_button">
+    <style name="button_fullwidth">
         <item name="android:paddingBottom">@dimen/login_button_paddingBottom</item>
         <item name="android:paddingTop">@dimen/login_button_paddingTop</item>
         <item name="android:textSize">22dp</item>
