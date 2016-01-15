@@ -1,0 +1,75 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- An identical theme to AppTheme, just with no actionbar -->
+    </style>
+
+
+    <style name="header">
+        <item name="android:textSize">@dimen/header_size</item>
+        <item name="android:textColor">#333</item>
+        <item name="android:padding">@dimen/header_padding</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
+    <style name="container_header">
+    </style>
+
+    <style name="container_logo_login">
+        <item name="android:paddingTop">64dp</item>
+        <item name="android:paddingRight">32dp</item>
+        <item name="android:paddingLeft">32dp</item>
+    </style>
+
+    <style name="logo_login">
+    </style>
+
+    <style name="login_edittext">
+        <item name="android:layout_marginRight">82px</item>
+        <item name="android:layout_marginLeft">82px</item>
+        <item name="android:textSize">22dp</item>
+        <item name="android:paddingLeft">6dp</item>
+    </style>
+
+    <style name="login_button">
+        <item name="android:paddingBottom">@dimen/login_button_paddingBottom</item>
+        <item name="android:paddingTop">@dimen/login_button_paddingTop</item>
+        <item name="android:textSize">22dp</item>
+    </style>
+
+    <style name="forgotpass_button" parent="nobackground_button">
+        <item name="android:layout_alignParentBottom">true</item>
+    </style>
+
+    <style name="forgotpass_button_innertext">
+        <item name="android:textSize">18dp</item>
+        <item name="android:text">FORGOT PASSWORD</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="nobackground_button">
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="dialog_forgotpass_text">
+        <item name="android:color">#333</item>
+        <item name="android:textSize">24dp</item>
+        <item name="android:paddingLeft">32dp</item>
+        <item name="android:paddingRight">32dp</item>
+        <item name="android:text">@string/forgotpassworddialog</item>
+    </style>
+
+
+
+
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Cse110DevTeam</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="forgotpassworddialog">"Enter the email of the account with the forgotten password. Instructions will be emailed your entry to reset your password.</string>
+    <string name="action_settings">Settings</string>
+</resources>
