@@ -10,12 +10,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <meta-data
             android:name="com.parse.APPLICATION_ID"
-            android:value="2FqCbEuIPBR6oiinIuClh8ewd9w0cDngdmtTuPgG" />
+            android:value="84X0uiEqqsbvsU970OtUR5K7gsBf4YFlu8GhA4p3" />
         <meta-data
             android:name="com.parse.CLIENT_KEY"
-            android:value="RLULeJwGHFP35asTfd00tWAMC1oBNV7CJs22LPqR" />
+            android:value="4VloWdYvpmBRBvDMEl0cCkZGKRmPTmUAB6dG3aCd" />
+
 
         <activity
             android:name=".Activity.MainActivity"

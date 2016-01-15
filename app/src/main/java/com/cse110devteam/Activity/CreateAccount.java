@@ -105,12 +105,15 @@ public class CreateAccount extends Activity {
                     newUser.put("firstname", textFname);
                     newUser.put("lastname", textLname);
                     newUser.setPassword(textPass1);
+                    Log.d("Create_Account", "About to signUpInBackground");
                     newUser.signUpInBackground(new SignUpCallback(){
                         public void done(com.parse.ParseException e){
                             if(e == null){
                                 Log.d("PARSE_SAVED", newUser.toString());
                                 goToLogin();
                             } else{
+                                e.printStackTrace();
+                                Log.d("CREATE_ACCOUNT_ERROR", e.toString() );
                                 Toast toast;
                                 switch (e.getCode()){
                                     case com.parse.ParseException.ACCOUNT_ALREADY_LINKED:
