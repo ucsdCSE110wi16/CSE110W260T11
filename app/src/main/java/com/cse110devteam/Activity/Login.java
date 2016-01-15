@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cse110devteam.R;
+import com.parse.Parse;
 
 /**
  * Created by anthonyaltieri on 1/14/16.
@@ -29,8 +30,19 @@ public class Login extends Activity{
     private TextView header;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+        try {
+            Parse.initialize(this, "2FqCbEuIPBR6oiinIuClh8ewd9w0cDngdmtTuPgG",
+                    "RLULeJwGHFP35asTfd00tWAMC1oBNV7CJs22LPqR");
+        } catch (java.lang.IllegalStateException e){
+            // Let it silently throw the error.
+            // TODO: Make this not a lazy fix for when one starts on Login then goes to create account and back
+        }
+        setContentView(R.layout.login);
         header = (TextView) findViewById(R.id.header);
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
@@ -77,7 +89,7 @@ public class Login extends Activity{
 
     @Override
     protected void onPause(){
-
+        super.onPause();
     }
 
     public void goToCreateAccount(){

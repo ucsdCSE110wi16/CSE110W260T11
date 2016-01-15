@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout android:id="@+id/container-header"
+    <RelativeLayout android:id="@+id/container_header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         style="@style/container_header"
@@ -23,9 +23,25 @@
     <EditText android:id="@+id/email"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="22dp"
         style="@style/login_edittext"
         android:hint="Enter Email"
+        />
+
+    <EditText android:id="@+id/fname"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        style="@style/login_edittext"
+        android:hint="Enter First Name"
+        />
+
+    <EditText android:id="@+id/lname"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        style="@style/login_edittext"
+        android:hint="Enter Last Name"
         />
 
     <EditText android:id="@+id/password1"
@@ -36,22 +52,6 @@
         style="@style/login_edittext"
         />
 
-    <EditText android:id="@+id/fname"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        style="@style/login_edittext"
-        android:hint="Enter Email"
-        />
-
-    <EditText android:id="@+id/lname"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        style="@style/login_edittext"
-        android:hint="Enter Email"
-        />
-
     <EditText android:id="@+id/password2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -60,24 +60,32 @@
         style="@style/login_edittext"
         />
 
-    <RelativeLayout android:id="@+id/container-buttons"
+    <RelativeLayout android:id="@+id/container_buttons"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-
-        <Button android:id="@+id/submit"
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="Submit"
-            android:layout_above="@+id/cancel"
-            style="@style/button_fullwidth"/>
+            android:layout_alignParentBottom="true">
 
-        <Button android:id="@+id/cancel"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:layout_alignParentBottom="true"
-            style="@style/button_fullwidth"/>
+            <Button android:id="@+id/submit"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="Submit"
+                android:layout_above="@+id/cancel"
+                style="@style/button_createaccount"/>
+
+            <Button android:id="@+id/cancel"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:layout_alignParentBottom="true"
+                style="@style/button_createaccount"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
 </LinearLayout>

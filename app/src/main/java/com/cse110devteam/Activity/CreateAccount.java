@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cse110devteam.R;
+import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -33,6 +35,8 @@ public class CreateAccount extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.create_account);
         email = (EditText) findViewById(R.id.email);
         fname = (EditText) findViewById(R.id.fname);
         lname = (EditText) findViewById(R.id.lname);
@@ -50,61 +54,53 @@ public class CreateAccount extends Activity {
                 boolean validFname = false;
                 boolean validLname = false;
                 boolean passMatch = false;
-                String textEmail = email.toString();
-                String textFname = fname.toString();
-                String textLname = lname.toString();
-                String textPass1 = password1.toString();
-                String textPass2 = password2.toString();
+                String textEmail = email.getText().toString();
+                String textFname = fname.getText().toString();
+                String textLname = lname.getText().toString();
+                String textPass1 = password1.getText().toString();
+                String textPass2 = password2.getText().toString();
                 /* We might want to test to see if the email is valid
                  * but for right now I'm just going to assume it is if
                  * it is longer than 0 length
                  */
                 if(textEmail.length() > 0){
                     validEmail = true;
-                    email.setBackgroundColor(editTextBackgroundColor);
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Enter an email!", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.BOTTOM, 0, 0);
                     toast.show();
-                    email.setBackgroundColor(0xFFCDD2);
                 }
                 if(textPass1.equals(textPass2)){
                     passMatch = true;
-                    password1.setBackgroundColor(editTextBackgroundColor);
-                    password2.setBackgroundColor(editTextBackgroundColor);
                 } else {
+                    Log.d("Password1Text", textPass1);
+                    Log.d("Password2Text", textPass2);
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Passwords don't match!", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.BOTTOM, 0, 0);
                     toast.show();
                     password1.setText("");
                     password2.setText("");
-                    password1.setBackgroundColor(0xFFCDD2);
-                    password2.setBackgroundColor(0xFFCDD2);
                 }
                 if(textFname.length() > 0){
                     validFname = true;
-                    fname.setBackgroundColor(editTextBackgroundColor);
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Enter a First Name!", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.BOTTOM, 0, 0);
                     toast.show();
-                    fname.setBackgroundColor(0xFFCDD2);
                 }
                 if(textLname.length() > 0){
                     validLname = true;
-                    fname.setBackgroundColor(editTextBackgroundColor);
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Enter a Last Name!", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.BOTTOM, 0, 0);
                     toast.show();
-                    lname.setBackgroundColor(0xFFCDD2);
                 }
                 if(validEmail && passMatch && validFname && validLname){
-                    ParseUser newUser = new ParseUser();
+                    final ParseUser newUser = new ParseUser();
                     newUser.setUsername(textEmail);
                     newUser.put("firstname", textFname);
                     newUser.put("lastname", textLname);
@@ -112,6 +108,7 @@ public class CreateAccount extends Activity {
                     newUser.signUpInBackground(new SignUpCallback(){
                         public void done(com.parse.ParseException e){
                             if(e == null){
+                                Log.d("PARSE_SAVED", newUser.toString());
                                 goToLogin();
                             } else{
                                 Toast toast;
@@ -123,7 +120,6 @@ public class CreateAccount extends Activity {
                                         toast.setGravity(Gravity.BOTTOM, 0, 0);
                                         toast.show();
                                         email.setText("");
-                                        email.setBackgroundColor(0xFFCDD2);
 
                                     case com.parse.ParseException.CONNECTION_FAILED:
                                         toast = Toast.makeText(getApplicationContext(),
@@ -152,6 +148,7 @@ public class CreateAccount extends Activity {
 
     @Override
     public void onPause(){
+        super.onPause();
 
     }
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout android:id="@+id/container-logo"
+    <RelativeLayout android:id="@+id/container_logo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         style="@style/container_logo_login">
@@ -19,7 +19,7 @@
 
     </RelativeLayout>
 
-    <RelativeLayout android:id="@+id/container-header"
+    <RelativeLayout android:id="@+id/container_header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         style="@style/container_header">
@@ -27,7 +27,7 @@
         <TextView android:id="@+id/header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/header"
+            style="@style/login_header"
             android:text="@string/app_name"/>
 
     </RelativeLayout>
@@ -48,7 +48,7 @@
         android:hint="Password"
         style="@style/login_edittext"
         />
-    
+
     <Button android:id="@+id/login"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
