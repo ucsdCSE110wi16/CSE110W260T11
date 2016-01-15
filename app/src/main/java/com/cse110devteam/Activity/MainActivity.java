@@ -9,19 +9,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.cse110devteam.R;
+import com.parse.Parse;
 
 import java.util.zip.Inflater;
 
 
 public class MainActivity extends Activity{
+    /* Don't need this unless we are going to use local data store and I don't think
+     * we need to.
+     *
+     * private String PARSE_APPLICATION_ID = "2FqCbEuIPBR6oiinIuClh8ewd9w0cDngdmtTuPgG";
+     * private String PARSE_CLIENT_KEY = "RLULeJwGHFP35asTfd00tWAMC1oBNV7CJs22LPqR";
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /* This is for local data store, but I don't think we need it for MVP
+         *
+         * Parse.enableLocalDatastore(this);
+         * Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
+         */
         setContentView(R.layout.activity_main);
-
-        FragmentManager fragManager = this.getFragmentManager();
-
     }
 
     @Override

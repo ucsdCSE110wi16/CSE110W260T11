@@ -44,7 +44,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="12dp"
         android:hint="Password"
         style="@style/login_edittext"
         />
@@ -55,6 +55,14 @@
         android:text="LOGIN"
         style="@style/button_fullwidth"
         />
+
+    <Button android:id="@+id/createaccount"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Account"
+        style="@style/button_fullwidth"
+        />
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">

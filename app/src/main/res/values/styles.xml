@@ -21,7 +21,7 @@
     </style>
 
     <style name="container_logo_login">
-        <item name="android:paddingTop">64dp</item>
+        <item name="android:paddingTop">28dp</item>
         <item name="android:paddingRight">32dp</item>
         <item name="android:paddingLeft">32dp</item>
     </style>
