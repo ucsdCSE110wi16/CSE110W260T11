@@ -8,4 +8,7 @@
     <dimen name="login_button_paddingBottom">22dp</dimen>
     <dimen name="login_button_paddingTop">22dp</dimen>
     <dimen name="login_button_textSize">32px</dimen>
+    <dimen name="toolbar_height">64dp</dimen>
+    <dimen name="pagertab_height">64dp</dimen>
+    <dimen name="tabstrip_height">64dp</dimen>
 </resources>

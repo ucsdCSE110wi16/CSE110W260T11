@@ -30,13 +30,23 @@ import java.util.zip.Inflater;
 public class CreateAccount extends Activity {
     private EditText email, fname, lname, password1, password2;
     private Button submit, cancel;
+    private boolean isManagerAccount;
 
 
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        // TODO: Make this not a lazy fix
+        try {
+            Parse.initialize(this, "84X0uiEqqsbvsU970OtUR5K7gsBf4YFlu8GhA4p3",
+                    "4VloWdYvpmBRBvDMEl0cCkZGKRmPTmUAB6dG3aCd");
+        } catch (IllegalStateException iSE){
+            // Silently fail
+        }
+        isManagerAccount = getIntent().getExtras().getBoolean("isManager");
         setContentView(R.layout.create_account);
+
         email = (EditText) findViewById(R.id.email);
         fname = (EditText) findViewById(R.id.fname);
         lname = (EditText) findViewById(R.id.lname);
@@ -45,7 +55,6 @@ public class CreateAccount extends Activity {
         submit = (Button) findViewById(R.id.submit);
         cancel = (Button) findViewById(R.id.cancel);
 
-        final int editTextBackgroundColor = password1.getDrawingCacheBackgroundColor();
 
         submit.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -104,6 +113,7 @@ public class CreateAccount extends Activity {
                     newUser.setUsername(textEmail);
                     newUser.put("firstname", textFname);
                     newUser.put("lastname", textLname);
+                    newUser.put("ismanager", isManagerAccount);
                     newUser.setPassword(textPass1);
                     Log.d("Create_Account", "About to signUpInBackground");
                     newUser.signUpInBackground(new SignUpCallback(){
@@ -117,6 +127,14 @@ public class CreateAccount extends Activity {
                                 Toast toast;
                                 switch (e.getCode()){
                                     case com.parse.ParseException.ACCOUNT_ALREADY_LINKED:
+                                        toast = Toast.makeText(getApplicationContext(),
+                                                "Email already used, try another one.",
+                                                Toast.LENGTH_LONG);
+                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                        toast.show();
+                                        email.setText("");
+
+                                    case com.parse.ParseException.USERNAME_TAKEN:
                                         toast = Toast.makeText(getApplicationContext(),
                                                 "Email already used, try another one.",
                                                 Toast.LENGTH_LONG);
