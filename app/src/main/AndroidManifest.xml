@@ -31,7 +31,6 @@
             android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -43,6 +42,15 @@
 
         <activity android:name=".Activity.ManagerMain"
             android:theme="@style/AppTheme">
+
+        </activity>
+
+        <activity android:name=".Activity.EmployeeMain"
+            android:theme="@style/AppTheme">
+
+        </activity>
+
+        <activity android:name=".Activity.CreateBusinessPage">
 
         </activity>
     </application>

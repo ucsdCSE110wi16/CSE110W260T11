@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import com.cse110devteam.Fragment.ManManagerial;
 import com.cse110devteam.Fragment.ManMessaging;
 import com.cse110devteam.Fragment.ManSchedule;
+import com.cse110devteam.R;
 
 import java.util.ArrayList;
 
@@ -21,21 +22,13 @@ public class ManagerMain  extends FragmentActivity {
     private ManagerPagerAdapter myAdapter;
     private ViewPager mPager;
 
-    private Fragment manMessaging, manSchedule, manManagerial;
-    public static ArrayList<Fragment> fragmentList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: setContentView();
-        // TODO: Implement ManMessaging, ManSchedule, ManManagerial fragments
-        manMessaging = new ManMessaging();
-        manSchedule = new ManSchedule();
-        manManagerial = new ManManagerial();
-        fragmentList.add(manMessaging);
-        fragmentList.add(manSchedule);
-        fragmentList.add(manManagerial);
-
+        setContentView(R.layout.manager_main);
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(new ManagerPagerAdapter(getSupportFragmentManager()));
+        mPager.setCurrentItem(1);
     }
 
     public static class ManagerPagerAdapter extends FragmentPagerAdapter{
@@ -45,7 +38,13 @@ public class ManagerMain  extends FragmentActivity {
 
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
-            return fragmentList.get(position);
+            switch (position){
+                default: return new ManManagerial();
+                case 0: return new ManSchedule();
+                case 1: return new ManManagerial();
+                case 2: return new ManMessaging();
+
+            }
         }
 
         @Override

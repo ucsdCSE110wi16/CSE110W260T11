@@ -11,6 +11,7 @@ import com.cse110devteam.Fragment.EmpSchedule;
 import com.cse110devteam.Fragment.ManManagerial;
 import com.cse110devteam.Fragment.ManMessaging;
 import com.cse110devteam.Fragment.ManSchedule;
+import com.cse110devteam.R;
 
 import java.util.ArrayList;
 
@@ -20,32 +21,31 @@ import java.util.ArrayList;
 public class EmployeeMain extends FragmentActivity {
     public static int NUM_ITEMS = 2;
 
-    private ManagerPagerAdapter myAdapter;
+    private EmployeePagerAdapter myAdapter;
     private ViewPager mPager;
-
-    private Fragment empMessaging, empSchedule;
-    public static ArrayList<Fragment> fragmentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: setContentView();
-        // TODO: Implement ManMessaging, ManSchedule, ManManagerial fragments
-        empMessaging = new EmpMessaging();
-        empSchedule = new EmpSchedule();
-        fragmentList.add(empMessaging);
-        fragmentList.add(empSchedule);
-
+        setContentView(R.layout.manager_main);
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(new EmployeePagerAdapter(getSupportFragmentManager()));
+        mPager.setCurrentItem(0);
     }
 
-    public static class ManagerPagerAdapter extends FragmentPagerAdapter{
-        public ManagerPagerAdapter(android.support.v4.app.FragmentManager fm) {
+    public static class EmployeePagerAdapter extends FragmentPagerAdapter{
+        public EmployeePagerAdapter(android.support.v4.app.FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
-            return fragmentList.get(position);
+            switch (position){
+                default: return new EmpSchedule();
+                case 0: return new EmpSchedule();
+                case 1: return new EmpMessaging();
+
+            }
         }
 
         @Override
@@ -53,7 +53,6 @@ public class EmployeeMain extends FragmentActivity {
             return NUM_ITEMS;
         }
     }
-
 
 }
 

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/header"
+            android:text="Create a page for your business"
+            />
+
+        <TextView android:id="@+id/subheader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/subheader"
+            android:text="@string/createbusiness_subheader"
+            />
+
+        <EditText android:id="@+id/businessname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginLeft="32dp"
+            android:hint="Business Name"
+            android:textSize="22sp"
+            style="@android:style/Widget.Material.EditText"
+            />
+
+    </LinearLayout>
+
+    <Button android:id="@+id/create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/createbusinesspage_button"
+        android:text="Create Page"
+        />
+
+</RelativeLayout>

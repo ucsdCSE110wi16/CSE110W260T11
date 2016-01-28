@@ -50,6 +50,11 @@ public class Login extends Activity{
             // Silently Fail
         }
 
+        // DEBUG PARSE
+        ParseObject pO = new ParseObject("TEST");
+        pO.put("please", "work");
+        pO.saveInBackground();
+
         setContentView(R.layout.login);
         header = (TextView) findViewById(R.id.header);
         email = (EditText) findViewById(R.id.email);
@@ -62,7 +67,8 @@ public class Login extends Activity{
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                final String textEmail = email.getText().toString();
+                // Email is not case-sensitive
+                final String textEmail = email.getText().toString().toLowerCase();
                 String textPassword = password.getText().toString();
                 boolean validEmail = false;
                 boolean validPassword = false;
@@ -98,7 +104,11 @@ public class Login extends Activity{
                                 @Override
                                 public void done(ParseUser user, ParseException e) {
                                     if(user != null){
-                                        // Log in to user worked
+                                        if(user.getBoolean("ismanager")){
+                                            goToManagerMain();
+                                        } else {
+                                            goToEmployeeMain();
+                                        }
                                     } else {
                                         Toast noPassToast;
                                         if(e.getCode() == ParseException.OBJECT_NOT_FOUND){
@@ -113,25 +123,6 @@ public class Login extends Activity{
                                 }
                             });
                 }
-
-
-                // Asynch task to query parse to see if these credentials are right
-
-                // We use asynch because we don't want any methods used for aesthetic
-                // purposses to be interupted
-
-                /* PSUEDO CODE FOR LOGIN:
-                 * If (correctCredentials){
-                 *  Start asynch task to log in
-                 * } else {
-                 *  Visual popup (either shake view or field that is wrong turns red,
-                 *  or some other type of popup)
-                 *  Prompt use to re-enter credentials
-                 * }
-                 */
-
-
-
             }
         });
 
@@ -167,8 +158,19 @@ public class Login extends Activity{
         super.onPause();
     }
 
-    public void goToCreateAccountUserType(){
+    protected void goToCreateAccountUserType(){
         Intent intent = new Intent(this, CreateAccountUserType.class);
         startActivity(intent);
     }
+
+    protected void goToManagerMain(){
+        Intent intent = new Intent(this, ManagerMain.class);
+        startActivity(intent);
+    }
+
+    protected void goToEmployeeMain(){
+        Intent intent = new Intent(this, EmployeeMain.class);
+        startActivity(intent);
+    }
+
 }

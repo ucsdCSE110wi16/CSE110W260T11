@@ -109,7 +109,9 @@ public class CreateAccount extends Activity {
                     toast.show();
                 }
                 if(validEmail && passMatch && validFname && validLname){
-                    final ParseUser newUser = new ParseUser();
+                    ParseUser currentUser = ParseUser.getCurrentUser();
+                    if(currentUser != null) currentUser.logOut();
+                    ParseUser newUser = new ParseUser();
                     newUser.setUsername(textEmail);
                     newUser.put("firstname", textFname);
                     newUser.put("lastname", textLname);
@@ -119,7 +121,6 @@ public class CreateAccount extends Activity {
                     newUser.signUpInBackground(new SignUpCallback(){
                         public void done(com.parse.ParseException e){
                             if(e == null){
-                                Log.d("PARSE_SAVED", newUser.toString());
                                 goToLogin();
                             } else{
                                 e.printStackTrace();
