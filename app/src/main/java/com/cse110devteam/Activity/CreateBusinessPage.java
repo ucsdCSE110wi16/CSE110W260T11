@@ -1,6 +1,7 @@
 package com.cse110devteam.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -36,7 +37,8 @@ public class CreateBusinessPage extends Activity{
             @Override
             public void onClick(View v) {
                 boolean validName = false;
-                String textName = businessName.getText().toString();
+                // businessName is not case-sensitive
+                String textName = businessName.getText().toString().toLowerCase();
                 if(textName.length() > 0){
                     validName = true;
                 } else {
@@ -46,12 +48,17 @@ public class CreateBusinessPage extends Activity{
                     toast.show();
                 }
                 if(validName){
-                    //ParseQuery<ParseUser> query = ParseQuery.getQuery("Users");
-                    //query.whereEqualTo(User.USERNAME);
+                    ParseUser.getCurrentUser().put("businessName", businessName);
+                    goToManagerMain();
                 }
 
 
             }
         });
+    }
+
+    protected void goToManagerMain(){
+        Intent intent = new Intent(this, ManagerMain.class);
+        startActivity(intent);
     }
 }
