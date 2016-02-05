@@ -1,0 +1,213 @@
+CLIENT SPEC
+This application creates a synched scheduling app that managers and workers can use to facilitate work scheduling. One of the key features is displaying a master schedule that includes all workers’ hours. Managers can go into the app to assign different hours to workers as necessary, and workers can use the master schedule to view who else is working, at what times, etc. One important feature of the app will be some kind of chat or message board, in which workers can communicate to informally rearrange hours if, for example, one is running late and needs his shift covered. The app will have a user interface similar to Skype’s, in which work friends can be seen and messaged, either individually or in a group. The manager will be responsible for creating a group to which he can add and remove workers at his discretion. One key detail of the app is that there will be a separate interface where the manager can create groups and manage employees. One possible extension of this app is including a payroll system. This would mean that hours are actually logged in the app, and can then be used to calculate employee wages. This feature is unnecessary to the core design of the app, but can be implemented given time availability.
+
+APPLICATION SPEC
+User-type differentiation: Manager class and Employee class.
+Functionality:
+
+Manager
+User
+Both
+
+
+View User Schedule
+View Master Schedule
+Chat with Users
+Chat with other Users
+
+
+Group Chat/Message functionality
+Group Chat/Message functionality
+Message Board
+Add Users/Create Groups
+
+
+
+
+Manage Groups
+
+
+
+
+
+Compatibility: API 21+
+
+
+Design Tasks:
+Design Login/Signup pages.
+Design Manager/User Homes.
+Design user-to-user chat screen(s)
+Design group chat screen(s)
+Design Calendar view
+Design Group Management (User-facing)
+Design Group Management (Manager-facing)
+Data schema:
+Personal schedules - attached to Parse.User
+Master schedule - attached to Group table
+Messages - attached to Parse.User
+Development Tasks:
+Develop app skeleton
+Define user-types: find ramifications and user data requirements
+Create user/group management
+Define schedule data schema - check internet
+Pick a messaging framework
+Develop Schedule management
+Implement messaging framework
+Develop a message board for announcements.
+Build a recipient-matching feature for user messaging (using schedule)
+Extend recipient-matching for group messaging.
+
+
+
+
+
+
+
+Timeline
+Milestone
+Anthony
+Adam
+Jeremy
+Maggie
+Zee
+Vidur
+Week 1
+...
+
+
+
+
+
+
+
+
+
+
+
+
+Week 2
+...
+
+
+
+
+
+
+
+
+
+
+
+
+Week 3
+...
+
+
+
+
+
+
+
+
+
+
+
+
+Week 4
+...
+
+
+
+
+
+
+
+
+
+
+
+
+Week 5
+Schedule displays days that employee is working with a red background. Messaging works for the entire ‘job’ (ie. the main chat board for the job, the one everyone can see, works).
+Shedule/Messaging
+Messaging
+Messaging
+Schedule
+Schedule
+Schedule/Messaging
+Week 6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Week 7
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Week 8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Week 9
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Week 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
