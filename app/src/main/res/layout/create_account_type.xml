@@ -37,6 +37,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:text="Manager"
+                    android:onClick="goToManagerMain"
                     android:background="@android:color/holo_blue_dark"
                     style="@style/header"
                     android:textColor="@android:color/white"

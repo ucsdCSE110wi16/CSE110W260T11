@@ -57,4 +57,8 @@ public class CreateAccountUserType extends Activity{
         Intent intent = new Intent(this, EmployeeMain.class);
 
     }
+
+    public void goToManagerMain(View view){
+        Intent intent = new Intent(this, ManagerMain.class);
+    }
 }
