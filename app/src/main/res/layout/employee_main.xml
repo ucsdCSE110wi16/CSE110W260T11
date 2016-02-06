@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose User Type"
+            android:text="Choose Activity"
             style="@style/header"
             />
     </RelativeLayout>
@@ -33,11 +33,10 @@
                 android:layout_weight="0.5"
                 >
 
-                <Button android:id="@+id/manager"
+                <Button android:id="@+id/schedule"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="Manager"
-                    android:onClick="goToManagerMain"
+                    android:text="Schedule"
                     android:background="@android:color/holo_blue_dark"
                     style="@style/header"
                     android:textColor="@android:color/white"
@@ -53,18 +52,17 @@
                 android:layout_weight="0.5"
                 >
 
-                <Button android:id="@+id/employee"
+                <Button android:id="@+id/messaging"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="Employee"
+                    android:text="Message"
                     android:background="@android:color/holo_blue_dark"
                     style="@style/header"
                     android:textColor="@android:color/white"
                     android:layout_centerInParent="true"
-                    android:layout_margin="32dp"
-                    android:onClick="goToEmployeeMain" />
+                    android:layout_margin="32dp" />
 
-                    />
+                />
 
 
 

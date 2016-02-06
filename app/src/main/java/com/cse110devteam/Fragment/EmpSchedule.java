@@ -1,6 +1,7 @@
 package com.cse110devteam.Fragment;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.R.id;
+import android.support.v4.app.Fragment;
 
 import com.cse110devteam.R;
 import com.roomorama.caldroid.CaldroidFragment;
@@ -42,6 +44,8 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
         super.onAttach(activity);
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -62,6 +66,5 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
 
         return rootView;
     }
-
 
 }

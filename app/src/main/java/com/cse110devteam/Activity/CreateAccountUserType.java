@@ -12,6 +12,7 @@ import android.widget.Button;
 
 import com.cse110devteam.Activity.CreateAccount;
 import com.cse110devteam.R;
+import android.content.Intent;
 
 /**
  * Created by anthonyaltieri on 1/15/16.
@@ -48,5 +49,16 @@ public class CreateAccountUserType extends Activity{
         Intent intent = new Intent(this , CreateAccount.class);
         intent.putExtra("isManager", isManager);
         startActivity(intent);
+    }
+
+
+    //Called when the user creates an employee account.
+    public void goToEmployeeMain(View view){
+        Intent intent = new Intent(this, EmployeeMain.class);
+
+    }
+
+    public void goToManagerMain(View view){
+        Intent intent = new Intent(this, ManagerMain.class);
     }
 }
