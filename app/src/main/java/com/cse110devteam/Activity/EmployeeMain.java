@@ -1,10 +1,13 @@
 package com.cse110devteam.Activity;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
@@ -22,18 +25,17 @@ import java.util.ArrayList;
  * Created by anthonyaltieri on 1/15/16.
  */
 public class EmployeeMain extends FragmentActivity{
-    Button messaging, schedule;
+   // Button messaging, schedule;
 
-    public static int NUM_ITEMS = 2;
+  //  public static int NUM_ITEMS = 2;
 
-    //public EmployeePagerAdapter myAdapter;
-    //private ViewPager mPager;
-    //ViewPager mPager;
-    //EmployeePagerAdapter myAdapter;
-
+      //private?
+      /*ViewPager mPager;
+      EmployeePagerAdapter myAdapter;*/
 
 
-    @Override
+
+    /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.employee_main);
@@ -41,36 +43,68 @@ public class EmployeeMain extends FragmentActivity{
 
         messaging = (Button) findViewById(R.id.messaging);
         schedule = (Button) findViewById(R.id.schedule);
-        //mPager = (ViewPager) findViewById(R.id.pager);
-        //mPager.setAdapter(new EmployeePagerAdapter(getSupportFragmentManager()));
 
-        //myAdapter = new EmployeePagerAdapter(getSupportFragmentManager());
-        //mPager.setAdapter(myAdapter);
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(new EmployeePagerAdapter(getSupportFragmentManager()));
 
-        //mPager.setCurrentItem(0);
+        myAdapter = new EmployeePagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(myAdapter);
+
+        //mPager.setCurrentItem(0);*/
 
        /*schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //myAdapter.getItem(0);
-                mPager.setCurrentItem(0);
-            }
-        });*/
+                switch (v.getId()) {
+                    case R.id.schedule:
+                        //what to put here
+                        EmpSchedule empSchedule = new EmpSchedule();
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        /*messaging.setOnClickListener(new View.OnClickListener() {
+                        transaction.replace(R.id.calendar1, empSchedule);
+                        transaction.addToBackStack(null);
+
+                        transaction.commit();
+
+                    }
+
+            }
+
+       });
+
+        messaging.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClickView(View v){
+            public void onClick(View v){
                 myAdapter.getItem(1);
             }
 
         });*/
 
 
-    }
+   // }
+
+      /*  public void selectFrag(View view) {
+            Fragment fr;
+
+            if(view == findViewById(R.id.calendar1)) {
+                fr = new EmpSchedule();
+
+            }else {
+            fr = new EmpMessaging();
+            }
+
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+            fragmentTransaction.replace(R.id.calendar1, fr);
+
+            fragmentTransaction.commit();
 
 
 
-     /*public static class EmployeePagerAdapter extends FragmentPagerAdapter{
+        }*/
+/*
+     public static class EmployeePagerAdapter extends FragmentPagerAdapter{
         public EmployeePagerAdapter(android.support.v4.app.FragmentManager fm) {
             super(fm);
         }
@@ -88,10 +122,32 @@ public class EmployeeMain extends FragmentActivity{
         @Override
         public int getCount() {
             return NUM_ITEMS;
+        }*/
+   // }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.employee_main);
+
+    }
+
+    public void selectFrag(View view){
+        Fragment fr;
+
+        if(view == findViewById(R.id.schedule)){
+            fr = new EmpSchedule();
+
+        }else{
+            fr = new EmpMessaging();
         }
-    }*/
 
 
+        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_place, fr);
+        ft.commit();
+    }
 
 }
 

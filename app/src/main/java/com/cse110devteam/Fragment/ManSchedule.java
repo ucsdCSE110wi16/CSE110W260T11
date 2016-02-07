@@ -48,7 +48,7 @@ public class ManSchedule extends android.support.v4.app.Fragment {
         FragmentManager fragManager = myContext.getSupportFragmentManager();
 
         android.support.v4.app.FragmentTransaction t = fragManager.beginTransaction();
-        t.replace(R.id.calendar1, caldroidFragment);
+        t.replace(R.id.schedule, caldroidFragment);
         t.commit();
 
         return rootView;
