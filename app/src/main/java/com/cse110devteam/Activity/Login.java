@@ -15,7 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110devteam.Global.ChatApplication;
 import com.cse110devteam.R;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -23,12 +27,19 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URISyntaxException;
+
 /**
  * Created by anthonyaltieri on 1/14/16.
  */
 public class Login extends Activity{
     private EditText email, password;
     private Button login, createaccount;
+    private Socket mSocket;
+    private String mUsername;
     /* forgotPass is a button, but in order to get the visual effect
      * that I wanted it is a clickable RelativeLayout. You can bind an
      * onClick listener to this and I made it clickable so it should
@@ -36,7 +47,6 @@ public class Login extends Activity{
      */
     private RelativeLayout forgotPass;
     private TextView header;
-
 
 
     @Override
@@ -50,10 +60,9 @@ public class Login extends Activity{
             // Silently Fail
         }
 
-        // DEBUG PARSE
-        ParseObject pO = new ParseObject("TEST");
-        pO.put("please", "work");
-        pO.saveInBackground();
+        // Get the Chat Application
+        ChatApplication chatApp = (ChatApplication) getApplication();
+        mSocket = chatApp.getSocket();
 
         setContentView(R.layout.login);
         header = (TextView) findViewById(R.id.header);
@@ -68,7 +77,7 @@ public class Login extends Activity{
             @Override
             public void onClick(View view){
                 // Email is not case-sensitive
-                final String textEmail = email.getText().toString().toLowerCase();
+                final String textEmail = email.getText().toString().toLowerCase().trim();
                 String textPassword = password.getText().toString();
                 boolean validEmail = false;
                 boolean validPassword = false;
@@ -104,6 +113,10 @@ public class Login extends Activity{
                                 @Override
                                 public void done(ParseUser user, ParseException e) {
                                     if(user != null){
+                                        ParseUser pU = ParseUser.getCurrentUser();
+                                        mUsername = pU.get("firsname") + " " + pU.get("lastname");
+                                        // Add user to chat server
+                                        mSocket.emit("add user", mUsername);
                                         if(user.getBoolean("ismanager")){
                                             goToManagerMain();
                                         } else {
@@ -140,13 +153,31 @@ public class Login extends Activity{
                 // an account associated with it.
             }
         });
+
+        mSocket.on("login", onLogin);
+
     }
+
+    private Emitter.Listener onLogin = new Emitter.Listener(){
+        @Override
+        public void call(Object... args) {
+            JSONObject data = (JSONObject) args[0];
+            int numUsers;
+            try {
+                numUsers = data.getInt("numUsers");
+            } catch (JSONException e){
+                return;
+            }
+            Intent intent = new Intent();
+            startActivity(intent);
+        }
+    };
 
     private boolean emailInSystem(String username){
         ParseQuery<ParseUser> userList = ParseUser.getQuery();
         userList.whereEqualTo("username", username);
         try{
-            return (userList.count() != 0) ? true : false;
+            return (userList.count() != 0);
 
         } catch (ParseException e) {
             return false;

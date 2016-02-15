@@ -1,0 +1,39 @@
+This is how you get the chat client to actually work.
+We are going to temporarily use localhost ports to test the chat until I can get this
+on my Elastic Server IP and when that happens it will always be up.
+
+STEPS:
+1. Determine if you are using an Emulator or a real Device to test the application
+  - Emulator: You can skip this step but what you have to use is the TEST_URI_EMULATOR
+              public static String in the ChatApplication.java file for the argument with
+              the method IO.socket(argument). ChatApplication.java can be found in 
+              app/build/src/main/java/com.cse110devteam/Global/
+
+  - Real Device: You have to go to the ChatApplication.java file that is located in
+                 app/build/src/main/java/com.cse110devteam/Global/ and use the public
+                 static String TEST_URI_DEVICE as the argument for the method 
+                 IO.socket(argument)
+
+
+2. Install Node if you havnen't already, here is a guide to install Node with a packet
+manager: https://nodejs.org/en/download/package-manager/ 
+If you have Node installed skip this step.
+
+3. Open terminal/cmd
+
+4. Navigate to the ChatClient directory
+
+5. Type in the following command in terminal/cmd: node ChatServer
+
+6. Now essentially what is happening, for those that haven't gotten into sockets yet is
+that there is an Express server (Express is a library that is publically available for
+Node) instance that is constantly running in your terminal/cmd. That is the server that
+hosts the messages and it still has a lot of work that needs to be done to it. However,
+as the one that is the most comfortable with this type of thing I will be working on that
+in conjunction with any other android task that we assign to me until it is done.
+
+
+
+*Note: Feel free to contact me anytime and I'll sit down with anyone and walk them through the
+more nitty gritty parts of sockets/ports or Node in general.
+

@@ -3,6 +3,9 @@
     <!-- Colors are temporary -->
     <color name="tab_background">#ff4779ff</color>
 
+    <!-- Username Colors for messages -->
+    <color name="usernamecolor_default">#333</color>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->

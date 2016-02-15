@@ -63,9 +63,9 @@ public class CreateAccount extends Activity {
                 boolean validFname = false;
                 boolean validLname = false;
                 boolean passMatch = false;
-                String textEmail = email.getText().toString().toLowerCase();
-                String textFname = fname.getText().toString().toLowerCase();
-                String textLname = lname.getText().toString().toLowerCase();
+                String textEmail = email.getText().toString().toLowerCase().trim();
+                String textFname = fname.getText().toString().toLowerCase().trim();
+                String textLname = lname.getText().toString().toLowerCase().trim();
                 String textPass1 = password1.getText().toString();
                 String textPass2 = password2.getText().toString();
                 /* We might want to test to see if the email is valid

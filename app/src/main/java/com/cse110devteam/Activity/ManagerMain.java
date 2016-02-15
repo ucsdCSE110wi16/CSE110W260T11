@@ -10,7 +10,10 @@ import com.cse110devteam.Fragment.ManManagerial;
 import com.cse110devteam.Fragment.ManMessaging;
 import com.cse110devteam.Fragment.ManSchedule;
 import com.cse110devteam.R;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 /**
@@ -19,16 +22,19 @@ import java.util.ArrayList;
 public class ManagerMain  extends FragmentActivity {
     public static int NUM_ITEMS = 3;
 
-    private ManagerPagerAdapter myAdapter;
     private ViewPager mPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.manager_main);
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(new ManagerPagerAdapter(getSupportFragmentManager()));
-        mPager.setCurrentItem(1);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.manager_main);
+            mPager = (ViewPager) findViewById(R.id.pager);
+            mPager.setAdapter(new ManagerPagerAdapter(getSupportFragmentManager()));
+            mPager.setCurrentItem(1);
+        } catch (Error e){
+            e.printStackTrace();
+        }
     }
 
     public static class ManagerPagerAdapter extends FragmentPagerAdapter{
