@@ -1,77 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:style="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <Button
+        android:id="@+id/schedule"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        style="@style/container_header"
-        >
+        android:text="Schedule"
+        android:onClick="selectFrag" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Choose Activity"
-            style="@style/header"
-            />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
-        <LinearLayout
+        <Button
+            android:id="@+id/messaging"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.5"
-                >
-
-                <Button android:id="@+id/schedule"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:text="Schedule"
-                    android:background="@android:color/holo_blue_dark"
-                    style="@style/header"
-                    android:textColor="@android:color/white"
-                    android:layout_centerInParent="true"
-                    android:layout_margin="32dp"
-                    />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.5"
-                >
-
-                <Button android:id="@+id/messaging"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:text="Message"
-                    android:background="@android:color/holo_blue_dark"
-                    style="@style/header"
-                    android:textColor="@android:color/white"
-                    android:layout_centerInParent="true"
-                    android:layout_margin="32dp" />
-
-                />
+            android:layout_height="wrap_content"
+            android:text="Message"
+            android:onClick="selectFrag" />
 
 
-
-
-            </RelativeLayout>
-        </LinearLayout>
-
-    </RelativeLayout>
-
-
+    <fragment
+        android:name="com.cse110devteam.Fragment.EmpSchedule"
+        android:id="@+id/fragment_place"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
