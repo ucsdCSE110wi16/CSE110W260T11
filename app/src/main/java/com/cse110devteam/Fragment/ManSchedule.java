@@ -38,18 +38,15 @@ public class ManSchedule extends android.support.v4.app.Fragment {
 
         View rootView = inflater.inflate(R.layout.employee_schedule, container, false);
 
+        /**
         CaldroidFragment caldroidFragment = new CaldroidFragment();
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         caldroidFragment.setArguments(args);
+        */
 
-        FragmentManager fragManager = myContext.getSupportFragmentManager();
-
-        android.support.v4.app.FragmentTransaction t = fragManager.beginTransaction();
-        t.replace(R.id.schedule, caldroidFragment);
-        t.commit();
 
         return rootView;
     }

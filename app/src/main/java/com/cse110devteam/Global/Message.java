@@ -4,9 +4,8 @@ package com.cse110devteam.Global;
  * Created by anthonyaltieri on 2/8/16.
  */
 public class Message {
-    public static final int TYPE_MESSAGE = 0;
-    public static final int TYPE_LOG = 1;
-    public static final int TYPE_ACTION = 2;
+    public static final int TYPE_MESSAGE_SELF = 0;
+    public static final int TYPE_MESSAGE_OTHER = 1;
 
     private int mType;
     private String mMessage;
@@ -27,10 +26,12 @@ public class Message {
     }
 
     public static class Builder {
+        private final int mType;
         private String mUsername;
         private String mMessage;
 
-        public Builder() {
+        public Builder(int type) {
+            mType = type;
         }
 
         public Builder username(String username){
@@ -47,6 +48,7 @@ public class Message {
             Message message = new Message();
             message.mUsername = mUsername;
             message.mMessage = mMessage;
+            message.mType = mType;
             return message;
         }
     }

@@ -26,7 +26,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int layout = R.layout.chat_message;
+        int layout = -1;
+        switch (viewType){
+            case Message.TYPE_MESSAGE_SELF: layout = R.layout.chat_message_self;
+            case Message.TYPE_MESSAGE_OTHER: layout = R.layout.chat_message_other;
+            default: layout = R.layout.chat_message_self;
+        }
         View v = LayoutInflater
                 .from(parent.getContext())
                 .inflate(layout, parent, false);
