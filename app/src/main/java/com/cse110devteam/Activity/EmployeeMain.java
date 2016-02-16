@@ -29,111 +29,21 @@ import java.util.ArrayList;
  * Created by anthonyaltieri on 1/15/16.
  */
 public class EmployeeMain extends FragmentActivity{
-   // Button messaging, schedule;
+    public static int NUM_ITEMS = 2;
 
-  //  public static int NUM_ITEMS = 2;
-
-      //private?
-      /*ViewPager mPager;
-      EmployeePagerAdapter myAdapter;*/
-
-
-
-    /*@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.employee_main);
-
-
-        messaging = (Button) findViewById(R.id.messaging);
-        schedule = (Button) findViewById(R.id.schedule);
-
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(new EmployeePagerAdapter(getSupportFragmentManager()));
-
-        myAdapter = new EmployeePagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(myAdapter);
-
-        //mPager.setCurrentItem(0);*/
-
-       /*schedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.schedule:
-                        //what to put here
-                        EmpSchedule empSchedule = new EmpSchedule();
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-                        transaction.replace(R.id.calendar1, empSchedule);
-                        transaction.addToBackStack(null);
-
-                        transaction.commit();
-
-                    }
-
-            }
-
-       });
-
-        messaging.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                myAdapter.getItem(1);
-            }
-
-        });*/
-
-
-   // }
-
-      /*  public void selectFrag(View view) {
-            Fragment fr;
-
-            if(view == findViewById(R.id.calendar1)) {
-                fr = new EmpSchedule();
-
-            }else {
-            fr = new EmpMessaging();
-            }
-
-
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
-            fragmentTransaction.replace(R.id.calendar1, fr);
-
-            fragmentTransaction.commit();
-
-
-
-        }*/
-/*
-     public static class EmployeePagerAdapter extends FragmentPagerAdapter{
-        public EmployeePagerAdapter(android.support.v4.app.FragmentManager fm) {
-            super(fm);
-        }
-
-       @Override
-        public android.support.v4.app.Fragment getItem(int position) {
-            switch (position){
-                default: return new EmpSchedule();
-                case 0: return new EmpSchedule();
-                case 1: return new EmpMessaging();
-
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return NUM_ITEMS;
-        }*/
-   // }
+    ViewPager mPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.employee_main);
+        try{
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.employee_main);
+            mPager = (ViewPager) findViewById(R.id.pager);
+            mPager.setAdapter(new EmployeePagerAdapter(getSupportFragmentManager()));
+            mPager.setCurrentItem(1);
+        } catch (Error e){
+            e.printStackTrace();
+        }
 
         boolean[][] boolArr = new boolean[12][31];
         JSONArray boolArrJSON = new JSONArray();
@@ -158,20 +68,24 @@ public class EmployeeMain extends FragmentActivity{
 
     }
 
-    public void selectFrag(View view){
-        Fragment fr;
-
-        if(view == findViewById(R.id.schedule)){
-            fr = new EmpSchedule();
-
-        }else{
-            fr = new EmpMessaging();
+    public static class EmployeePagerAdapter extends FragmentPagerAdapter {
+        public EmployeePagerAdapter(android.support.v4.app.FragmentManager fm) {
+            super(fm);
         }
 
+        @Override
+        public android.support.v4.app.Fragment getItem(int position) {
+            switch (position){
+                default: return new EmpSchedule();
+                case 0: return new EmpSchedule();
+                case 1: return new EmpMessaging();
+            }
+        }
 
-        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_place, fr);
-        ft.commit();
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
     }
 
 }
