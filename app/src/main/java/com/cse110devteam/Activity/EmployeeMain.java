@@ -18,6 +18,10 @@ import com.cse110devteam.Fragment.ManManagerial;
 import com.cse110devteam.Fragment.ManMessaging;
 import com.cse110devteam.Fragment.ManSchedule;
 import com.cse110devteam.R;
+import com.parse.ParseUser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -130,6 +134,27 @@ public class EmployeeMain extends FragmentActivity{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.employee_main);
+
+        boolean[][] boolArr = new boolean[12][31];
+        JSONArray boolArrJSON = new JSONArray();
+        for(int i = 0; i < 12; i++){
+            JSONArray subArray = new JSONArray();
+            for(int j = 0; j < 31; j++) {
+                try {
+                    subArray.put(j, boolArr[i][j]);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                boolArrJSON.put(i, subArray);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        currentUser.put("boolSched", boolArrJSON);
+        currentUser.saveInBackground();
 
     }
 
