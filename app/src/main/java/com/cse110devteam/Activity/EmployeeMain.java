@@ -1,24 +1,25 @@
 package com.cse110devteam.Activity;
 
-import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TextView;
 
-import com.cse110devteam.Fragment.EmpMessaging;
-import com.cse110devteam.Fragment.EmpSchedule;
-import com.cse110devteam.Fragment.ManManagerial;
-import com.cse110devteam.Fragment.ManMessaging;
-import com.cse110devteam.Fragment.ManSchedule;
+import com.cse110devteam.Global.EmployeePagerAdapter;
 import com.cse110devteam.R;
-import com.parse.ParseUser;
+
+import junit.framework.Assert;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,18 +34,54 @@ public class EmployeeMain extends FragmentActivity{
 
     ViewPager mPager;
 
+    Toolbar mToolbar;
+    TextView title;
+    Typeface robotoBold;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         try{
             super.onCreate(savedInstanceState);
             setContentView(R.layout.employee_main);
+
             mPager = (ViewPager) findViewById(R.id.pager);
-            mPager.setAdapter(new EmployeePagerAdapter(getSupportFragmentManager()));
+            mPager.setAdapter(new EmployeePagerAdapter(getSupportFragmentManager(), NUM_ITEMS));
             mPager.setCurrentItem(1);
+
+            mToolbar = (Toolbar) findViewById(R.id.toolbar);
+            title = (TextView) findViewById(R.id.title);
+            robotoBold = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Bold.ttf");
+            title.setTypeface(robotoBold);
+
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
+            tabLayout.addTab(tabLayout.newTab().setText("SCHEDULE"));
+            tabLayout.addTab(tabLayout.newTab().setText("MESSAGING"));
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+            mPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    mPager.setCurrentItem(tab.getPosition());
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    // Nothing
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                    // Nothing
+                }
+            });
+
         } catch (Error e){
             e.printStackTrace();
         }
 
+        /*
         boolean[][] boolArr = new boolean[12][31];
         JSONArray boolArrJSON = new JSONArray();
         for(int i = 0; i < 12; i++){
@@ -65,28 +102,10 @@ public class EmployeeMain extends FragmentActivity{
         ParseUser currentUser = ParseUser.getCurrentUser();
         currentUser.put("boolSched", boolArrJSON);
         currentUser.saveInBackground();
+        */
 
     }
 
-    public static class EmployeePagerAdapter extends FragmentPagerAdapter {
-        public EmployeePagerAdapter(android.support.v4.app.FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public android.support.v4.app.Fragment getItem(int position) {
-            switch (position){
-                default: return new EmpSchedule();
-                case 0: return new EmpSchedule();
-                case 1: return new EmpMessaging();
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return NUM_ITEMS;
-        }
-    }
 
 }
 

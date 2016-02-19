@@ -117,11 +117,13 @@ public class Login extends Activity{
                                         mUsername = pU.get("firsname") + " " + pU.get("lastname");
                                         // Add user to chat server
                                         mSocket.emit("add user", mUsername);
+
                                         if(user.getBoolean("ismanager")){
                                             goToManagerMain();
                                         } else {
                                             goToEmployeeMain();
                                         }
+
                                     } else {
                                         Toast noPassToast;
                                         if(e.getCode() == ParseException.OBJECT_NOT_FOUND){
