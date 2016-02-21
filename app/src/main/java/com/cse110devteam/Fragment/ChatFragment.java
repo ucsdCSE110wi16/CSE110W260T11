@@ -76,8 +76,12 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("send.OnClick", "Inside method");
                 // If no connection, immediately return
-                if(!socket.connected()) return;
+                if(!socket.connected()){
+                    Log.d("SOCKET ERROR:", "Socket not connected");
+                    return;
+                }
 
                 String message = input.getText().toString();
                 // If message is length 0 after trim return
@@ -105,6 +109,7 @@ public class ChatFragment extends android.support.v4.app.Fragment{
 
                     json.put("time", time);
                 } catch (JSONException e) {
+                    Log.d("JSONException", e.toString());
                     e.printStackTrace();
                 }
 
@@ -194,6 +199,7 @@ public class ChatFragment extends android.support.v4.app.Fragment{
             getActivity().runOnUiThread(new Runnable(){
                 @Override
                 public void run() {
+                    Log.d("onNewMessage", "inside method");
                     // TODO: Add support for time
                     JSONObject data = (JSONObject) args[0];
                     String username;
