@@ -16,9 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cse110devteam.Global.ChatApplication;
+import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.R;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Manager;
 import com.github.nkzawa.socketio.client.Socket;
 import com.parse.LogInCallback;
 import com.parse.Parse;
@@ -37,15 +39,11 @@ import java.net.URISyntaxException;
  */
 public class Login extends Activity{
     private EditText email, password;
-    private Button login, createaccount;
+    private Button login;
+    private Button createaccount;
+    private Button attribution;
     private Socket mSocket;
     private String mUsername;
-    /* forgotPass is a button, but in order to get the visual effect
-     * that I wanted it is a clickable RelativeLayout. You can bind an
-     * onClick listener to this and I made it clickable so it should
-     * not be a problem
-     */
-    private RelativeLayout forgotPass;
     private TextView header;
 
 
@@ -70,7 +68,12 @@ public class Login extends Activity{
         password = (EditText) findViewById(R.id.password);
         login = (Button) findViewById(R.id.login);
         createaccount = (Button) findViewById(R.id.createaccount);
-        forgotPass = (RelativeLayout) findViewById(R.id.forgotpass);
+        attribution = (Button) findViewById(R.id.attribution);
+
+        email.setTypeface(TypefaceGenerator.get("roboto", getAssets()));
+        password.setTypeface(TypefaceGenerator.get("roboto", getAssets()));
+        login.setTypeface(TypefaceGenerator.get("robotoMedium", getAssets()));
+        createaccount.setTypeface(TypefaceGenerator.get("robotoMedium", getAssets()));
 
         /* BUTTON ONCLICK LISTENERS */
         login.setOnClickListener(new View.OnClickListener(){
@@ -119,9 +122,13 @@ public class Login extends Activity{
                                         mSocket.emit("add user", mUsername);
 
                                         if(user.getBoolean("ismanager")){
-                                            goToManagerMain();
+                                            Intent intent = new Intent(getApplicationContext(),
+                                                    ManagerMain.class);
+                                            startActivity(intent);
                                         } else {
-                                            goToEmployeeMain();
+                                            Intent intent = new Intent(getApplicationContext(),
+                                                    EmployeeMain.class);
+                                            startActivity(intent);
                                         }
 
                                     } else {
@@ -144,17 +151,19 @@ public class Login extends Activity{
         createaccount.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                goToCreateAccountUserType();
+                Intent intent = new Intent(getApplicationContext(), CreateAccountUserType.class);
+                startActivity(intent);
             }
         });
 
-        forgotPass.setOnClickListener(new View.OnClickListener(){
+        attribution.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
-                // Open a dialogue box prompting to enter in an email that has
-                // an account associated with it.
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Attribution.class);
+                startActivity(intent);
             }
         });
+
 
         mSocket.on("login", onLogin);
 
@@ -191,19 +200,5 @@ public class Login extends Activity{
         super.onPause();
     }
 
-    protected void goToCreateAccountUserType(){
-        Intent intent = new Intent(this, CreateAccountUserType.class);
-        startActivity(intent);
-    }
-
-    protected void goToManagerMain(){
-        Intent intent = new Intent(this, ManagerMain.class);
-        startActivity(intent);
-    }
-
-    protected void goToEmployeeMain(){
-        Intent intent = new Intent(this, EmployeeMain.class);
-        startActivity(intent);
-    }
 
 }

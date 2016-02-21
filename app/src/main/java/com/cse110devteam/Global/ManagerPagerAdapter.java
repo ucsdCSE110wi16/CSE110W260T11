@@ -17,15 +17,12 @@ import java.util.Locale;
  */
 public class ManagerPagerAdapter extends FragmentPagerAdapter {
     private int NUM_ITEMS;
-    ParseUser user;
     boolean hasBusinessPage;
 
     public ManagerPagerAdapter(FragmentManager fm, int NUM_ITEMS) {
         super(fm);
         this.NUM_ITEMS = NUM_ITEMS;
-        user = ParseUser.getCurrentUser();
-        String businessName = (String) user.get("businessName");
-        hasBusinessPage = (businessName != null && businessName.length() != 0);
+        hasBusinessPage = (NUM_ITEMS == 3);
     }
 
     @Override
@@ -37,24 +34,21 @@ public class ManagerPagerAdapter extends FragmentPagerAdapter {
                 case 2: return new ManMessaging();
             }
         } else {
-            switch (position){
-                case 0: return new ManSchedule();
-                case 1: return new ManManagerialNoBusiness();
-                case 2: return new ManMessaging();
-            }
+            return new ManManagerialNoBusiness();
         }
         return null;
     }
 
     @Override
     public CharSequence getPageTitle(int position){
-        Locale l = Locale.getDefault();
-        switch (position){
-            case 0: return "SCHEDULE";
-            case 1: return "MANAGERIAL";
-            case 2: return "MESSAGING";
+        if(hasBusinessPage){
+            switch (position){
+                case 0: return "SCHEDULE";
+                case 1: return "MANAGERIAL";
+                case 2: return "MESSAGING";
+            }
         }
-        return null;
+        return "MANAGERIAL";
     }
 
     @Override

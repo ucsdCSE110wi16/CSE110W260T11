@@ -9,6 +9,7 @@
     <color name="primary">#579532</color>
     <color name="primary_dark">#356F13</color>
     <color name="accent">#748BA7</color>
+    <color name="button_dark">#4D2D73</color>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorPrimary">@color/primary</item>
@@ -54,20 +55,13 @@
     <style name="logo_login">
     </style>
 
-    <style name="login_edittext">
+    <style name="login_edittext" parent="android:Widget.Material.Light.EditText">
         <item name="android:layout_marginRight">82px</item>
         <item name="android:layout_marginLeft">82px</item>
         <item name="android:textSize">22dp</item>
         <item name="android:paddingLeft">6dp</item>
     </style>
 
-    <style name="button_fullwidth">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingBottom">@dimen/login_button_paddingBottom</item>
-        <item name="android:paddingTop">@dimen/login_button_paddingTop</item>
-        <item name="android:textSize">22dp</item>
-    </style>
 
     <style name="button_createaccount">
         <item name="android:paddingBottom">@dimen/login_button_paddingBottom</item>

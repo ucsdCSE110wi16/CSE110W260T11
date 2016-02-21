@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">Cse110DevTeam</string>
+    <string name="app_name">Shift Assign</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="forgotpassworddialog">"Enter the email of the account with the forgotten password. Instructions will be emailed your entry to reset your password.</string>
     <string name="action_settings">Settings</string>
     <string name="createbusiness_subheader">This is the profile that will represent your business. You will be able to invite employees and manage their schedules after your profile has been set up.</string>
     <string name="createbusiness_instructions">You have not set up a business page yet. Click below to create a business page.</string>
+    <string name="logoattribution">Business graphic by: Freepik (http://www.freepik.com) \nfrom Flaticon (http://www.flaticon.com) \nis liscensed under CC BY 3.0 (http://creativecommons.org/licenses/by/3.0/).\nMade with Logo Maker (http://logomakr.com)</string>
 </resources>

@@ -17,6 +17,7 @@ public class TypefaceGenerator {
             case "robotoBlack": return Typeface.createFromAsset(am, "fonts/Roboto-Black.ttf");
             case "robotoLight": return Typeface.createFromAsset(am, "fonts/Roboto-Light.ttf");
             case "robotoBold": return Typeface.createFromAsset(am, "fonts/Roboto-Bold.ttf");
+            case "robotoMedium": return Typeface.createFromAsset(am, "fonts/Roboto-Medium.ttf");
         }
         return null;
     }
