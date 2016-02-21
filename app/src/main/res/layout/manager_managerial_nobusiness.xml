@@ -7,25 +7,42 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="254dp"
-        style="@style/section_manager"
+        android:layout_height="fill_parent"
+        android:background="@color/accent"
         >
 
-        <TextView android:id="@+id/noManagerPageText"
+        <TextView android:id="@+id/greeting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="32dp"
+            android:text="Hello Anthony!"
+            android:textSize="36dp"
             android:textColor="#FAFAFA"
-            android:text="No business page, click the button to create one."
             android:textAlignment="center"
             android:paddingRight="12dp"
             android:paddingLeft="12dp"
             android:paddingTop="22dp"
-            android:paddingBottom="22dp"
+            android:paddingBottom="11dp"
+            android:layout_centerHorizontal="true"
             />
 
+        <TextView android:id="@+id/instructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="#FAFAFA"
+            android:text="@string/createbusiness_instructions"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:lineSpacingMultiplier="1.1"
+            android:paddingRight="22dp"
+            android:paddingLeft="22dp"
+            android:paddingTop="11dp"
+            android:paddingBottom="22dp"
+            android:layout_below="@+id/greeting" />
 
-        <Button android:id="@+id/noManagerButtons"
+
+        <Button android:id="@+id/createBusiness"
+            style="@android:style/Widget.Material.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="42dp"
@@ -34,7 +51,7 @@
             android:paddingBottom="18dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="42dp"
+            android:layout_marginBottom="22dp"
             android:background="@android:color/holo_blue_light"
             android:text="CREATE"
             android:textSize="18sp"

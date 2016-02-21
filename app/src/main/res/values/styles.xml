@@ -6,9 +6,14 @@
     <!-- Username Colors for messages -->
     <color name="usernamecolor_default">#333</color>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <color name="primary">#579532</color>
+    <color name="primary_dark">#356F13</color>
+    <color name="accent">#748BA7</color>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:colorAccent">@color/accent</item>
     </style>
 
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -98,9 +103,6 @@
         <item name="android:text">@string/forgotpassworddialog</item>
     </style>
 
-    <style name="section_manager">
-        <item name="android:background">@android:color/holo_green_dark</item>
-    </style>
 
     <style name="createbusinesspage_button" parent="@android:style/Widget.Material.Button.Borderless">
         <item name="android:textColor">@android:color/holo_blue_light</item>

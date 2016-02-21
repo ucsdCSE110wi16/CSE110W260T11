@@ -1,11 +1,14 @@
 package com.cse110devteam.Global;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.cse110devteam.Fragment.ManManagerial;
+import com.cse110devteam.Fragment.ManManagerialNoBusiness;
 import com.cse110devteam.Fragment.ManMessaging;
 import com.cse110devteam.Fragment.ManSchedule;
+import com.parse.ParseUser;
 
 import java.util.Locale;
 
@@ -14,21 +17,33 @@ import java.util.Locale;
  */
 public class ManagerPagerAdapter extends FragmentPagerAdapter {
     private int NUM_ITEMS;
+    ParseUser user;
+    boolean hasBusinessPage;
 
     public ManagerPagerAdapter(FragmentManager fm, int NUM_ITEMS) {
         super(fm);
         this.NUM_ITEMS = NUM_ITEMS;
+        user = ParseUser.getCurrentUser();
+        String businessName = (String) user.get("businessName");
+        hasBusinessPage = (businessName != null && businessName.length() != 0);
     }
 
     @Override
     public android.support.v4.app.Fragment getItem(int position) {
-        switch (position){
-            default: return new ManManagerial();
-            case 0: return new ManSchedule();
-            case 1: return new ManManagerial();
-            case 2: return new ManMessaging();
-
+        if(hasBusinessPage){
+            switch (position){
+                case 0: return new ManSchedule();
+                case 1: return new ManManagerial();
+                case 2: return new ManMessaging();
+            }
+        } else {
+            switch (position){
+                case 0: return new ManSchedule();
+                case 1: return new ManManagerialNoBusiness();
+                case 2: return new ManMessaging();
+            }
         }
+        return null;
     }
 
     @Override

@@ -1,34 +1,30 @@
 package com.cse110devteam.Activity;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.TextView;
 
-import com.cse110devteam.Fragment.ManManagerial;
-import com.cse110devteam.Fragment.ManMessaging;
-import com.cse110devteam.Fragment.ManSchedule;
 import com.cse110devteam.Global.ManagerPagerAdapter;
+import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.R;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
 
-import java.net.URISyntaxException;
-import java.util.ArrayList;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by anthonyaltieri on 1/15/16.
  */
 public class ManagerMain  extends FragmentActivity {
     public static int NUM_ITEMS = 3;
-
     private ViewPager mPager;
 
     Toolbar mToolbar;
+    TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +36,9 @@ public class ManagerMain  extends FragmentActivity {
             mPager.setCurrentItem(1);
 
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+            title = (TextView) findViewById(R.id.title);
+            title.setTypeface(TypefaceGenerator.get("robotoBold", getAssets()));
 
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
             tabLayout.addTab(tabLayout.newTab().setText("SCHEDULE"));

@@ -17,6 +17,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.cse110devteam.Global.EmployeePagerAdapter;
+import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.R;
 
 import junit.framework.Assert;
@@ -51,8 +52,7 @@ public class EmployeeMain extends FragmentActivity{
 
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
             title = (TextView) findViewById(R.id.title);
-            robotoBold = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Bold.ttf");
-            title.setTypeface(robotoBold);
+            title.setTypeface(TypefaceGenerator.get("robotoBold", getAssets()));
 
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
             tabLayout.addTab(tabLayout.newTab().setText("SCHEDULE"));

@@ -1,6 +1,7 @@
 package com.cse110devteam.Global;
 
 import android.app.Application;
+import android.graphics.Typeface;
 import android.util.Log;
 
 import com.github.nkzawa.socketio.client.IO;
