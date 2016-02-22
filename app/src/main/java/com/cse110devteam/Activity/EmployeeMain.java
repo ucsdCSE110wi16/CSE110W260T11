@@ -22,10 +22,6 @@ import com.cse110devteam.R;
 
 import junit.framework.Assert;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.ArrayList;
 
 /**
  * Created by anthonyaltieri on 1/15/16.
@@ -80,32 +76,6 @@ public class EmployeeMain extends FragmentActivity{
         } catch (Error e){
             e.printStackTrace();
         }
-
-        /*
-        boolean[][] boolArr = new boolean[12][31];
-        JSONArray boolArrJSON = new JSONArray();
-        for(int i = 0; i < 12; i++){
-            JSONArray subArray = new JSONArray();
-            for(int j = 0; j < 31; j++) {
-                try {
-                    subArray.put(j, boolArr[i][j]);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            try {
-                boolArrJSON.put(i, subArray);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        currentUser.put("boolSched", boolArrJSON);
-        currentUser.saveInBackground();
-        */
-
     }
-
-
 }
 
