@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:style="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/primary"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,14 +10,20 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         style="@style/container_header"
+        android:layout_marginTop="22dp"
+        android:layout_marginBottom="22dp"
         >
 
-        <TextView
+        <TextView android:id="@+id/header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Choose User Type"
-            style="@style/header"
+            android:textSize="38dp"
+            android:layout_centerHorizontal="true"
+            android:textColor="#FAFAFA"
             />
+
+
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -37,12 +44,12 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:text="Manager"
+                    android:textSize="40dp"
                     android:onClick="goToManagerMain"
-                    android:background="@android:color/holo_blue_dark"
-                    style="@style/header"
+                    android:backgroundTint="@color/button_dark"
                     android:textColor="@android:color/white"
                     android:layout_centerInParent="true"
-                    android:layout_margin="32dp"
+                    android:layout_margin="44dp"
                     />
 
             </RelativeLayout>
@@ -57,11 +64,11 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:text="Employee"
-                    android:background="@android:color/holo_blue_dark"
-                    style="@style/header"
+                    android:textSize="40dp"
+                    android:backgroundTint="@color/button_dark"
                     android:textColor="@android:color/white"
                     android:layout_centerInParent="true"
-                    android:layout_margin="32dp"
+                    android:layout_margin="44dp"
                     android:onClick="goToEmployeeMain" />
 
                     />

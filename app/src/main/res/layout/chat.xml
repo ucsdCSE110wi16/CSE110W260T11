@@ -8,6 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="0.88"
+        android:background="@color/accent"
         >
 
     </android.support.v7.widget.RecyclerView>
@@ -19,7 +20,6 @@
         android:layout_weight="0.12"
         >
         <EditText android:id="@+id/inputMessage"
-            style="@android:style/Widget.Material.EditText"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="0.8"

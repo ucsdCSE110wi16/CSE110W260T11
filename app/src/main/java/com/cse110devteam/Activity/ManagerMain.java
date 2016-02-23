@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.cse110devteam.Global.ManagerPagerAdapter;
 import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.R;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
@@ -34,69 +35,54 @@ public class ManagerMain  extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        try {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.manager_main);
-            user = ParseUser.getCurrentUser();
-            String businessName = (String) user.get("businessName");
-            boolean hasBusinessPage = (businessName != null && businessName.length() != 0);
-            mPager = (ViewPager) findViewById(R.id.pager);
-            mPager.setAdapter(new ManagerPagerAdapter(getSupportFragmentManager(),
-                    (hasBusinessPage) ? HAS_BUSINESS_NUM_ITEMS : NO_BUSINESS_NUM_ITEMS));
-            mPager.setCurrentItem(1);
-
-            mToolbar = (Toolbar) findViewById(R.id.toolbar);
-
-            title = (TextView) findViewById(R.id.title);
-            title.setTypeface(TypefaceGenerator.get("robotoBold", getAssets()));
-
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
-            if(hasBusinessPage) {
-                tabLayout.addTab(tabLayout.newTab().setText("SCHEDULE"));
-                tabLayout.addTab(tabLayout.newTab().setText("MANAGERIAL"));
-                tabLayout.addTab(tabLayout.newTab().setText("MESSAGING"));
-            } else {
-                tabLayout.setVisibility(View.GONE);
-                /*
-                tabLayout.addTab(tabLayout.newTab().setText(""));
-                tabLayout.addTab(tabLayout.newTab().setText("MANAGERIAL"));
-                tabLayout.addTab(tabLayout.newTab().setText(""));
-                // set the current item at MANAGERIAL
-                tabLayout.getTabAt(1).select();
-                // get the first tab
-                LinearLayout tabStrip = (LinearLayout)tabLayout.getChildAt(0);
-                // disable the tab strip
-                tabStrip.setEnabled(false);
-                // iterate through tabs, set as unclickable
-                for(int i = 0 ; i < tabStrip.getChildCount() ; i++){
-                    tabStrip.getChildAt(i).setClickable(false);
-                }
-                */
-            }
-            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-            mPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    mPager.setCurrentItem(tab.getPosition());
-                }
-
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
-                    // Nothing
-                }
-
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
-                    // Nothing
-                }
-            });
-        } catch (Error e){
-            e.printStackTrace();
-        }
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.manager_main);
     }
 
+    @Override
+    protected void onStart(){
+        super.onStart();
+        user = ParseUser.getCurrentUser();
+        ParseObject business = (ParseObject) user.get("business");
+        boolean hasBusinessPage = (business != null);
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(new ManagerPagerAdapter(getSupportFragmentManager(),
+                (hasBusinessPage) ? HAS_BUSINESS_NUM_ITEMS : NO_BUSINESS_NUM_ITEMS));
+        mPager.setCurrentItem(1);
 
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        title = (TextView) findViewById(R.id.title);
+        title.setTypeface(TypefaceGenerator.get("robotoBold", getAssets()));
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
+        if(hasBusinessPage) {
+            tabLayout.addTab(tabLayout.newTab().setText("SCHEDULE"));
+            tabLayout.addTab(tabLayout.newTab().setText("MANAGERIAL"));
+            tabLayout.addTab(tabLayout.newTab().setText("MESSAGING"));
+        } else {
+            tabLayout.setVisibility(View.GONE);
+        }
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        mPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // Nothing
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // Nothing
+            }
+        });
+
+    }
 }
 

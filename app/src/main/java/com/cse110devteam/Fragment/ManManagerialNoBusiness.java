@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.cse110devteam.Activity.CreateBusinessPage;
 import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.R;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 /**
@@ -52,10 +53,12 @@ public class ManManagerialNoBusiness extends android.support.v4.app.Fragment{
                 + firstname.substring(1) + "!");
 
         createBusiness = (Button) getActivity().findViewById(R.id.createBusiness);
+
         createBusiness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToCreateBusinessPage();
+                Intent intent = new Intent(getActivity(), CreateBusinessPage.class);
+                startActivity(intent);
             }
         });
     }
@@ -66,8 +69,4 @@ public class ManManagerialNoBusiness extends android.support.v4.app.Fragment{
         super.onPause();
     }
 
-    private void goToCreateBusinessPage(){
-        Intent intent = new Intent(getActivity(), CreateBusinessPage.class);
-        startActivity(intent);
-    }
 }

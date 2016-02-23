@@ -42,21 +42,20 @@
 
 
         <Button android:id="@+id/createBusiness"
-            style="@android:style/Widget.Material.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="42dp"
             android:paddingRight="42dp"
-            android:paddingTop="18dp"
-            android:paddingBottom="18dp"
+            android:paddingTop="22dp"
+            android:paddingBottom="22dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="22dp"
-            android:background="@android:color/holo_blue_light"
+            android:minWidth="200dp"
+            android:backgroundTint="@color/button_dark"
             android:text="CREATE"
             android:textSize="18sp"
             android:textColor="#FAFAFA"
-            android:shadowRadius="5"
             />
 
 

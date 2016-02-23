@@ -114,7 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:text="Attribution"
-            android:textSize="7dp"
+            android:textSize="8dp"
             android:textColor="@android:color/secondary_text_light_nodisable"
             style="?attr/borderlessButtonStyle"
             android:layout_alignParentBottom="true"

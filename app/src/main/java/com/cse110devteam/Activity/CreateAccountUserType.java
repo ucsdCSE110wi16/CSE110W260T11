@@ -11,54 +11,49 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.cse110devteam.Activity.CreateAccount;
+import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.R;
 import android.content.Intent;
+import android.widget.TextView;
 
 /**
  * Created by anthonyaltieri on 1/15/16.
  */
 public class CreateAccountUserType extends Activity{
     Button manager, employee;
+    TextView header;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_account_type);
 
+        header = (TextView) findViewById(R.id.header);
+        header.setTypeface(TypefaceGenerator.get("robotoBlack", getAssets()));
+
         manager = (Button) findViewById(R.id.manager);
         employee = (Button) findViewById(R.id.employee);
+        manager.setTypeface(TypefaceGenerator.get("robotoMedium", getAssets()));
+        employee.setTypeface(TypefaceGenerator.get("robotoMedium", getAssets()));
 
         manager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToCreateAccount(true);
+                Intent intent = new Intent(getApplicationContext() , CreateAccount.class);
+                intent.putExtra("isManager", true);
+                startActivity(intent);
             }
         });
 
         employee.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                goToCreateAccount(false);
+                Intent intent = new Intent(getApplicationContext() , CreateAccount.class);
+                intent.putExtra("isManer", false);
+                startActivity(intent);
             }
         });
 
     }
 
-
-    private void goToCreateAccount(boolean isManager){
-        Intent intent = new Intent(this , CreateAccount.class);
-        intent.putExtra("isManager", isManager);
-        startActivity(intent);
-    }
-
-
-    //Called when the user creates an employee account.
-    public void goToEmployeeMain(View view){
-        Intent intent = new Intent(this, EmployeeMain.class);
-
-    }
-
-    public void goToManagerMain(View view){
-        Intent intent = new Intent(this, ManagerMain.class);
-    }
 }

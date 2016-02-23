@@ -15,12 +15,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.R;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.util.zip.Inflater;
 
@@ -52,8 +54,16 @@ public class CreateAccount extends Activity {
         lname = (EditText) findViewById(R.id.lname);
         password1 = (EditText) findViewById(R.id.password1);
         password2 = (EditText) findViewById(R.id.password2);
+        email.setTypeface(TypefaceGenerator.get("roboto", getAssets()));
+        fname.setTypeface(TypefaceGenerator.get("roboto", getAssets()));
+        lname.setTypeface(TypefaceGenerator.get("roboto", getAssets()));
+        password1.setTypeface(TypefaceGenerator.get("roboto", getAssets()));
+        password2.setTypeface(TypefaceGenerator.get("roboto", getAssets()));
+
         submit = (Button) findViewById(R.id.submit);
         cancel = (Button) findViewById(R.id.cancel);
+        submit.setTypeface(TypefaceGenerator.get("robotoMedium", getAssets()));
+        cancel.setTypeface(TypefaceGenerator.get("robotoMedium", getAssets()));
 
 
         submit.setOnClickListener(new View.OnClickListener(){
