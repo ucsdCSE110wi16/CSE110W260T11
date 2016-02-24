@@ -13,11 +13,14 @@ import android.widget.Toast;
 
 import com.cse110devteam.Global.User;
 import com.cse110devteam.R;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import java.util.List;
 
 /**
  * Created by anthonyaltieri on 1/26/16.
@@ -54,7 +57,7 @@ public class CreateBusinessPage extends Activity{
             public void onClick(View v) {
                 boolean validName = false;
                 // businessName is not case-sensitive
-                String textName = businessName.getText().toString().trim();
+                final String textName = businessName.getText().toString().trim();
                 if (textName.length() > 0) {
                     validName = true;
                 } else {
@@ -72,9 +75,20 @@ public class CreateBusinessPage extends Activity{
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                user.put("business", business);
-                                Intent intent = new Intent(getApplicationContext(), ManagerMain.class);
-                                startActivity(intent);
+                                final ParseQuery<ParseObject> query = ParseQuery.getQuery("Business");
+                                query.whereEqualTo("name", textName);
+                                query.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> objects, ParseException e) {
+                                        if (e == null) {
+                                            user.put("business", query);
+                                            Intent intent = new Intent(getApplicationContext(), ManagerMain.class);
+                                            startActivity(intent);
+                                        } else {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
                             } else {
                                 e.printStackTrace();
                             }
