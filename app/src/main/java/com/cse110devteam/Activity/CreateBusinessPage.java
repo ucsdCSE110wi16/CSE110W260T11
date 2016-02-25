@@ -75,25 +75,16 @@ public class CreateBusinessPage extends Activity{
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                final ParseQuery<ParseObject> query = ParseQuery.getQuery("Business");
-                                query.whereEqualTo("name", textName);
-                                query.findInBackground(new FindCallback<ParseObject>() {
-                                    @Override
-                                    public void done(List<ParseObject> objects, ParseException e) {
-                                        if (e == null) {
-                                            user.put("business", query);
-                                            Intent intent = new Intent(getApplicationContext(), ManagerMain.class);
-                                            startActivity(intent);
-                                        } else {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
+                                user.put("business", business);
+
+                                Intent intent = new Intent(getApplicationContext(), ManagerMain.class);
+                                startActivity(intent);
                             } else {
                                 e.printStackTrace();
                             }
                         }
                     });
+
                 }
 
 
