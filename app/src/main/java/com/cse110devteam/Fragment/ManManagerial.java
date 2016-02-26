@@ -68,6 +68,14 @@ public class ManManagerial extends Fragment{
             }
         });
 
+        btnSubmit=(Button)rootView.findViewById(R.id.btnSubmit);
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
 
 
         Spinner spinner_day = (Spinner)rootView.findViewById(R.id.spinner_day);
