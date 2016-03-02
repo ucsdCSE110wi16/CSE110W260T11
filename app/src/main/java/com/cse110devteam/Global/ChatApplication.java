@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.parse.Parse;
+import com.parse.ParseInstallation;
 
 import java.net.URISyntaxException;
 
@@ -27,6 +29,11 @@ public class ChatApplication  extends Application{
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    public void onCreate() {
+        super.onCreate();
+        Parse.initialize(this);
     }
 
     public Socket getSocket(){

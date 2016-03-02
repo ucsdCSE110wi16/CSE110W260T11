@@ -85,9 +85,14 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
                     }
                 }
             }
+            caldroidFragment.setTextColorForDates(schedHM);
+            caldroidFragment.refreshView();
         }
+<<<<<<< HEAD
         //caldroidFragment.setTextColorForDates(schedHM);
         //caldroidFragment.refreshView();
+=======
+>>>>>>> f2b4e893b2ac5374b1a02b44a43b0c472da45b97
         FragmentManager fragManager = myContext.getSupportFragmentManager();
 
         android.support.v4.app.FragmentTransaction t = fragManager.beginTransaction();

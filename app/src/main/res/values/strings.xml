@@ -7,4 +7,36 @@
     <string name="createbusiness_subheader">This is the profile that will represent your business. You will be able to invite employees and manage their schedules after your profile has been set up.</string>
     <string name="createbusiness_instructions">You have not set up a business page yet. Click below to create a business page.</string>
     <string name="logoattribution">Business graphic by: Freepik (http://www.freepik.com) \nfrom Flaticon (http://www.flaticon.com) \nis liscensed under CC BY 3.0 (http://creativecommons.org/licenses/by/3.0/).\nMade with Logo Maker (http://logomakr.com)</string>
+
+    <string name="month_prompt">Choose a month</string>
+
+    <string-array name="month_array">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+    <string-array name= "days_array">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>
