@@ -40,12 +40,12 @@ public class CreateAccount extends Activity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         // TODO: Make this not a lazy fix
-        try {
+/*        try {
             Parse.initialize(this, "84X0uiEqqsbvsU970OtUR5K7gsBf4YFlu8GhA4p3",
                     "4VloWdYvpmBRBvDMEl0cCkZGKRmPTmUAB6dG3aCd");
         } catch (IllegalStateException iSE){
             // Silently fail
-        }
+        }*/
         isManagerAccount = getIntent().getExtras().getBoolean("isManager");
         setContentView(R.layout.create_account);
 
