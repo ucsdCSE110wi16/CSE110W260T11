@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.cse110devteam.Global.EmployeePagerAdapter;
 import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.R;
+import com.parse.ParseUser;
 
 import junit.framework.Assert;
 
@@ -33,11 +34,11 @@ public class EmployeeMain extends FragmentActivity{
 
     Toolbar mToolbar;
     TextView title;
-    Typeface robotoBold;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
+
         try{
             super.onCreate(savedInstanceState);
             setContentView(R.layout.employee_main);

@@ -13,14 +13,14 @@ import android.widget.Toast;
 
 import com.cse110devteam.Global.User;
 import com.cse110devteam.R;
-import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by anthonyaltieri on 1/26/16.
@@ -57,7 +57,7 @@ public class CreateBusinessPage extends Activity{
             public void onClick(View v) {
                 boolean validName = false;
                 // businessName is not case-sensitive
-                final String textName = businessName.getText().toString().trim();
+                String textName = businessName.getText().toString().trim();
                 if (textName.length() > 0) {
                     validName = true;
                 } else {
@@ -66,37 +66,77 @@ public class CreateBusinessPage extends Activity{
                     toast.setGravity(Gravity.BOTTOM, 0, 0);
                     toast.show();
                 }
-                if (validName) {
-                    final ParseObject business = new ParseObject("Business");
-                    business.put("mainManager", user);
-                    business.put("name", textName);
-                    user.put("businessName", textName);
-                    business.saveInBackground(new SaveCallback() {
+                if (validName) createBusiness(textName, user);
+            }
+        });
+    }
+
+    private void createBusiness(String name, final ParseObject mainManager){
+        final ParseObject business = new ParseObject("Business");
+        business.put("mainManager", mainManager);
+        business.put("name", name);
+        mainManager.put("business", business);
+        business.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    createBusinessChat(business, mainManager);
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void createBusinessChat(final ParseObject business, final ParseObject mainManger){
+        final ParseObject businessChat = new ParseObject("BusinessChat");
+        businessChat.put("business", business);
+        business.put("chat", businessChat);
+        business.saveInBackground();
+        businessChat.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null){
+                    createChatRoom(businessChat, mainManger);
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+        businessChat.put("business", business);
+        business.put("chat", businessChat);
+    }
+
+    private void createChatRoom(final ParseObject businessChat, final ParseObject mainManager){
+        final ParseObject chatRoom = new ParseObject("ChatRoom");
+        chatRoom.put("type", "main");
+        ArrayList<ParseObject> rooms = new ArrayList<ParseObject>();
+        rooms.add( chatRoom );
+        businessChat.put("rooms", rooms);
+        Log.d("user", user.getObjectId());
+        Log.d("mainManager", mainManager.getObjectId());
+        Log.d("chatRoom", chatRoom.toString());
+        chatRoom.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null){
+                    mainManager.put("chatMain", chatRoom);
+                    mainManager.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                final ParseQuery<ParseObject> query = ParseQuery.getQuery("Business");
-                                query.whereEqualTo("name", textName);
-                                query.findInBackground(new FindCallback<ParseObject>() {
-                                    @Override
-                                    public void done(List<ParseObject> objects, ParseException e) {
-                                        if (e == null) {
-                                            user.put("business", query);
-                                            Intent intent = new Intent(getApplicationContext(), ManagerMain.class);
-                                            startActivity(intent);
-                                        } else {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
+                                Intent intent = new Intent(getApplicationContext(), ManagerMain.class);
+                                startActivity(intent);
                             } else {
                                 e.printStackTrace();
                             }
+
+
                         }
                     });
+                } else {
+                    e.printStackTrace();
                 }
-
-
             }
         });
     }

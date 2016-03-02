@@ -66,26 +66,28 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
         caldroidFragment.setArguments(args);
         int[] limit = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
         JSONArray schedArray = ParseUser.getCurrentUser().getJSONArray("boolSched");
-        HashMap<Date, Integer> schedHM = new HashMap<>();
-        Calendar workCalendar = Calendar.getInstance();
-        for(int i = 0; i < 12; i++){
-            JSONArray thisMonth = null;
-            try {
-                thisMonth = schedArray.getJSONArray(i);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            for(int j = 0; j < limit[i]; j++) {
-                boolean working = thisMonth.optBoolean(j);
-                if(working) {
-                    workCalendar.set(2016, i, j);
-                    Date workingDay = workCalendar.getTime();
-                    schedHM.put(workingDay, R.color.caldroid_light_red);
+        if(schedArray != null) {
+            HashMap<Date, Integer> schedHM = new HashMap<>();
+            Calendar workCalendar = Calendar.getInstance();
+            for (int i = 0; i < 12; i++) {
+                JSONArray thisMonth = null;
+                try {
+                    thisMonth = schedArray.getJSONArray(i);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                for (int j = 0; j < limit[i]; j++) {
+                    boolean working = thisMonth.optBoolean(j);
+                    if (working) {
+                        workCalendar.set(2016, i, j);
+                        Date workingDay = workCalendar.getTime();
+                        schedHM.put(workingDay, R.color.caldroid_light_red);
+                    }
                 }
             }
         }
-        caldroidFragment.setTextColorForDates(schedHM);
-        caldroidFragment.refreshView();
+        //caldroidFragment.setTextColorForDates(schedHM);
+        //caldroidFragment.refreshView();
         FragmentManager fragManager = myContext.getSupportFragmentManager();
 
         android.support.v4.app.FragmentTransaction t = fragManager.beginTransaction();

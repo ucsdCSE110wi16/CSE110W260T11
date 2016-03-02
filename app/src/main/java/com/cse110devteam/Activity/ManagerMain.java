@@ -43,6 +43,9 @@ public class ManagerMain  extends FragmentActivity {
     protected void onStart(){
         super.onStart();
         user = ParseUser.getCurrentUser();
+        Log.d("ManMain", "");
+        Log.d("user", user.toString());
+        Log.d("user.oid", user.getObjectId());
         ParseObject business = (ParseObject) user.get("business");
         boolean hasBusinessPage = (business != null);
         mPager = (ViewPager) findViewById(R.id.pager);

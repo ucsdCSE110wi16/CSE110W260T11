@@ -16,6 +16,7 @@ import com.cse110devteam.Global.MessageAdapter;
 import com.cse110devteam.R;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
@@ -40,6 +41,10 @@ public class ChatFragment extends android.support.v4.app.Fragment{
     private EditText input;
     private ImageButton send;
 
+    private ParseUser user;
+
+    private String businessId;
+
 
     @Override
     public void onCreate(Bundle bundle){
@@ -53,7 +58,8 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         socket.on("user left", onUserLeft);
         socket.connect();
 
-        username = ParseUser.getCurrentUser().getString("firstname");
+        user = ParseUser.getCurrentUser();
+        username = (String) user.get("firstname");
     }
 
 
@@ -90,6 +96,9 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                 /** json is a JSON object that contains the following keys
                  *  message - The message that is being recieved
                  *  username - The username of the sender
+                 *  businessId - The object id for the ParseObject business this
+                 *             chat is associated with
+                 *  userId - The object id for the ParseUser sending the message
                  *  time - A JSON object with the following keys:
                  *          isAM - boolean, true if it is in the AM
                  *          hour - current hour in 12 hour am/pm format
@@ -99,6 +108,10 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                 try {
                     json.put("message", message);
                     json.put("username", username);
+                    ParseObject business = (ParseObject) user.get("business");
+                    businessId = business.getObjectId();
+                    json.put("businessId", businessId);
+                    json.put("userId", user.get("objectId"));
 
                     Date date = new Date();
                     JSONObject time = new JSONObject();
@@ -128,7 +141,7 @@ public class ChatFragment extends android.support.v4.app.Fragment{
     public void onDestroy(){
         super.onDestroy();
         socket.disconnect();
-        socket.off("new message", onNewMessage);
+        socket.off("new message:" + businessId, onNewMessage);
         socket.off("user left", onUserLeft);
         socket.off("user joined", onUserJoined);
     }
@@ -157,9 +170,14 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                     JSONObject data = (JSONObject) args[0];
                     String username;
                     int numUsers;
+                    ParseObject chatMain = user.getParseObject("chatMain");
                     try{
                         username = data.getString("username");
                         numUsers = data.getInt("numUsers");
+                        JSONObject[] chatLog = (JSONObject[]) user.get("log");
+                        for (JSONObject json : chatLog) {
+                            addMessage((String) json.get("username"), (String) json.get("message"));
+                        }
                     } catch (JSONException e){
                         // Silently fail
                         return;
