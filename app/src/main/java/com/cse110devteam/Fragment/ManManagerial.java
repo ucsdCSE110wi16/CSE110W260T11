@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.parse.ParseObject;
 import com.parse.Parse;
 import com.parse.ParseUser;
+import android.app.AlertDialog;
 
 
 
@@ -40,7 +41,7 @@ public class ManManagerial extends Fragment{
     private List<Message> mMessages = new ArrayList<Message>();
 
 
-    //private Spinner spinner1, spinner2;
+    private Spinner spinner_month, spinner_day;
     private Button btnStart;
     private Button btnEnd;
     private Button btnInvite;
@@ -61,10 +62,43 @@ public class ManManagerial extends Fragment{
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //update parse
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("please select a month and day");
+                alertDialog.setMessage("Please select a starting month and day");
 
+                spinner_month = (Spinner)rootView.findViewById(R.id.spinner_month);
+                ArrayAdapter<CharSequence> adapter_month = ArrayAdapter.createFromResource(rootView.getContext(), R.array.month_array,
+                        android.R.layout.simple_spinner_item);
+                adapter_month.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                spinner_month.setAdapter(adapter_month);
 
+                spinner_month.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                        adapterView.getItemAtPosition(pos);
+                    }
 
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
+                spinner_day = (Spinner)rootView.findViewById(R.id.spinner_day);
+
+                ArrayAdapter<CharSequence> adapter_day = ArrayAdapter.createFromResource(rootView.getContext(), R.array.days_array,
+                        android.R.layout.simple_spinner_item);
+                adapter_day.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                spinner_day.setAdapter(adapter_day);
+
+                spinner_day.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                        adapterView.getItemAtPosition(pos);
+                    }
+                });
+
+                alertDialog.show();
 
             }
         });
