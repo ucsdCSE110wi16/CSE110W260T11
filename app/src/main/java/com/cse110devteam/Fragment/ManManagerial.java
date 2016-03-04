@@ -41,7 +41,7 @@ public class ManManagerial extends Fragment{
     private List<Message> mMessages = new ArrayList<Message>();
 
 
-    private Spinner spinner_month, spinner_day;
+    private Spinner spinner_month, spinner_day, spinner_time;
     private Button btnStart;
     private Button btnEnd;
     private Button btnInvite;
@@ -56,15 +56,13 @@ public class ManManagerial extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
 
+
         final View rootView = inflater.inflate(R.layout.man_managerial_shifts, container, false);
 
         btnStart = (Button)rootView.findViewById(R.id.btnStart);
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("please select a month and day");
-                alertDialog.setMessage("Please select a starting month and day");
 
                 spinner_month = (Spinner)rootView.findViewById(R.id.spinner_month);
                 ArrayAdapter<CharSequence> adapter_month = ArrayAdapter.createFromResource(rootView.getContext(), R.array.month_array,
@@ -96,9 +94,30 @@ public class ManManagerial extends Fragment{
                     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
                         adapterView.getItemAtPosition(pos);
                     }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
                 });
 
-                alertDialog.show();
+                spinner_time = (Spinner)rootView.findViewById(R.id.spinner_time);
+                ArrayAdapter<CharSequence> adapter_time = ArrayAdapter.createFromResource(rootView.getContext(), R.array.time_array,
+                        android.R.layout.simple_spinner_item);
+                adapter_time.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                spinner_time.setAdapter(adapter_time);
+
+                spinner_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                        adapterView.getItemAtPosition(pos);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
 
             }
         });
@@ -107,7 +126,6 @@ public class ManManagerial extends Fragment{
         btnEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //update parse
 
 
 
@@ -119,7 +137,6 @@ public class ManManagerial extends Fragment{
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //update parse
 
 
 
