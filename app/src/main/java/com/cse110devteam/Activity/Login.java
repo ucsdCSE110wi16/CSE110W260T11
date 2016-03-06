@@ -50,14 +50,6 @@ public class Login extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        // TODO: Make this fix not lazy
-/*        try {
-            Parse.initialize(this, "84X0uiEqqsbvsU970OtUR5K7gsBf4YFlu8GhA4p3",
-                    "4VloWdYvpmBRBvDMEl0cCkZGKRmPTmUAB6dG3aCd");
-        } catch (IllegalStateException iSE){
-            // Silently Fail
-        }*/
-
         // Get the Chat Application
         ChatApplication chatApp = (ChatApplication) getApplication();
         mSocket = chatApp.getSocket();
