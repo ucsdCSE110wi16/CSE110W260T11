@@ -18,6 +18,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.parse.ParseObject;
+import com.parse.Parse;
+import com.parse.ParseUser;
+import android.app.AlertDialog;
+
+
 
 import com.cse110devteam.Global.Message;
 import com.cse110devteam.R;
@@ -37,8 +43,11 @@ public class ManManagerial extends Fragment{
     private List<Message> mMessages = new ArrayList<Message>();
 
 
-    private Spinner spinner1, spinner2;
-    private Button btnSubmit;
+    private Spinner spinner_month, spinner_day, spinner_time;
+    private Button btnStart;
+    private Button btnEnd;
+    private Button btnInvite;
+
 
 
     @Override
@@ -50,13 +59,101 @@ public class ManManagerial extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
 
+
         final View rootView = inflater.inflate(R.layout.man_managerial_shifts, container, false);
 
+<<<<<<< HEAD
 
         ArrayAdapter<CharSequence> adapter_month = ArrayAdapter.createFromResource(rootView.getContext(), R.array.month_array,
                 android.R.layout.simple_spinner_item);
         adapter_month.setDropDownViewResource(android.R.layout.simple_spinner_item);
+=======
+        btnStart = (Button)rootView.findViewById(R.id.btnStart);
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                spinner_month = (Spinner)rootView.findViewById(R.id.spinner_month);
+                ArrayAdapter<CharSequence> adapter_month = ArrayAdapter.createFromResource(rootView.getContext(), R.array.month_array,
+                        android.R.layout.simple_spinner_item);
+                adapter_month.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                spinner_month.setAdapter(adapter_month);
+
+                spinner_month.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                        adapterView.getItemAtPosition(pos);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
+                spinner_day = (Spinner)rootView.findViewById(R.id.spinner_day);
+
+                ArrayAdapter<CharSequence> adapter_day = ArrayAdapter.createFromResource(rootView.getContext(), R.array.days_array,
+                        android.R.layout.simple_spinner_item);
+                adapter_day.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                spinner_day.setAdapter(adapter_day);
+
+                spinner_day.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                        adapterView.getItemAtPosition(pos);
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
+                spinner_time = (Spinner)rootView.findViewById(R.id.spinner_time);
+                ArrayAdapter<CharSequence> adapter_time = ArrayAdapter.createFromResource(rootView.getContext(), R.array.time_array,
+                        android.R.layout.simple_spinner_item);
+                adapter_time.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                spinner_time.setAdapter(adapter_time);
+
+                spinner_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                        adapterView.getItemAtPosition(pos);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
+
+            }
+        });
+
+        btnEnd = (Button)rootView.findViewById(R.id.btnEnd);
+        btnEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+
+            }
+        });
+
+        btnInvite=(Button)rootView.findViewById(R.id.btnInvite);
+        btnInvite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+            }
+        });
+
+
+>>>>>>> d086ed9b888e91d33568cd493bbb8fe8d52b89c0
 
         return rootView;
     }
