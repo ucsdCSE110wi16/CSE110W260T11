@@ -20,6 +20,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -113,8 +115,9 @@ public class CreateBusinessPage extends Activity{
         ArrayList<ParseObject> rooms = new ArrayList<ParseObject>();
         rooms.add( chatRoom );
         businessChat.put("rooms", rooms);
-        Log.d("user", user.getObjectId());
-        Log.d("mainManager", mainManager.getObjectId());
+        ArrayList<JSONObject> log = new ArrayList<JSONObject>();
+        // Put an empty array of jsonobjects into log
+        chatRoom.put("log", log);
         Log.d("chatRoom", chatRoom.toString());
         chatRoom.saveInBackground(new SaveCallback() {
             @Override

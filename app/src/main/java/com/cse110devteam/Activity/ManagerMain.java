@@ -20,6 +20,8 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by anthonyaltieri on 1/15/16.
  */
@@ -33,10 +35,12 @@ public class ManagerMain  extends FragmentActivity {
 
     ParseUser user;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manager_main);
+
     }
 
     @Override
@@ -51,7 +55,6 @@ public class ManagerMain  extends FragmentActivity {
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(new ManagerPagerAdapter(getSupportFragmentManager(),
                 (hasBusinessPage) ? HAS_BUSINESS_NUM_ITEMS : NO_BUSINESS_NUM_ITEMS));
-        mPager.setCurrentItem(1);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -86,6 +89,9 @@ public class ManagerMain  extends FragmentActivity {
             }
         });
 
+        mPager.setCurrentItem(1);
+
     }
+
 }
 

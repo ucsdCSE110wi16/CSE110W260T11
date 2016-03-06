@@ -1,27 +1,40 @@
 package com.cse110devteam.Fragment;
 
+import android.app.Activity;
+import android.content.res.AssetManager;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.cse110devteam.Global.ChatApplication;
 import com.cse110devteam.Global.Message;
 import com.cse110devteam.Global.MessageAdapter;
+import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.R;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
+import com.parse.GetCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +50,8 @@ public class ChatFragment extends android.support.v4.app.Fragment{
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private List<Message> mMessages = new ArrayList<Message>();
+    private VerticalSpaceItemDeocration mItemDecoration;
+    private ArrayList<ParseObject> log = null;
 
     private EditText input;
     private ImageButton send;
@@ -44,6 +59,10 @@ public class ChatFragment extends android.support.v4.app.Fragment{
     private ParseUser user;
 
     private String businessId;
+
+    private Typeface roboto;
+    private Typeface robotoBlack;
+    private Typeface robotoMedium;
 
 
     @Override
@@ -53,13 +72,24 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         // Get the socket associated with the chat application
         ChatApplication chatApp = (ChatApplication) getActivity().getApplication();
         socket = chatApp.getSocket();
-        socket.on("new message", onNewMessage);
+
+        user = ParseUser.getCurrentUser();
+        username = (String) user.get("firstname");
+
+        ParseObject business = (ParseObject) user.get("business");
+        String businessId = business.getObjectId();
+        Log.d("businessId", businessId);
+
+        socket.on("new message:" + businessId, onNewMessage);
         socket.on("user joined", onUserJoined);
         socket.on("user left", onUserLeft);
         socket.connect();
 
-        user = ParseUser.getCurrentUser();
-        username = (String) user.get("firstname");
+
+        AssetManager assestManager = getActivity().getAssets();
+        roboto = TypefaceGenerator.get( "roboto", assestManager );
+        robotoBlack = TypefaceGenerator.get( "robotoBlack", assestManager );
+        robotoMedium = TypefaceGenerator.get( "robotoMedium", assestManager );
     }
 
 
@@ -75,6 +105,21 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
+        mItemDecoration = new VerticalSpaceItemDeocration( 40 );
+        mRecyclerView.addItemDecoration( mItemDecoration );
+
+        ParseObject chatMain = (ParseObject) user.get( "chatMain" );
+
+        if ( log == null )
+        {
+            try {
+                log = (ArrayList<ParseObject>) chatMain.fetchIfNeeded().get("log");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Log.d("log.size()", log.size() + "");
+            fillChat(log);
+        }
 
         input = (EditText) getActivity().findViewById(R.id.inputMessage);
         send = (ImageButton) getActivity().findViewById(R.id.send_button);
@@ -84,14 +129,14 @@ public class ChatFragment extends android.support.v4.app.Fragment{
             public void onClick(View v) {
                 Log.d("send.OnClick", "Inside method");
                 // If no connection, immediately return
-                if(!socket.connected()){
+                if (!socket.connected()) {
                     Log.d("SOCKET ERROR:", "Socket not connected");
                     return;
                 }
 
                 String message = input.getText().toString();
                 // If message is length 0 after trim return
-                if(message.trim().length() == 0) return;
+                if (message.trim().length() == 0) return;
 
                 /** json is a JSON object that contains the following keys
                  *  message - The message that is being recieved
@@ -111,16 +156,16 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                     ParseObject business = (ParseObject) user.get("business");
                     businessId = business.getObjectId();
                     json.put("businessId", businessId);
-                    json.put("userId", user.get("objectId"));
+                    json.put("userId", user.getObjectId());
 
                     Date date = new Date();
-                    JSONObject time = new JSONObject();
-                    int hours = date.getHours();
-                    time.put("isAM", hours < 12);
-                    time.put("hour", ++hours % 12);
-                    time.put("minute", date.getMinutes());
+                    int hours = (date.getHours()) % 12;
+                    int minutes = date.getMinutes();
+                    boolean isPm = (hours < 12);
+                    String ampm = (isPm) ? "pm" : "am";
+                    String timeString = "" + hours + ":" + minutes + " " + ampm;
 
-                    json.put("time", time);
+                    json.put("time", timeString);
                 } catch (JSONException e) {
                     Log.d("JSONException", e.toString());
                     e.printStackTrace();
@@ -128,11 +173,32 @@ public class ChatFragment extends android.support.v4.app.Fragment{
 
                 try {
                     socket.emit("new message", json);
-                } catch (Error e){
+                } catch (Error e) {
                     Log.d("ERROR new message: ", e.toString());
                     e.printStackTrace();
                 }
                 input.setText("");
+
+                Date currentDate = new Date();
+                int hours = (currentDate.getHours() + 1) % 12;
+                int minutes = currentDate.getMinutes();
+                boolean isPm = (hours < 12);
+                String ampm = (isPm) ? "pm" : "am";
+                String timeString = "" + hours + ":" + minutes + " " + ampm;
+
+
+                final ParseObject chatMain = (ParseObject) user.get("chatMain");
+                final ParseObject messageObject = new ParseObject("Message");
+                messageObject.put("message", message);
+                messageObject.put("username", username);
+                messageObject.put("time", timeString);
+                messageObject.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        chatMain.add("log", messageObject);
+                        chatMain.saveInBackground();
+                    }
+                });
             }
         });
     }
@@ -146,15 +212,54 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         socket.off("user joined", onUserJoined);
     }
 
-    private void addMessage(String username, String message){
-        int type = (username.equals(this.username))
+    private void addMessage(String username, String message, String time){
+        int type = ( username.equals( this.username ) )
                 ? Message.TYPE_MESSAGE_SELF : Message.TYPE_MESSAGE_OTHER;
         mMessages.add(new Message.Builder(type)
                 .username(username)
                 .message(message)
+                .time(time)
+                .typefaceMessage(roboto)
+                .typefaceTime(robotoMedium)
+                .typefaceUsername(robotoBlack)
                 .build());
-        mAdapter.notifyItemInserted(mMessages.size() - 1);
+        mAdapter.notifyItemInserted( mMessages.size() - 1 );
         scrollToBottom();
+    }
+
+    private void fillChat( ArrayList<ParseObject> log ) {
+        if ( log == null ) return;
+
+        for ( int i = 0 ; i < log.size() ; i++ )
+        {
+            ParseObject msg = log.get( i );
+            Log.d( "log.get(" + i + ") classname", msg.getClassName() );
+            Log.d( "log.get(" + i + ") oid", msg.getObjectId() );
+            try{
+                String message = msg.fetchIfNeeded().getString("message");
+                String usrname = msg.fetchIfNeeded().getString("username");
+                String time = msg.fetchIfNeeded().getString("time");
+                addMessage(usrname, message, time);
+
+            } catch (ParseException pe){
+                pe.printStackTrace();
+            }
+        }
+    }
+
+    public class VerticalSpaceItemDeocration extends RecyclerView.ItemDecoration {
+
+        private final int mSpaceHeight;
+
+        public VerticalSpaceItemDeocration(int mSpaceHeight) {
+            this.mSpaceHeight = mSpaceHeight;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
+                                   RecyclerView.State state) {
+            outRect.bottom = mSpaceHeight;
+        }
     }
 
     private void scrollToBottom(){
@@ -174,17 +279,16 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                     try{
                         username = data.getString("username");
                         numUsers = data.getInt("numUsers");
-                        JSONObject[] chatLog = (JSONObject[]) user.get("log");
-                        for (JSONObject json : chatLog) {
-                            addMessage((String) json.get("username"), (String) json.get("message"));
-                        }
+
+                        Toast userJoinedToast =
+                                Toast.makeText(getActivity().getApplicationContext(),
+                                        ( username + " joined!" ), Toast.LENGTH_LONG);
+                        userJoinedToast.setGravity(Gravity.BOTTOM, 0, 0);
+                        userJoinedToast.show();
                     } catch (JSONException e){
-                        // Silently fail
-                        return;
+                        e.printStackTrace();
                     }
 
-
-                    // TODO: Keep a list of users in chat
                 }
             });
         }
@@ -222,15 +326,17 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                     JSONObject data = (JSONObject) args[0];
                     String username;
                     String message;
+                    String time;
                     try{
                         username = data.getString("username");
                         message = data.getString("message");
+                        time = data.getString("time");
                     } catch (JSONException e){
                         // Silently fail and log
                         Log.d("Error new Message:", e.toString());
                         return;
                     }
-                    addMessage(username, message);
+                    addMessage(username, message, time);
                 }
             });
         }

@@ -1,6 +1,7 @@
 package com.cse110devteam.Global;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +27,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int layout = -1;
-        switch (viewType){
-            case Message.TYPE_MESSAGE_SELF: layout = R.layout.chat_message_self;
-            case Message.TYPE_MESSAGE_OTHER: layout = R.layout.chat_message_other;
-            default: layout = R.layout.chat_message_self;
-        }
+        int layout = R.layout.chat_message;
         View v = LayoutInflater
                 .from(parent.getContext())
                 .inflate(layout, parent, false);
@@ -43,6 +39,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         Message message = mMessages.get(position);
         holder.setMessage(message.getMessage());
         holder.setUsername(message.getUsername());
+        holder.setTime( message.getTime() );
+        holder.setUsernameTypeface( message.getTfUsername() );
+        holder.setMessageTypeface( message.getTfMessage() );
+        holder.setTimeTypeface( message.getTfTime() );
     }
 
     @Override
@@ -53,12 +53,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mUsernameView;
         private TextView mMessageView;
+        private TextView mTimeView;
+        private Typeface usernameTypeface;
+        private Typeface messageTypeface;
+        private Typeface timeTypeface;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            mUsernameView = (TextView) itemView.findViewById(R.id.sender_username);
-            mMessageView = (TextView) itemView.findViewById(R.id.message);
+            mUsernameView = (TextView) itemView.findViewById( R.id.sender_username );
+            mUsernameView.setTypeface( usernameTypeface );
+            mMessageView = (TextView) itemView.findViewById( R.id.message );
+            mMessageView.setTypeface( messageTypeface );
+            mTimeView = (TextView) itemView.findViewById( R.id.message_timestamp );
+            mTimeView.setTypeface( timeTypeface );
         }
 
         public void setUsername(String username) {
@@ -70,6 +78,30 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         public void setMessage(String message) {
             if (mMessageView == null) return;
             mMessageView.setText(message);
+        }
+
+        public void setTime( String time )
+        {
+            if ( time == null ) return;
+            mTimeView.setText( time );
+        }
+
+        public void setUsernameTypeface( Typeface tf )
+        {
+            if ( tf == null ) return;
+            usernameTypeface = tf;
+        }
+
+        public void setMessageTypeface( Typeface tf )
+        {
+            if ( tf == null ) return;
+            messageTypeface = tf;
+        }
+
+        public void setTimeTypeface( Typeface tf )
+        {
+            if ( tf == null ) return;
+            timeTypeface = tf;
         }
 
         private int getUsernameColor(String username) {
