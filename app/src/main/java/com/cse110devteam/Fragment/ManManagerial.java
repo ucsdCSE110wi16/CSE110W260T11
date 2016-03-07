@@ -28,7 +28,9 @@ import com.parse.Parse;
 import com.parse.ParseUser;
 import android.app.AlertDialog;
 import android.widget.DatePicker;
+import android.widget.TimePicker;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.app.Dialog;
 import java.util.Calendar;
 import android.view.View.OnClickListener;
@@ -55,7 +57,8 @@ public class ManManagerial extends Fragment{
 
 
     private Spinner spinner_month, spinner_day, spinner_time;
-    private Button btnStart;
+    private Button btnStartDay;
+    private Button btnStartTime;
     private Button btnEnd;
     private Button btnInvite;
     private int mYear;
@@ -79,8 +82,8 @@ public class ManManagerial extends Fragment{
         final View rootView = inflater.inflate(R.layout.man_managerial_shifts, container, false);
 
 
-        btnStart = (Button)rootView.findViewById(R.id.btnStart);
-        btnStart.setOnClickListener(new View.OnClickListener() {
+        btnStartDay = (Button)rootView.findViewById(R.id.btnStartDay);
+        btnStartDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     final Calendar c = Calendar.getInstance();
@@ -95,8 +98,8 @@ public class ManManagerial extends Fragment{
                                 @Override
                                 public void onDateSet(DatePicker view, int year,
                                                       int monthOfYear, int dayOfMonth) {
-//                                    txtDate.setText(dayOfMonth + "-"
-//                                            + (monthOfYear + 1) + "-" + year);
+                                        //MAYBE do parse stuff here
+
 
                                 }
                             }, mYear, mMonth, mDay);
@@ -105,27 +108,55 @@ public class ManManagerial extends Fragment{
 
         });
 
+        btnStartTime = (Button)rootView.findViewById(R.id.btnStartTime);
+        btnStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+                boolean is24hour = true;
+
+
+                TimePickerDialog tpd = new TimePickerDialog(getActivity(),
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int selectedhour,
+                                                  int selectedminute) {
+                                //MAYBE do parse stuff here
+
+
+                            }
+                        }, hour, minute, is24hour);
+                tpd.show();
+            }
+
+        });
+
+
         btnEnd = (Button)rootView.findViewById(R.id.btnEnd);
         btnEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+                boolean is24hour = true;
 
 
-                DatePickerDialog dpd = new DatePickerDialog(getActivity(),
-                        new DatePickerDialog.OnDateSetListener() {
+                TimePickerDialog tpd = new TimePickerDialog(getActivity(),
+                        new TimePickerDialog.OnTimeSetListener() {
 
                             @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-//
+                            public void onTimeSet(TimePicker view, int selectedhour,
+                                                  int selectedminute) {
+                                //MAYBE do parse stuff here
+
 
                             }
-                        }, mYear, mMonth, mDay);
-                dpd.show();
+                        }, hour, minute, is24hour);
+                tpd.show();
             }
 
         });
