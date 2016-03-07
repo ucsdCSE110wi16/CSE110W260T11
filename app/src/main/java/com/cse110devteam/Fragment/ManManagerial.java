@@ -8,12 +8,20 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.app.Fragment;
 import android.support.v7.internal.widget.AdapterViewCompat;
 import android.support.v7.widget.RecyclerView;
+<<<<<<< HEAD
+import android.text.InputType;
+=======
+>>>>>>> 0b0d0814c02803975dad9ac4de25abac281dc19b
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+<<<<<<< HEAD
+import android.widget.EditText;
+=======
+>>>>>>> 0b0d0814c02803975dad9ac4de25abac281dc19b
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,7 +55,11 @@ public class ManManagerial extends Fragment{
     private Button btnStart;
     private Button btnEnd;
     private Button btnInvite;
+<<<<<<< HEAD
+    private String m_Text;
+=======
 
+>>>>>>> 0b0d0814c02803975dad9ac4de25abac281dc19b
 
 
     @Override
@@ -63,11 +75,18 @@ public class ManManagerial extends Fragment{
         final View rootView = inflater.inflate(R.layout.man_managerial_shifts, container, false);
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 0b0d0814c02803975dad9ac4de25abac281dc19b
 
         ArrayAdapter<CharSequence> adapter_month = ArrayAdapter.createFromResource(rootView.getContext(), R.array.month_array,
                 android.R.layout.simple_spinner_item);
         adapter_month.setDropDownViewResource(android.R.layout.simple_spinner_item);
+<<<<<<< HEAD
+
 =======
+=======
+>>>>>>> 0b0d0814c02803975dad9ac4de25abac281dc19b
         btnStart = (Button)rootView.findViewById(R.id.btnStart);
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,25 +161,60 @@ public class ManManagerial extends Fragment{
             }
         });
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 0b0d0814c02803975dad9ac4de25abac281dc19b
         btnInvite=(Button)rootView.findViewById(R.id.btnInvite);
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
+<<<<<<< HEAD
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle("Employee e-mail");
+                alertDialog.setMessage("Enter your e-mail");
+
+                //Setting up the input
+                final EditText input = new EditText(getActivity());
+
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                alertDialog.setView(input);
+
+
+                //setting up button
+                alertDialog.setButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        //this is when the employee enters e-mail
+                        m_Text = input.getText().toString();
+
+                    }
+                });
+                alertDialog.show();
+=======
+>>>>>>> 0b0d0814c02803975dad9ac4de25abac281dc19b
 
             }
         });
 
 
+<<<<<<< HEAD
+=======
 >>>>>>> d086ed9b888e91d33568cd493bbb8fe8d52b89c0
 
+>>>>>>> 0b0d0814c02803975dad9ac4de25abac281dc19b
         return rootView;
     }
 
 
 
 
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> 0b0d0814c02803975dad9ac4de25abac281dc19b
 }
