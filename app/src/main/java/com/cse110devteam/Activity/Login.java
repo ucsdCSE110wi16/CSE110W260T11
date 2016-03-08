@@ -42,6 +42,7 @@ import java.util.ArrayList;
 public class Login extends Activity{
     private EditText email, password;
     private Button login;
+    private Button forgotPassword;
     private Button createaccount;
     private Button attribution;
     private Socket mSocket;
@@ -54,10 +55,6 @@ public class Login extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
-
-=======
->>>>>>> d086ed9b888e91d33568cd493bbb8fe8d52b89c0
         // Get the Chat Application
         ChatApplication chatApp = (ChatApplication) getApplication();
         mSocket = chatApp.getSocket();
@@ -67,6 +64,7 @@ public class Login extends Activity{
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         login = (Button) findViewById(R.id.login);
+        forgotPassword = (Button) findViewById(R.id.forgotpass);
         createaccount = (Button) findViewById(R.id.createaccount);
         attribution = (Button) findViewById(R.id.attribution);
 
