@@ -4,36 +4,24 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <Spinner
-            android:id="@+id/spinner_month"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/month_array"
-            android:prompt="@string/month_prompt" />
-
-    <Spinner
-            android:id="@+id/spinner_day"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/days_array" />
-
-    <Spinner
-        android:id="@+id/spinner_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/time_array" />
 
     <Button
-        android:id="@+id/btnStart"
+        android:id="@+id/btnStartDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start" />
+        android:text="Date" />
+
+    <Button
+        android:id="@+id/btnStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Starting Time" />
 
     <Button
         android:id="@+id/btnEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="End" />
+        android:text="Ending Time" />
 
     <Button
         android:id="@+id/btnInvite"

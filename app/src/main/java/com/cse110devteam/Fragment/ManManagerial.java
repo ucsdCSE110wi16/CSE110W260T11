@@ -8,12 +8,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.app.Fragment;
 import android.support.v7.internal.widget.AdapterViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+
+import android.widget.EditText;
+
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,6 +27,14 @@ import com.parse.ParseObject;
 import com.parse.Parse;
 import com.parse.ParseUser;
 import android.app.AlertDialog;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.app.Dialog;
+import java.util.Calendar;
+import android.view.View.OnClickListener;
+
 
 
 
@@ -44,9 +57,15 @@ public class ManManagerial extends Fragment{
 
 
     private Spinner spinner_month, spinner_day, spinner_time;
-    private Button btnStart;
+    private Button btnStartDay;
+    private Button btnStartTime;
     private Button btnEnd;
     private Button btnInvite;
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+    private String m_Text;
+    private TextView txtDate;
 
 
 
@@ -62,85 +81,90 @@ public class ManManagerial extends Fragment{
 
         final View rootView = inflater.inflate(R.layout.man_managerial_shifts, container, false);
 
-<<<<<<< HEAD
 
-        ArrayAdapter<CharSequence> adapter_month = ArrayAdapter.createFromResource(rootView.getContext(), R.array.month_array,
-                android.R.layout.simple_spinner_item);
-        adapter_month.setDropDownViewResource(android.R.layout.simple_spinner_item);
-=======
-        btnStart = (Button)rootView.findViewById(R.id.btnStart);
-        btnStart.setOnClickListener(new View.OnClickListener() {
+        btnStartDay = (Button)rootView.findViewById(R.id.btnStartDay);
+        btnStartDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                spinner_month = (Spinner)rootView.findViewById(R.id.spinner_month);
-                ArrayAdapter<CharSequence> adapter_month = ArrayAdapter.createFromResource(rootView.getContext(), R.array.month_array,
-                        android.R.layout.simple_spinner_item);
-                adapter_month.setDropDownViewResource(android.R.layout.simple_spinner_item);
-                spinner_month.setAdapter(adapter_month);
-
-                spinner_month.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-                        adapterView.getItemAtPosition(pos);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
-                });
-
-                spinner_day = (Spinner)rootView.findViewById(R.id.spinner_day);
-
-                ArrayAdapter<CharSequence> adapter_day = ArrayAdapter.createFromResource(rootView.getContext(), R.array.days_array,
-                        android.R.layout.simple_spinner_item);
-                adapter_day.setDropDownViewResource(android.R.layout.simple_spinner_item);
-                spinner_day.setAdapter(adapter_day);
-
-                spinner_day.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-                        adapterView.getItemAtPosition(pos);
-                    }
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
-                });
-
-                spinner_time = (Spinner)rootView.findViewById(R.id.spinner_time);
-                ArrayAdapter<CharSequence> adapter_time = ArrayAdapter.createFromResource(rootView.getContext(), R.array.time_array,
-                        android.R.layout.simple_spinner_item);
-                adapter_time.setDropDownViewResource(android.R.layout.simple_spinner_item);
-                spinner_time.setAdapter(adapter_time);
-
-                spinner_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-                        adapterView.getItemAtPosition(pos);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
-                });
+                    final Calendar c = Calendar.getInstance();
+                    mYear = c.get(Calendar.YEAR);
+                    mMonth = c.get(Calendar.MONTH);
+                    mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-            }
+                    DatePickerDialog dpd = new DatePickerDialog(getActivity(),
+                            new DatePickerDialog.OnDateSetListener() {
+
+                                @Override
+                                public void onDateSet(DatePicker view, int year,
+                                                      int monthOfYear, int dayOfMonth) {
+                                        //MAYBE do parse stuff here
+
+
+                                }
+                            }, mYear, mMonth, mDay);
+                    dpd.show();
+                }
+
         });
+
+        btnStartTime = (Button)rootView.findViewById(R.id.btnStartTime);
+        btnStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+                boolean is24hour = true;
+
+
+                TimePickerDialog tpd = new TimePickerDialog(getActivity(),
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int selectedhour,
+                                                  int selectedminute) {
+                                //MAYBE do parse stuff here
+
+
+                            }
+                        }, hour, minute, is24hour);
+                tpd.show();
+            }
+
+        });
+
 
         btnEnd = (Button)rootView.findViewById(R.id.btnEnd);
         btnEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+                boolean is24hour = true;
 
 
+                TimePickerDialog tpd = new TimePickerDialog(getActivity(),
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int selectedhour,
+                                                  int selectedminute) {
+                                //MAYBE do parse stuff here
 
 
+                            }
+                        }, hour, minute, is24hour);
+                tpd.show();
             }
+
         });
+
+
+
+
+
 
         btnInvite=(Button)rootView.findViewById(R.id.btnInvite);
         btnInvite.setOnClickListener(new View.OnClickListener() {
@@ -149,15 +173,37 @@ public class ManManagerial extends Fragment{
 
 
 
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle("Employee e-mail");
+                alertDialog.setMessage("Enter your e-mail");
+
+                //Setting up the input
+                final EditText input = new EditText(getActivity());
+
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                alertDialog.setView(input);
+
+
+                //setting up button
+                alertDialog.setButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        //this is when the employee enters e-mail
+                        m_Text = input.getText().toString();
+
+                    }
+                });
+                alertDialog.show();
+
+
             }
         });
 
 
->>>>>>> d086ed9b888e91d33568cd493bbb8fe8d52b89c0
 
         return rootView;
     }
-
 
 
 
