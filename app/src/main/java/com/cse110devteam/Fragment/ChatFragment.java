@@ -77,8 +77,9 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         username = (String) user.get("firstname");
 
         ParseObject business = (ParseObject) user.get("business");
-        String businessId = business.getObjectId();
-        Log.d("businessId", businessId);
+
+            String businessId = business.getObjectId();
+            Log.d("businessId", businessId);
 
         socket.on("new message:" + businessId, onNewMessage);
         socket.on("user joined", onUserJoined);

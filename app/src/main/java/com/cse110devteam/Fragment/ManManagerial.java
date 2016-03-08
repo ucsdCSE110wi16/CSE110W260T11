@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import android.provider.Contacts;
 import android.support.v4.view.ViewPager;
 import android.support.v4.app.Fragment;
 import android.support.v7.internal.widget.AdapterViewCompat;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 
@@ -44,6 +47,7 @@ import android.view.View.OnClickListener;
 import com.cse110devteam.Global.Message;
 import com.cse110devteam.R;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -54,7 +58,7 @@ import java.util.List;
  */
 public class ManManagerial extends Fragment{
 
-    private RecyclerView mRecyclerView;
+    private RecyclerView rv;
     private RecyclerView.Adapter mAdapter;
     private List<Message> mMessages = new ArrayList<Message>();
 
@@ -64,11 +68,16 @@ public class ManManagerial extends Fragment{
     private Button btnStartTime;
     private Button btnEnd;
     private Button btnInvite;
+    private Button btnShifts;
+
     private int mYear;
     private int mMonth;
     private int mDay;
     private String m_Text;
     private TextView txtDate;
+
+    private TextView worker_name;
+    private TextView worker_email;
 
 
 
@@ -79,10 +88,30 @@ public class ManManagerial extends Fragment{
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+
+
+
+        rv = (RecyclerView)getActivity().findViewById(R.id.cardList);
+        final LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+
+
+
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        rv.setLayoutManager(llm);
+        rv.setHasFixedSize(true);
+
+        ContactAdapter ca = new ContactAdapter(createList(30));
+        rv.setAdapter(ca);
+        rv.setVisibility(View.GONE);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
 
 
         final View rootView = inflater.inflate(R.layout.man_managerial_shifts, container, false);
+
 
 
         btnStartDay = (Button)rootView.findViewById(R.id.btnStartDay);
@@ -165,7 +194,15 @@ public class ManManagerial extends Fragment{
         });
 
 
+        btnShifts = (Button)rootView.findViewById(R.id.btnShifts);
+        btnShifts.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
 
+                rv.setVisibility(View.VISIBLE);
+            }
+
+        });
 
 
 
@@ -206,13 +243,24 @@ public class ManManagerial extends Fragment{
                         }
                         //Now, we know the email belongs to an employee. We check if the employee is already
                         //in the business page. Make a helper method
+                        Toast toast2;
                         if (alreadyInvited(ParseUser.getCurrentUser())) {
                             //The employee has already been invited, there is nothing to do
+                            toast2 = Toast.makeText(getActivity().getApplicationContext(),
+                                    "Employee has already been invited to the business page",
+                                    Toast.LENGTH_LONG);
+                            toast2.show();
                             return;
                         } else {
                             //Need to add the employee into the Business page (add into employee
                             //array)
+                            Toast toast3;
                             addToBusiness(ParseUser.getCurrentUser());
+                            toast3 = Toast.makeText(getActivity().getApplicationContext(),
+                                    "Employee successfully invited to the business page",
+                                    Toast.LENGTH_LONG);
+                            toast3.show();
+                            return;
 
                         }
 
@@ -241,28 +289,40 @@ public class ManManagerial extends Fragment{
     }
 
     private boolean alreadyInvited(ParseUser user){
-        //need to check if the user is listed in the Business's employees array
-        ParseObject business = user.getParseObject("Business");
-        if(business != null) {
-            List<ParseUser> employees = business.getList("employees");
-            if (employees.contains(user)) {
-                return true;
-            }
+
+        if(user.get("businessName").toString().length()==0){
+            //employee is not in a business page yet
+            return false;
         }
-        return false;
+        return true;
+
 
 
     }
 
     private void addToBusiness(ParseUser user){
-        ParseObject business = user.getParseObject("Business");
-        if(business != null) {
-            business.getList("employees").add(user);
-        }
+        ParseObject workplace = new ParseObject("business");
+            user.put("business", workplace );
 
         return;
     }
 
 
+
+    private List<ContactInfo> createList(int size) {
+
+        List<ContactInfo> result = new ArrayList<ContactInfo>();
+        for (int i=1; i <= size; i++) {
+            ContactInfo ci = new ContactInfo();
+            ci.name = ContactInfo.NAME_PREFIX + i;
+            ci.surname = ContactInfo.SURNAME_PREFIX + i;
+            ci.email = ContactInfo.EMAIL_PREFIX + i + "@test.com";
+
+            result.add(ci);
+
+        }
+
+        return result;
+    }
 }
 
