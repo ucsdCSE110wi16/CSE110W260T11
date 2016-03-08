@@ -23,8 +23,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.Parse;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import android.app.AlertDialog;
 import android.widget.DatePicker;
@@ -86,25 +89,25 @@ public class ManManagerial extends Fragment{
         btnStartDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    final Calendar c = Calendar.getInstance();
-                    mYear = c.get(Calendar.YEAR);
-                    mMonth = c.get(Calendar.MONTH);
-                    mDay = c.get(Calendar.DAY_OF_MONTH);
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-                    DatePickerDialog dpd = new DatePickerDialog(getActivity(),
-                            new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog dpd = new DatePickerDialog(getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
 
-                                @Override
-                                public void onDateSet(DatePicker view, int year,
-                                                      int monthOfYear, int dayOfMonth) {
-                                        //MAYBE do parse stuff here
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                //MAYBE do parse stuff here
 
 
-                                }
-                            }, mYear, mMonth, mDay);
-                    dpd.show();
-                }
+                            }
+                        }, mYear, mMonth, mDay);
+                dpd.show();
+            }
 
         });
 
@@ -172,7 +175,6 @@ public class ManManagerial extends Fragment{
             public void onClick(View v) {
 
 
-
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                 alertDialog.setTitle("Employee e-mail");
                 alertDialog.setMessage("Enter your e-mail");
@@ -192,6 +194,28 @@ public class ManManagerial extends Fragment{
                         //this is when the employee enters e-mail
                         m_Text = input.getText().toString();
 
+                        //check if the email is in the system
+                        Toast toast;
+                        boolean emailInSystem = emailInSystem(m_Text);
+                        if (!emailInSystem) {
+                            toast = Toast.makeText(getActivity().getApplicationContext(),
+                                    "Email not registered to an employee",
+                                    Toast.LENGTH_LONG);
+                            toast.show();
+                            return;
+                        }
+                        //Now, we know the email belongs to an employee. We check if the employee is already
+                        //in the business page. Make a helper method
+                        if (alreadyInvited(ParseUser.getCurrentUser())) {
+                            //The employee has already been invited, there is nothing to do
+                            return;
+                        } else {
+                            //Need to add the employee into the Business page (add into employee
+                            //array)
+                            addToBusiness(ParseUser.getCurrentUser());
+
+                        }
+
                     }
                 });
                 alertDialog.show();
@@ -205,8 +229,40 @@ public class ManManagerial extends Fragment{
         return rootView;
     }
 
+    private boolean emailInSystem(String username){
+        ParseQuery<ParseUser> userList = ParseUser.getQuery();
+        userList.whereEqualTo("username", username);
+        try{
+            return (userList.count() != 0);
+
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    private boolean alreadyInvited(ParseUser user){
+        //need to check if the user is listed in the Business's employees array
+        ParseObject business = user.getParseObject("Business");
+        if(business != null) {
+            List<ParseUser> employees = business.getList("employees");
+            if (employees.contains(user)) {
+                return true;
+            }
+        }
+        return false;
 
 
+    }
+
+    private void addToBusiness(ParseUser user){
+        ParseObject business = user.getParseObject("Business");
+        if(business != null) {
+            business.getList("employees").add(user);
+        }
+
+        return;
+    }
 
 
 }
+

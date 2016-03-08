@@ -39,18 +39,31 @@ public class CreateAccountUserType extends Activity{
         manager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext() , CreateAccount.class);
-                intent.putExtra("isManager", true);
-                startActivity(intent);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(getApplicationContext() , CreateAccount.class);
+                        intent.putExtra("isManager", true);
+                        startActivity(intent);
+                    }
+                });
+                thread.start();
             }
         });
 
         employee.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(getApplicationContext() , CreateAccount.class);
-                intent.putExtra("isManer", false);
-                startActivity(intent);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(getApplicationContext(), CreateAccount.class);
+                        intent.putExtra("isManer", false);
+                        startActivity(intent);
+
+                    }
+                });
+                thread.start();
             }
         });
 

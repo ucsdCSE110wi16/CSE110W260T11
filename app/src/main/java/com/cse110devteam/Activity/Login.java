@@ -97,6 +97,9 @@ public class Login extends Activity{
                         } else {
                             Toast toast = Toast.makeText(getApplicationContext(),
                                     "Enter an Email!", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.BOTTOM, 0, 0);
+                            if ( loginPD != null ) loginPD.dismiss();
+                            toast.show();
                             email.setText("");
                         }
                         if(textPassword.length() > 0){
@@ -105,6 +108,7 @@ public class Login extends Activity{
                             Toast toast = Toast.makeText(getApplicationContext(),
                                     "Enter a password", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.BOTTOM, 0, 0);
+                            if ( loginPD != null ) loginPD.dismiss();
                             toast.show();
                             password.setText("");
                         }
@@ -115,6 +119,8 @@ public class Login extends Activity{
                                 toast = Toast.makeText(getApplicationContext(),
                                         "Email not in registered!",
                                         Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                if ( loginPD != null ) loginPD.dismiss();
                                 toast.show();
                                 return;
                             }
@@ -166,16 +172,38 @@ public class Login extends Activity{
         createaccount.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(getApplicationContext(), CreateAccountUserType.class);
-                startActivity(intent);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(getApplicationContext(), CreateAccountUserType.class);
+                        startActivity(intent);
+
+                    }
+                });
+                thread.start();
             }
         });
 
         attribution.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Attribution.class);
-                startActivity(intent);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(getApplicationContext(), Attribution.class);
+                        startActivity(intent);
+
+                    }
+                });
+                thread.start();
+            }
+        });
+
+
+        forgotPassword.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                // TODO: Handle forgotpass
             }
         });
 

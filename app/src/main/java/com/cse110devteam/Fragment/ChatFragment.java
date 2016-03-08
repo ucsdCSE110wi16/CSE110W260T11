@@ -117,8 +117,12 @@ public class ChatFragment extends android.support.v4.app.Fragment{
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            Log.d("log.size()", log.size() + "");
-            fillChat(log);
+            //I made this fix to prevent null object reference
+            if(log != null) {
+
+                Log.d("log.size()", log.size() + "");
+                fillChat(log);
+            }
         }
 
         input = (EditText) getActivity().findViewById(R.id.inputMessage);
