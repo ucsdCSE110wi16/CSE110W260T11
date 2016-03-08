@@ -42,7 +42,6 @@ import java.util.ArrayList;
 public class Login extends Activity{
     private EditText email, password;
     private Button login;
-    private Button forgotPassword;
     private Button createaccount;
     private Button attribution;
     private Socket mSocket;
@@ -55,6 +54,7 @@ public class Login extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
         // Get the Chat Application
         ChatApplication chatApp = (ChatApplication) getApplication();
         mSocket = chatApp.getSocket();
@@ -64,7 +64,6 @@ public class Login extends Activity{
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         login = (Button) findViewById(R.id.login);
-        forgotPassword = (Button) findViewById(R.id.forgotpass);
         createaccount = (Button) findViewById(R.id.createaccount);
         attribution = (Button) findViewById(R.id.attribution);
 
@@ -92,14 +91,18 @@ public class Login extends Activity{
                         String textPassword = password.getText().toString();
                         boolean validEmail = false;
                         boolean validPassword = false;
+
+                        // Safe guard login prompt
+                        if(textEmail.length() == 0 && textPassword.length() == 0) {
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    "Email and password required", Toast.LENGTH_LONG);
+                                    toast.show();
+                        }
                         if(textEmail.length() > 0){
                             validEmail = true;
                         } else {
                             Toast toast = Toast.makeText(getApplicationContext(),
                                     "Enter an Email!", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.BOTTOM, 0, 0);
-                            if ( loginPD != null ) loginPD.dismiss();
-                            toast.show();
                             email.setText("");
                         }
                         if(textPassword.length() > 0){
@@ -108,7 +111,6 @@ public class Login extends Activity{
                             Toast toast = Toast.makeText(getApplicationContext(),
                                     "Enter a password", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.BOTTOM, 0, 0);
-                            if ( loginPD != null ) loginPD.dismiss();
                             toast.show();
                             password.setText("");
                         }
@@ -119,8 +121,6 @@ public class Login extends Activity{
                                 toast = Toast.makeText(getApplicationContext(),
                                         "Email not in registered!",
                                         Toast.LENGTH_LONG);
-                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                if ( loginPD != null ) loginPD.dismiss();
                                 toast.show();
                                 return;
                             }
@@ -154,6 +154,7 @@ public class Login extends Activity{
                                                             "Password Incorrect!", Toast.LENGTH_LONG);
                                                     noPassToast.setGravity(Gravity.BOTTOM, 0, 0);
                                                     noPassToast.show();
+                                                    loginPD.dismiss();
                                                 } else {
                                                     e.printStackTrace();
                                                 }
@@ -172,38 +173,16 @@ public class Login extends Activity{
         createaccount.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(getApplicationContext(), CreateAccountUserType.class);
-                        startActivity(intent);
-
-                    }
-                });
-                thread.start();
+                Intent intent = new Intent(getApplicationContext(), CreateAccountUserType.class);
+                startActivity(intent);
             }
         });
 
         attribution.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(getApplicationContext(), Attribution.class);
-                        startActivity(intent);
-
-                    }
-                });
-                thread.start();
-            }
-        });
-
-
-        forgotPassword.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                // TODO: Handle forgotpass
+                Intent intent = new Intent(getApplicationContext(), Attribution.class);
+                startActivity(intent);
             }
         });
 

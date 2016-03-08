@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         applicationId "com.cse110devteam"
-        minSdkVersion 21
+        minSdkVersion 22
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -27,8 +27,7 @@ dependencies {
     compile 'com.roomorama:caldroid:2.3.1'
     compile 'com.github.nkzawa:socket.io-client:0.3.0'
     compile 'com.android.support:recyclerview-v7:22.2.1'
-    compile 'com.android.support:cardview-v7:21.0.+'
+    compile 'com.android.support:cardview-v7:22.0.+'
     compile 'com.android.support:design:22.2.1'
     compile 'com.android.support:support-v4:22.2.1'
-
 }
