@@ -54,10 +54,7 @@ public class Login extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
 
-=======
->>>>>>> d086ed9b888e91d33568cd493bbb8fe8d52b89c0
         // Get the Chat Application
         ChatApplication chatApp = (ChatApplication) getApplication();
         mSocket = chatApp.getSocket();
