@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="createbusiness_subheader">This is the profile that will represent your business. You will be able to invite employees and manage their schedules after your profile has been set up.</string>
     <string name="createbusiness_instructions">You have not set up a business page yet. Click below to create a business page.</string>
-    <string name="logoattribution">Business graphic by: Freepik (http://www.freepik.com) \nfrom Flaticon (http://www.flaticon.com) \nis liscensed under CC BY 3.0 (http://creativecommons.org/licenses/by/3.0/).\nMade with Logo Maker (http://logomakr.com)</string>
+    <string name="logoattribution">Business graphic by: \nFreepik (http://www.freepik.com) \nfrom Flaticon (http://www.flaticon.com) \nis liscensed under CC BY 3.0 (http://creativecommons.org/licenses/by/3.0/).\nMade with Logo Maker (http://logomakr.com)</string>
     <string name="loremipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec ante bibendum, luctus tellus quis, faucibus massa. Donec et erat nisl. Suspendisse ut lectus vitae arcu accumsan molestie nec vel erat.</string>
 
     <string name="month_prompt">Choose a month</string>

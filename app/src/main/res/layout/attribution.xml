@@ -3,8 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/accent"
-    >
+    android:background="@color/background_floating_material_light"
+    style="@style/Base.DialogWindowTitleBackground.AppCompat">
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="22dp"
         android:paddingRight="22dp"
-        android:textColor="@android:color/secondary_text_light_nodisable"
+        android:textColor="@color/abc_primary_text_material_light"
         android:text="@string/logoattribution"
         />
 
