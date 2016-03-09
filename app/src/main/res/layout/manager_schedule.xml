@@ -9,12 +9,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.6"
         android:clickable="true"
         android:focusable="true">
 
         <CalendarView
-            android:id="@+id/calendarView1"
+            android:id="@+id/manager_calendar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -22,14 +22,15 @@
 
     </RelativeLayout>
     <ListView
-        android:id="@+id/dailyView1"
+        android:id="@+id/manager_shift_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.4"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_gravity="center_horizontal|center"
         android:clickable="true"
-        android:focusable="true" />
+        android:focusable="true"
+        android:foreground="@color/abc_primary_text_material_light" />
 
 </LinearLayout>

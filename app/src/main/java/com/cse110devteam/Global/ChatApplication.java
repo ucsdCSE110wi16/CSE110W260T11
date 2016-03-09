@@ -1,6 +1,7 @@
 package com.cse110devteam.Global;
 
 import android.app.Application;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
 
@@ -15,6 +16,7 @@ import java.net.URISyntaxException;
  * Created by anthonyaltieri on 2/14/16.
  */
 public class ChatApplication  extends Application{
+    private static ChatApplication instance;
     public static String TEST_URI_EMULATOR = "http://10.0.2.2:3620/";
     public static String TEST_URI_DEVICE = "http://localhost:3620/";
     public static String CHAT_SERVER_BASIC = "http://52.32.198.121:8080";
@@ -33,10 +35,16 @@ public class ChatApplication  extends Application{
 
     public void onCreate() {
         super.onCreate();
+        instance = this;
         Parse.initialize(this);
     }
 
     public Socket getSocket(){
         return socket;
     }
+    public static ChatApplication getInstance() {return instance;}
+    public static Context getContext(){return instance.getApplicationContext();}
+
+
+
 }

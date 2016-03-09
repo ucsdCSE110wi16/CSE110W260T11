@@ -157,6 +157,7 @@ public class Login extends Activity{
                                                             "Password Incorrect!", Toast.LENGTH_LONG);
                                                     noPassToast.setGravity(Gravity.BOTTOM, 0, 0);
                                                     noPassToast.show();
+                                                    loginPD.dismiss();
                                                 } else {
                                                     e.printStackTrace();
                                                 }
