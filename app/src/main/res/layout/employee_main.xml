@@ -15,7 +15,7 @@
         <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"
-            android:background="#00B0FF"
+            android:background="@color/primary"
             android:elevation="6dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -35,7 +35,7 @@
             android:id="@+id/tablayout"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/toolbar_height"
-            android:background="#00B0FF"
+            android:background="@color/primary"
             android:elevation="6dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             />

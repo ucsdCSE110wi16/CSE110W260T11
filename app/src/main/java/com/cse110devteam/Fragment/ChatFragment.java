@@ -77,8 +77,10 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         username = (String) user.get("firstname");
 
         ParseObject business = (ParseObject) user.get("business");
-        String businessId = business.getObjectId();
-        Log.d("businessId", businessId);
+        if ( business != null )
+        {
+            String businessId = business.getObjectId();
+        }
 
         socket.on("new message:" + businessId, onNewMessage);
         socket.on("user joined", onUserJoined);
@@ -108,21 +110,26 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         mItemDecoration = new VerticalSpaceItemDeocration( 40 );
         mRecyclerView.addItemDecoration( mItemDecoration );
 
+
         ParseObject chatMain = (ParseObject) user.get( "chatMain" );
 
-        if ( log == null )
+        if ( chatMain != null)
         {
-            try {
-                log = (ArrayList<ParseObject>) chatMain.fetchIfNeeded().get("log");
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            //I made this fix to prevent null object reference
-            if(log != null) {
+            if ( log == null )
+            {
+                try {
+                    log = (ArrayList<ParseObject>) chatMain.fetchIfNeeded().get("log");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                //I made this fix to prevent null object reference
+                if(log != null) {
 
-                Log.d("log.size()", log.size() + "");
-                fillChat(log);
+                    Log.d("log.size()", log.size() + "");
+                    fillChat(log);
+                }
             }
+
         }
 
         input = (EditText) getActivity().findViewById(R.id.inputMessage);
