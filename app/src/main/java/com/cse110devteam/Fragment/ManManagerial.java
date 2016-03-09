@@ -27,6 +27,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110devteam.Global.ContactAdapter;
+import com.cse110devteam.Global.ContactInfo;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.Parse;
