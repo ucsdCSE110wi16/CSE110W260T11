@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110devteam.Fragment.ForgotPassDialog;
 import com.cse110devteam.Global.ChatApplication;
 import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.R;
@@ -29,6 +31,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.RequestPasswordResetCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,8 +66,8 @@ public class Login extends Activity{
         header = (TextView) findViewById(R.id.header);
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
-        login = (Button) findViewById(R.id.login);
         forgotPassword = (Button) findViewById(R.id.forgotpass);
+        login = (Button) findViewById(R.id.login);
         createaccount = (Button) findViewById(R.id.createaccount);
         attribution = (Button) findViewById(R.id.attribution);
 
@@ -203,7 +206,10 @@ public class Login extends Activity{
         forgotPassword.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                // TODO: Handle forgotpass
+                FragmentManager fragmentManager = getFragmentManager();
+                ForgotPassDialog forgotPassDialog = new ForgotPassDialog();
+                forgotPassDialog.show(fragmentManager, "forgotpass_fragment");
+
             }
         });
 
@@ -248,4 +254,8 @@ public class Login extends Activity{
         if ( loginPD == null ) return;
         loginPD.dismiss();
     }
+    public Context getContext() {
+        return (Context)this;
+    }
+
 }

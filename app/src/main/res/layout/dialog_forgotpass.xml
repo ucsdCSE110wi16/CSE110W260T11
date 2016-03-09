@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="64dp"
-    android:paddingBottom="64dp">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="32dp"
+    android:paddingBottom="32dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/dialog_forgotpass_text"
-        />
+        android:textSize="18sp" />
+    <EditText
+        android:id="@+id/forgot_email_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/forgot_email_placeholder"
+        android:inputType="textEmailAddress"
+        android:layout_gravity="center" />
 
 
 </LinearLayout>
