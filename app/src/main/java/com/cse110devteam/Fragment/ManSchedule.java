@@ -64,10 +64,15 @@ public class ManSchedule extends android.support.v4.app.Fragment {
         shiftAdapter.setNotifyOnChange(true);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                initShifts.clear();
-                initShifts.addAll(getShifts(year, month, dayOfMonth));
-                shiftAdapter.notifyDataSetChanged();
+            public void onSelectedDayChange(CalendarView view, final int year, final int month, final int dayOfMonth) {
+                Thread shiftThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initShifts.clear();
+                        initShifts.addAll(getShifts(year, month, dayOfMonth));
+                        shiftAdapter.notifyDataSetChanged();
+                    }
+                });
             }
         });
         shiftAdapter.notifyDataSetChanged();
