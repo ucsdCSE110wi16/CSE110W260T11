@@ -58,6 +58,10 @@
         <activity android:name=".Activity.Attribution">
 
         </activity>
+
+        <activity android:name=".Activity.ShiftList">
+
+        </activity>
     </application>
 
 </manifest>

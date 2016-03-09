@@ -2,6 +2,8 @@ package com.cse110devteam.Fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import android.provider.Contacts;
@@ -13,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +30,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110devteam.Activity.ShiftList;
 import com.cse110devteam.Global.ContactAdapter;
 import com.cse110devteam.Global.ContactInfo;
+import com.cse110devteam.Global.TypefaceGenerator;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.Parse;
@@ -48,11 +53,13 @@ import android.view.View.OnClickListener;
 
 import com.cse110devteam.Global.Message;
 import com.cse110devteam.R;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,6 +78,8 @@ public class ManManagerial extends Fragment{
     private Button btnEnd;
     private Button btnInvite;
     private Button btnShifts;
+    private Button btnShiftList;
+    private Button btnSaveShift;
 
     private int mYear;
     private int mMonth;
@@ -81,42 +90,43 @@ public class ManManagerial extends Fragment{
     private TextView worker_name;
     private TextView worker_email;
 
+    private Typeface roboto;
+    private Typeface robotoMedium;
+    private Typeface robotoBold;
 
+    ParseUser user;
+    ParseObject business;
+
+    private Date shiftStart;
+    private Date shiftEnd;
+
+    private boolean doneStartDay;
+    private boolean doneStartTime;
+    private boolean doneEndTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        user = ParseUser.getCurrentUser();
+        business = (ParseObject) user.get( "business" );
+
+        shiftStart = new Date();
+        shiftEnd = new Date();
+
+        doneStartDay = false;
+        doneStartTime = false;
+        doneEndTime = false;
+
+        roboto = TypefaceGenerator.get( "roboto", getActivity().getAssets() );
+        robotoBold = TypefaceGenerator.get( "robotoBold", getActivity().getAssets() );
+        robotoMedium = TypefaceGenerator.get( "robotoMedium", getActivity().getAssets() );
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
-
-
-        rv = (RecyclerView)getActivity().findViewById(R.id.cardList);
-        final LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-
-
-
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rv.setLayoutManager(llm);
-        rv.setHasFixedSize(true);
-
-        ContactAdapter ca = new ContactAdapter(createList(30));
-        rv.setAdapter(ca);
-        rv.setVisibility(View.GONE);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-
-
-        final View rootView = inflater.inflate(R.layout.man_managerial_shifts, container, false);
-
-
-
-        btnStartDay = (Button)rootView.findViewById(R.id.btnStartDay);
+        btnStartDay = (Button) getActivity().findViewById(R.id.btnStartDay);
+        btnStartDay.setTypeface( robotoMedium );
         btnStartDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,9 +142,13 @@ public class ManManagerial extends Fragment{
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-                                //MAYBE do parse stuff here
 
+                                ParseObject shift = new ParseObject( "Shift" );
+                                shiftStart.setYear(year);
+                                shiftStart.setMonth(monthOfYear);
+                                shiftStart.setDate(dayOfMonth);
 
+                                doneStartDay = true;
                             }
                         }, mYear, mMonth, mDay);
                 dpd.show();
@@ -142,7 +156,8 @@ public class ManManagerial extends Fragment{
 
         });
 
-        btnStartTime = (Button)rootView.findViewById(R.id.btnStartTime);
+        btnStartTime = (Button) getActivity().findViewById(R.id.btnStartTime);
+        btnStartTime.setTypeface(robotoMedium);
         btnStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,7 +175,10 @@ public class ManManagerial extends Fragment{
                                                   int selectedminute) {
                                 //MAYBE do parse stuff here
 
+                                shiftStart.setHours( selectedhour );
+                                shiftStart.setHours( selectedminute );
 
+                                doneStartTime = true;
                             }
                         }, hour, minute, is24hour);
                 tpd.show();
@@ -168,8 +186,41 @@ public class ManManagerial extends Fragment{
 
         });
 
+        btnSaveShift = (Button) getActivity().findViewById(R.id.shift_save);
+        btnSaveShift.setTypeface(robotoMedium);
+        btnSaveShift.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final ParseObject shift = new ParseObject( "Shift" );
+                        shift.put( "start", shiftStart );
+                        shift.put( "end", shiftEnd );
+                        shift.put( "business", business );
+                        shift.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                business.add("shifts", shift);
+                                business.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                                                "Shift Saved!", Toast.LENGTH_LONG);
+                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                        toast.show();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+                thread.start();
+            }
+        });
 
-        btnEnd = (Button)rootView.findViewById(R.id.btnEnd);
+        btnEnd = (Button) getActivity().findViewById(R.id.btnEnd);
+        btnEnd.setTypeface( robotoMedium );
         btnEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,8 +237,10 @@ public class ManManagerial extends Fragment{
                             public void onTimeSet(TimePicker view, int selectedhour,
                                                   int selectedminute) {
                                 //MAYBE do parse stuff here
+                                shiftEnd.setHours(selectedhour);
+                                shiftEnd.setMinutes(selectedminute);
 
-
+                                doneEndTime = true;
                             }
                         }, hour, minute, is24hour);
                 tpd.show();
@@ -196,19 +249,23 @@ public class ManManagerial extends Fragment{
         });
 
 
-        btnShifts = (Button)rootView.findViewById(R.id.btnShifts);
-        btnShifts.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
 
-                rv.setVisibility(View.VISIBLE);
+        btnShifts = (Button) getActivity().findViewById(R.id.btnShifts);
+        btnShifts.setTypeface( robotoMedium );
+        btnShifts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( getActivity().getApplicationContext(),
+                        ShiftList.class );
+                startActivity( intent );
             }
 
         });
 
 
 
-        btnInvite=(Button)rootView.findViewById(R.id.btnInvite);
+        btnInvite=(Button) getActivity().findViewById(R.id.btnInvite);
+        btnInvite.setTypeface( robotoMedium );
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -275,6 +332,16 @@ public class ManManagerial extends Fragment{
         });
 
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+
+
+        final View rootView = inflater.inflate(R.layout.man_managerial, container, false);
+
+
+
 
         return rootView;
     }
@@ -309,22 +376,5 @@ public class ManManagerial extends Fragment{
         return;
     }
 
-
-
-    private List<ContactInfo> createList(int size) {
-
-        List<ContactInfo> result = new ArrayList<ContactInfo>();
-        for (int i=1; i <= size; i++) {
-            ContactInfo ci = new ContactInfo();
-            ci.name = ContactInfo.NAME_PREFIX + i;
-            ci.surname = ContactInfo.SURNAME_PREFIX + i;
-            ci.email = ContactInfo.EMAIL_PREFIX + i + "@test.com";
-
-            result.add(ci);
-
-        }
-
-        return result;
-    }
 }
 
