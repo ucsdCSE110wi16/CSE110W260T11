@@ -87,7 +87,7 @@ public class Login extends Activity{
                 loginPD.setCancelable(false);
                 loginPD.show();
 
-                Thread loginThread = new Thread(new Runnable() {
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         // Email is not case-sensitive
@@ -168,7 +168,6 @@ public class Login extends Activity{
 
                     }
                 });
-                loginThread.start();
 
             }
         });

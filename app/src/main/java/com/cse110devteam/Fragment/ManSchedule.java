@@ -107,7 +107,12 @@ public class ManSchedule extends android.support.v4.app.Fragment {
                 Date beginning = shift.getDate("start");
                 Date end = shift.getDate("end");
                 ParseObject employee = shift.getParseObject("employee");
-                shiftString = dateFormatter.format(beginning) + " - " + dateFormatter.format(end) + ": " + employee.getString("firstname") + " " + employee.getString("lastname");
+                shiftString = dateFormatter.format(beginning) + " - " + dateFormatter.format(end);
+                if ( employee != null )
+                {
+                    shiftString = shiftString + ": " +
+                            employee.getString("firstname") + " " + employee.getString("lastname");
+                }
                 shifts.add(shiftString);
             }
         }
