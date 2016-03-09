@@ -54,7 +54,7 @@ public class ManSchedule extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.manager_schedule , container, false);
-
+        setHasOptionsMenu(true);
         CalendarView calendarView = (CalendarView) rootView.findViewById(R.id.manager_calendar);
         ListView listView = (ListView) rootView.findViewById(R.id.manager_shift_list);
         Calendar today = Calendar.getInstance();
@@ -65,14 +65,9 @@ public class ManSchedule extends android.support.v4.app.Fragment {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, final int year, final int month, final int dayOfMonth) {
-                Thread shiftThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        initShifts.clear();
-                        initShifts.addAll(getShifts(year, month, dayOfMonth));
-                        shiftAdapter.notifyDataSetChanged();
-                    }
-                });
+                initShifts.clear();
+                initShifts.addAll(getShifts(year, month, dayOfMonth));
+                shiftAdapter.notifyDataSetChanged();
             }
         });
         shiftAdapter.notifyDataSetChanged();
