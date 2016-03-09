@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_place"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:focusable="true"
-    android:baselineAligned="false">
+    android:focusable="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.6"
         android:clickable="true"
         android:focusable="true">
 
         <CalendarView
-            style="@android:style/Widget.Material.Light.CalendarView"
-            android:id="@+id/calendarView1"
+            android:id="@+id/employee_calendar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -24,13 +22,15 @@
 
     </RelativeLayout>
     <ListView
-        android:id="@+id/dailyView1"
+        android:id="@+id/employee_shift_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_gravity="center_horizontal|center"
         android:clickable="true"
-        android:focusable="true" />
+        android:focusable="true"
+        android:layout_weight="0.4"
+        android:foreground="@color/abc_primary_text_material_light" />
+
 </LinearLayout>
