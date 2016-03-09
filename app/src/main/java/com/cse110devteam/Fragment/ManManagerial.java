@@ -89,6 +89,10 @@ public class ManManagerial extends Fragment{
 
     private TextView worker_name;
     private TextView worker_email;
+    private TextView startTime;
+    private TextView endTime;
+    private TextView startDate;
+
 
     private Typeface roboto;
     private Typeface robotoMedium;
@@ -125,6 +129,15 @@ public class ManManagerial extends Fragment{
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        startTime = (TextView) getActivity().findViewById(R.id.starttime);
+        startTime.setText( "--:--");
+        endTime = (TextView) getActivity().findViewById(R.id.endtime);
+        endTime.setText( "--:--");
+        startDate = (TextView) getActivity().findViewById(R.id.startdate);
+        startDate.setText( "--/--/--");
+
+
         btnStartDay = (Button) getActivity().findViewById(R.id.btnStartDay);
         btnStartDay.setTypeface( robotoMedium );
         btnStartDay.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +161,11 @@ public class ManManagerial extends Fragment{
                                 shiftStart.setMonth(monthOfYear);
                                 shiftStart.setDate(dayOfMonth);
 
+                                String setStartDate = monthOfYear + "/" + dayOfMonth + "/"
+                                        + year;
+                                startDate.setText( setStartDate );
+
+
                                 doneStartDay = true;
                             }
                         }, mYear, mMonth, mDay);
@@ -164,7 +182,7 @@ public class ManManagerial extends Fragment{
                 final Calendar c = Calendar.getInstance();
                 int hour = c.get(Calendar.HOUR_OF_DAY);
                 int minute = c.get(Calendar.MINUTE);
-                boolean is24hour = true;
+                boolean is24hour = false;
 
 
                 TimePickerDialog tpd = new TimePickerDialog(getActivity(),
@@ -176,7 +194,18 @@ public class ManManagerial extends Fragment{
                                 //MAYBE do parse stuff here
 
                                 shiftStart.setHours( selectedhour );
-                                shiftStart.setHours( selectedminute );
+                                shiftStart.setHours(selectedminute);
+
+                                String ampm = ( selectedhour < 12 ) ? "am" : "pm";
+                                String hour = ( selectedhour == 0 )
+                                        ? "12" : Integer.toString( selectedhour );
+                                String min = ( selectedminute < 10 )
+                                        ? "0" + Integer.toString( selectedminute )
+                                        : Integer.toString( selectedminute );
+
+                                String setShiftStart = hour + ":" + min + ampm;
+
+                                startTime.setText( setShiftStart );
 
                                 doneStartTime = true;
                             }
@@ -227,7 +256,7 @@ public class ManManagerial extends Fragment{
                 final Calendar c = Calendar.getInstance();
                 int hour = c.get(Calendar.HOUR_OF_DAY);
                 int minute = c.get(Calendar.MINUTE);
-                boolean is24hour = true;
+                boolean is24hour = false;
 
 
                 TimePickerDialog tpd = new TimePickerDialog(getActivity(),
@@ -239,6 +268,17 @@ public class ManManagerial extends Fragment{
                                 //MAYBE do parse stuff here
                                 shiftEnd.setHours(selectedhour);
                                 shiftEnd.setMinutes(selectedminute);
+
+                                String ampm = ( selectedhour < 12 ) ? "am" : "pm";
+                                String hour = ( selectedhour == 0 )
+                                        ? "12" : Integer.toString( selectedhour );
+                                String min = ( selectedminute < 10 )
+                                        ? "0" + Integer.toString( selectedminute )
+                                        : Integer.toString( selectedminute );
+
+                                String setShiftEnd = hour + ":" + min + ampm;
+
+                                endTime.setText( setShiftEnd );
 
                                 doneEndTime = true;
                             }

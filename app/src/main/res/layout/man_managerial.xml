@@ -77,21 +77,21 @@
                     <TextView android:id="@+id/text_sd"
                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
                         android:text="Choose a date"
                          android:textColor="#333"
                          android:textSize="16dp"
-                         android:layout_marginLeft="18dp"
-                         android:layout_centerVertical="true"
-                         />
+                         android:layout_marginLeft="20dp" />
 
-                    <RelativeLayout android:id="@+id/container-startdate"
-                        android:layout_width="90dp"
+                    <RelativeLayout android:id="@+id/container_startdate"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
                         android:background="#BDBDBD"
-                        android:layout_toLeftOf="@id/btnStartDay"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="8dp"
-                        >
+                        android:layout_below="@+id/text_sd"
+                        android:layout_alignLeft="@+id/text_sd">
 
                         <TextView android:id="@+id/startdate"
                             android:layout_width="wrap_content"
@@ -101,7 +101,6 @@
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:layout_centerHorizontal="true"
-
                             />
 
                     </RelativeLayout>
@@ -136,17 +135,17 @@
                          android:text="Starting time"
                          android:textColor="#333"
                          android:textSize="16dp"
-                         android:layout_marginLeft="18dp"
-                         android:layout_centerVertical="true"
+                         android:layout_marginLeft="20dp"
                          />
 
-                     <RelativeLayout android:id="@+id/container-starttime"
-                         android:layout_width="90dp"
+                     <RelativeLayout android:id="@+id/container_starttime"
+                         android:layout_width="100dp"
                          android:layout_height="wrap_content"
                          android:background="#BDBDBD"
-                         android:layout_toLeftOf="@id/btnStartTime"
                          android:layout_centerVertical="true"
+                         android:layout_below="@+id/text_st"
                          android:layout_marginRight="8dp"
+                         android:layout_alignLeft="@+id/text_st"
                          >
 
                          <TextView android:id="@+id/starttime"
@@ -195,18 +194,18 @@
                          android:text="Ending time"
                          android:textColor="#333"
                          android:textSize="16dp"
-                         android:layout_marginLeft="18dp"
-                         android:layout_centerVertical="true"
+                         android:layout_marginLeft="20dp"
                          />
 
 
-                     <RelativeLayout android:id="@+id/container-endtime"
-                         android:layout_width="90dp"
+                     <RelativeLayout android:id="@+id/container_endtime"
+                         android:layout_width="100dp"
                          android:layout_height="wrap_content"
                          android:background="#BDBDBD"
-                         android:layout_toLeftOf="@id/btnEnd"
                          android:layout_centerVertical="true"
+                         android:layout_below="@id/text_et"
                          android:layout_marginRight="8dp"
+                         android:layout_alignLeft="@+id/text_et"
                          >
 
                          <TextView android:id="@+id/endtime"
