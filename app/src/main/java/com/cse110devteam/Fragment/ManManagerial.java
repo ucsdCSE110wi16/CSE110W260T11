@@ -1,17 +1,11 @@
 package com.cse110devteam.Fragment;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
-import android.provider.Contacts;
-import android.support.v4.view.ViewPager;
 import android.support.v4.app.Fragment;
-import android.support.v7.internal.widget.AdapterViewCompat;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 
@@ -19,24 +13,18 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import android.widget.EditText;
 
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cse110devteam.Activity.ShiftList;
-import com.cse110devteam.Global.ContactAdapter;
-import com.cse110devteam.Global.ContactInfo;
 import com.cse110devteam.Global.TypefaceGenerator;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.Parse;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import android.app.AlertDialog;
@@ -44,7 +32,6 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.app.Dialog;
 import java.util.Calendar;
 import android.view.View.OnClickListener;
 
