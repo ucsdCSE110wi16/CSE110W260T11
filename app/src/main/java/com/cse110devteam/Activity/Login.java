@@ -231,7 +231,7 @@ public class Login extends Activity{
         }
     };
 
-    private boolean emailInSystem(String username){
+    public static boolean emailInSystem(String username){
         ParseQuery<ParseUser> userList = ParseUser.getQuery();
         userList.whereEqualTo("username", username);
         try{
