@@ -20,6 +20,7 @@ import com.cse110devteam.Global.ChatApplication;
 import com.cse110devteam.Global.Message;
 import com.cse110devteam.Global.MessageAdapter;
 import com.cse110devteam.Global.TypefaceGenerator;
+import com.cse110devteam.Global.Util;
 import com.cse110devteam.R;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
@@ -170,11 +171,7 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                     json.put("userId", user.getObjectId());
 
                     Date date = new Date();
-                    int hours = (date.getHours()) % 12;
-                    int minutes = date.getMinutes();
-                    boolean isPm = (hours < 12);
-                    String ampm = (isPm) ? "pm" : "am";
-                    String timeString = "" + hours + ":" + minutes + " " + ampm;
+                    String timeString = Util.prettyHourMin( date );
 
                     json.put("time", timeString);
                 } catch (JSONException e) {

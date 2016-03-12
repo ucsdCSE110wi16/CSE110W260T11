@@ -2,42 +2,31 @@ package com.cse110devteam.Activity;
 
 import android.app.Activity;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cse110devteam.Fragment.ForgotPassDialog;
 import com.cse110devteam.Global.ChatApplication;
 import com.cse110devteam.Global.TypefaceGenerator;
+import com.cse110devteam.Global.Util;
 import com.cse110devteam.R;
 import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Manager;
 import com.github.nkzawa.socketio.client.Socket;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.RequestPasswordResetCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 
 /**
  * Created by anthonyaltieri on 1/14/16.
@@ -93,11 +82,9 @@ public class Login extends Activity{
                         // Email is not case-sensitive
                         final String textEmail = email.getText().toString().toLowerCase().trim();
                         String textPassword = password.getText().toString();
-                        boolean validEmail = false;
-                        boolean validPassword = false;
-                        if(textEmail.length() > 0){
-                            validEmail = true;
-                        } else {
+                        boolean validEmail = Util.isEmailValid(textEmail);
+                        boolean validPassword = Util.isPasswordValid(textPassword);
+                        if( !validEmail ){
                             Toast toast = Toast.makeText(getApplicationContext(),
                                     "Enter an Email!", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.BOTTOM, 0, 0);
@@ -105,11 +92,9 @@ public class Login extends Activity{
                             toast.show();
                             email.setText("");
                         }
-                        if(textPassword.length() > 0){
-                            validPassword = true;
-                        } else {
+                        if( !validPassword ){
                             Toast toast = Toast.makeText(getApplicationContext(),
-                                    "Enter a password", Toast.LENGTH_LONG);
+                                    "Enter a valid password", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.BOTTOM, 0, 0);
                             if ( loginPD != null ) loginPD.dismiss();
                             toast.show();
@@ -257,5 +242,6 @@ public class Login extends Activity{
     public Context getContext() {
         return (Context)this;
     }
+
 
 }

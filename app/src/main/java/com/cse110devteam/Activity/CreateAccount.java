@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cse110devteam.Global.TypefaceGenerator;
+import com.cse110devteam.Global.Util;
 import com.cse110devteam.R;
 import com.parse.Parse;
 import com.parse.ParseObject;
@@ -38,7 +39,7 @@ public class CreateAccount extends Activity {
     ProgressDialog caPD = null;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isManagerAccount = getIntent().getExtras().getBoolean("isManager");
         setContentView(R.layout.create_account);
@@ -70,36 +71,30 @@ public class CreateAccount extends Activity {
                 caPD.setCancelable(false);
                 caPD.show();
 
-                Thread thread = new Thread(new Runnable() {
+
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
-
-                        boolean validEmail = false;
-                        boolean validFname = false;
-                        boolean validLname = false;
-                        boolean passMatch = false;
-                        String textEmail = email.getText().toString().toLowerCase().trim();
                         String textFname = fname.getText().toString().toLowerCase().trim();
                         String textLname = lname.getText().toString().toLowerCase().trim();
                         String textPass1 = password1.getText().toString();
                         String textPass2 = password2.getText().toString();
-                    /* We might want to test to see if the email is valid
-                     * but for right now I'm just going to assume it is if
-                     * it is longer than 0 length
-                     */
-                        if (textEmail.length() > 0) {
-                            validEmail = true;
-                        } else {
+                        String textEmail = email.getText().toString().toLowerCase().trim();
+
+                        boolean validEmail = Util.isEmailValid(textEmail);
+                        boolean validFname = false;
+                        boolean validLname = false;
+                        boolean passMatch = false;
+
+                        if (!validEmail) {
                             Toast toast = Toast.makeText(getApplicationContext(),
-                                    "Enter an email!", Toast.LENGTH_LONG);
+                                    "Enter a valid email!", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.BOTTOM, 0, 0);
                             if (caPD != null) caPD.dismiss();
                             toast.show();
                         }
-                        if (textPass1.equals(textPass2)) {
-                            passMatch = true;
-                        } else {
+                        if (!(Util.isPasswordValid(textPass1)
+                                && textPass1.equals(textPass2))) {
                             Log.d("Password1Text", textPass1);
                             Log.d("Password2Text", textPass2);
                             Toast toast = Toast.makeText(getApplicationContext(),
@@ -130,23 +125,35 @@ public class CreateAccount extends Activity {
                         }
                         if (validEmail && passMatch && validFname && validLname) {
                             ParseUser currentUser = ParseUser.getCurrentUser();
+
                             if (currentUser != null) currentUser.logOut();
+
                             ParseUser newUser = new ParseUser();
+
                             newUser.setUsername(textEmail);
                             newUser.put("firstname", textFname);
                             newUser.put("lastname", textLname);
                             newUser.put("ismanager", isManagerAccount);
                             newUser.setPassword(textPass1);
-                            Log.d("Create_Account", "About to signUpInBackground");
+
                             newUser.signUpInBackground(new SignUpCallback() {
                                 public void done(com.parse.ParseException e) {
                                     if (e == null) {
-                                        goToLogin();
+                                        Thread activitySwitch = new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Intent intent = new Intent( getApplicationContext(),
+                                                        Login.class );
+                                                startActivity( intent );
+                                            }
+                                        });
+                                        activitySwitch.start();
                                     } else {
                                         e.printStackTrace();
-                                        Log.d("CREATE_ACCOUNT_ERROR", e.toString());
+
                                         Toast toast;
                                         switch (e.getCode()) {
+
                                             case com.parse.ParseException.ACCOUNT_ALREADY_LINKED:
                                                 toast = Toast.makeText(getApplicationContext(),
                                                         "Email already used, try another one.",
@@ -181,31 +188,28 @@ public class CreateAccount extends Activity {
 
                     }
                 });
-                thread.start();
             }
         });
 
-        cancel.setOnClickListener(new View.OnClickListener()
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread activitySwitch = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent( getApplicationContext(), Login.class );
+                        startActivity( intent );
 
-            {
-                @Override
-                public void onClick (View v){
-                goToLogin();
+                    }
+                });
             }
-            }
-
-            );
-        }
-
-        @Override
-    public void onPause(){
-        super.onPause();
+        });
 
     }
 
-    private void goToLogin(){
-        Intent intent = new Intent(this, Login.class);
-        startActivity(intent);
-        if ( caPD != null ) caPD.dismiss();
+    @Override
+    public void onPause() {
+        super.onPause();
+
     }
 }

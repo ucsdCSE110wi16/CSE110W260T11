@@ -11,6 +11,9 @@
     <color name="accent">#4DD0E1</color>
     <color name="button_dark">#FF9100</color>
 
+    <color name="shift_vacant">@android:color/holo_green_light</color>
+    <color name="shift_filled">@android:color/holo_red_light</color>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorPrimary">@color/primary</item>
         <item name="android:colorPrimaryDark">@color/primary_dark</item>

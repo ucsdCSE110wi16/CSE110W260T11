@@ -2,6 +2,8 @@ package com.cse110devteam.Global;
 
 import android.graphics.Typeface;
 
+import java.util.Date;
+
 /**
  * Created by anthonyaltieri on 2/8/16.
  */
@@ -108,5 +110,7 @@ public class Message {
             message.tfTime = typefaceTime;
             return message;
         }
+
+
     }
 }

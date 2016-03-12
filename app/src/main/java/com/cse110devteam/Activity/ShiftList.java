@@ -3,19 +3,31 @@ package com.cse110devteam.Activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-import com.cse110devteam.Global.ContactAdapter;
+import com.cse110devteam.Fragment.ChatFragment;
 import com.cse110devteam.Global.ContactInfo;
+import com.cse110devteam.Global.Shift;
+import com.cse110devteam.Global.ShiftAdapter;
+import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.R;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,61 +35,115 @@ import java.util.List;
  */
 public class ShiftList  extends Activity {
 
-    private RecyclerView rv;
+    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
+    private List<Shift> mShifts = new ArrayList< Shift >();
+    private ArrayList< ParseObject > shifts = null;
+    private VerticalSpaceItemDeocration mItemDecoration;
 
     private Toolbar toolbar;
 
+
+    private Typeface roboto;
+    private Typeface robotoBlack;
+    private Typeface robotoMedium;
+
+    private ParseUser user;
+    private ParseObject business;
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate( Bundle bundle )
+    {
+        super.onCreate(bundle);
+
         setContentView(R.layout.shift_list);
 
-
-        rv = (RecyclerView) findViewById( R.id.cardList );
-        final LinearLayoutManager llm = new LinearLayoutManager( this );
-
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rv.setLayoutManager(llm);
-        rv.setHasFixedSize(true);
-
-        ContactAdapter ca = new ContactAdapter(createList(30));
-        rv.setAdapter(ca);
-        rv.setVisibility(View.GONE);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-//        toolbar.setNavigationIcon( R.drawable.abc_ic_ab_back_mtrl_am_alpha );
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent( getApplicationContext(),
-                                                    ManagerMain.class );
-                        startActivity( intent );
-                    }
-                });
-                thread.start();
+        user = ParseUser.getCurrentUser();
+        business = (ParseObject) user.get("business");
+        if ( business != null )
+        {
+            try {
+                shifts = (ArrayList<ParseObject>) business.fetchIfNeeded().get("shifts");
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        });
-    }
-
-    private List<ContactInfo> createList(int size) {
-
-        List<ContactInfo> result = new ArrayList<ContactInfo>();
-        for (int i=1; i <= size; i++) {
-            ContactInfo ci = new ContactInfo();
-            ci.name = ContactInfo.NAME_PREFIX + i;
-            ci.surname = ContactInfo.SURNAME_PREFIX + i;
-            ci.email = ContactInfo.EMAIL_PREFIX + i + "@test.com";
-
-            result.add(ci);
-
+            if ( shifts != null )
+            {
+                fillShifts( shifts );
+            }
         }
 
-        return result;
+        // Get typefaces
+        roboto = TypefaceGenerator.get("roboto", getAssets() );
+        robotoBlack = TypefaceGenerator.get( "robotoBlack", getAssets() );
+        robotoMedium = TypefaceGenerator.get( "robotoMedium", getAssets() );
+
+        mAdapter = new ShiftAdapter( getApplicationContext(), mShifts );
+        mRecyclerView = ( RecyclerView ) findViewById( R.id.shiftlist );
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mAdapter);
+        mItemDecoration = new VerticalSpaceItemDeocration( 30 );
     }
+
+
+
+    public class VerticalSpaceItemDeocration extends RecyclerView.ItemDecoration {
+
+        private final int mSpaceHeight;
+
+        public VerticalSpaceItemDeocration(int mSpaceHeight) {
+            this.mSpaceHeight = mSpaceHeight;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
+                                   RecyclerView.State state) {
+            outRect.bottom = mSpaceHeight;
+        }
+    }
+
+    private void addShift( ParseUser employee, Date start, Date end )
+    {
+        int type = ( employee == null ) ? Shift.VACANT : Shift.FILLED;
+        mShifts.add( new Shift.Builder( type )
+                .employee( employee )
+                .business( business )
+                .start( start )
+                .end( end )
+                .build());
+        mAdapter.notifyItemInserted( mShifts.size() - 1 );
+        scrollToBottom();
+    }
+
+    private void scrollToBottom()
+    {
+        mRecyclerView.scrollToPosition( mAdapter.getItemCount() - 1 );
+    }
+
+    private void fillShifts( ArrayList< ParseObject > shifts )
+    {
+        if ( shifts == null ) return;
+
+        for ( ParseObject shift : shifts )
+        {
+            try {
+                ParseUser employee = ( ParseUser ) shift.fetchIfNeeded().get( "employee" );
+                boolean isVacant = ( employee == null );
+                Date start = ( Date ) shift.fetchIfNeeded().get( "start" );
+                Date end = ( Date ) shift.fetchIfNeeded().get( "end" );
+                addShift( employee, start, end );
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+
+
 
 }
