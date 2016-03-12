@@ -26,7 +26,6 @@ public class ChatApplication  extends Application{
     {
         try{
             socket = IO.socket(CHAT_SERVER_BASIC);
-            Log.d("Socket Set To:", CHAT_SERVER_BASIC);
         } catch (URISyntaxException e){
             e.printStackTrace();
             throw new RuntimeException(e);
