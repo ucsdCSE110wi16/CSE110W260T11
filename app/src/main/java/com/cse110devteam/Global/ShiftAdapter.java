@@ -1,10 +1,12 @@
 package com.cse110devteam.Global;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -70,10 +72,10 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder>{
         private TextView start;
         private TextView end;
         private TextView status;
-        private RelativeLayout banner;
+        private LinearLayout banner;
 
-        private int colorVacant = Integer.parseInt( "ff9cc00", 16 );
-        private int colorFilled = Integer.parseInt( "ffff4444", 16 );
+        private String colorVacant = "#ff9cc00";
+        private String colorFilled = "#ffff4444";
 
         public ViewHolder( View view )
         {
@@ -84,15 +86,15 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder>{
             start = ( TextView ) view.findViewById( R.id.start );
             end = ( TextView ) view.findViewById( R.id.end );
             status = ( TextView ) view.findViewById( R.id.status );
-            banner = ( RelativeLayout ) view.findViewById( R.id.banner );
+            banner = (LinearLayout) view.findViewById( R.id.banner );
 
             if( status.getText().toString().equals("FILLED") )
             {
-                banner.setBackgroundColor( colorFilled );
+                banner.setBackgroundColor(Color.parseColor("#F44336"));
             }
             else
             {
-                banner.setBackgroundColor( colorVacant );
+                banner.setBackgroundColor( Color.parseColor( "#4CAF50" ) );
             }
         }
 

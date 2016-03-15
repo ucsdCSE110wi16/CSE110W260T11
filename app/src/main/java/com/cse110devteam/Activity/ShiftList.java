@@ -59,6 +59,12 @@ public class ShiftList  extends Activity {
 
         setContentView(R.layout.shift_list);
 
+        mAdapter = new ShiftAdapter( getApplicationContext(), mShifts );
+        mRecyclerView = ( RecyclerView ) findViewById( R.id.shiftlist );
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mAdapter);
+        mItemDecoration = new VerticalSpaceItemDeocration( 30 );
+
         user = ParseUser.getCurrentUser();
         business = (ParseObject) user.get("business");
         if ( business != null )
@@ -68,7 +74,7 @@ public class ShiftList  extends Activity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if ( shifts != null )
+            if ( shifts != null && shifts.size() > 0 )
             {
                 fillShifts( shifts );
             }
@@ -78,12 +84,6 @@ public class ShiftList  extends Activity {
         roboto = TypefaceGenerator.get("roboto", getAssets() );
         robotoBlack = TypefaceGenerator.get( "robotoBlack", getAssets() );
         robotoMedium = TypefaceGenerator.get( "robotoMedium", getAssets() );
-
-        mAdapter = new ShiftAdapter( getApplicationContext(), mShifts );
-        mRecyclerView = ( RecyclerView ) findViewById( R.id.shiftlist );
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mAdapter);
-        mItemDecoration = new VerticalSpaceItemDeocration( 30 );
     }
 
 
@@ -106,13 +106,26 @@ public class ShiftList  extends Activity {
     private void addShift( ParseUser employee, Date start, Date end )
     {
         int type = ( employee == null ) ? Shift.VACANT : Shift.FILLED;
-        mShifts.add( new Shift.Builder( type )
-                .employee( employee )
-                .business( business )
-                .start( start )
-                .end( end )
-                .build());
-        mAdapter.notifyItemInserted( mShifts.size() - 1 );
+        if ( employee != null )
+        {
+            mShifts.add( new Shift.Builder( type )
+                    .employee( employee )
+                    .business( business )
+                    .start( start )
+                    .end( end )
+                    .build());
+            mAdapter.notifyItemInserted( mShifts.size() - 1 );
+        }
+        else
+        {
+            mShifts.add( new Shift.Builder( type )
+                    .business(business)
+                    .start( start )
+                    .end( end )
+                    .build());
+            mAdapter.notifyItemInserted( mShifts.size() - 1 );
+
+        }
         scrollToBottom();
     }
 

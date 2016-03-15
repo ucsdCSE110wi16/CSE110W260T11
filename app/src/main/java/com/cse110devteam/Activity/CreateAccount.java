@@ -72,122 +72,145 @@ public class CreateAccount extends Activity {
                 caPD.show();
 
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String textFname = fname.getText().toString().toLowerCase().trim();
-                        String textLname = lname.getText().toString().toLowerCase().trim();
-                        String textPass1 = password1.getText().toString();
-                        String textPass2 = password2.getText().toString();
-                        String textEmail = email.getText().toString().toLowerCase().trim();
+                String textFname = fname.getText().toString().toLowerCase().trim();
+                String textLname = lname.getText().toString().toLowerCase().trim();
+                String textPass1 = password1.getText().toString();
+                String textPass2 = password2.getText().toString();
+                String textEmail = email.getText().toString().toLowerCase().trim();
 
-                        boolean validEmail = Util.isEmailValid(textEmail);
-                        boolean validFname = false;
-                        boolean validLname = false;
-                        boolean passMatch = false;
+                boolean validEmail = Util.isEmailValid(textEmail);
+                boolean validFname = false;
+                boolean validLname = false;
+                boolean validPass = false;
 
-                        if (!validEmail) {
-                            Toast toast = Toast.makeText(getApplicationContext(),
-                                    "Enter a valid email!", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.BOTTOM, 0, 0);
-                            if (caPD != null) caPD.dismiss();
-                            toast.show();
-                        }
-                        if (!(Util.isPasswordValid(textPass1)
-                                && textPass1.equals(textPass2))) {
-                            Log.d("Password1Text", textPass1);
-                            Log.d("Password2Text", textPass2);
-                            Toast toast = Toast.makeText(getApplicationContext(),
-                                    "Passwords don't match!", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.BOTTOM, 0, 0);
-                            if (caPD != null) caPD.dismiss();
-                            toast.show();
-                            password1.setText("");
-                            password2.setText("");
-                        }
-                        if (textFname.length() > 0) {
-                            validFname = true;
-                        } else {
-                            Toast toast = Toast.makeText(getApplicationContext(),
-                                    "Enter a First Name!", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.BOTTOM, 0, 0);
-                            if (caPD != null) caPD.dismiss();
-                            toast.show();
-                        }
-                        if (textLname.length() > 0) {
-                            validLname = true;
-                        } else {
-                            Toast toast = Toast.makeText(getApplicationContext(),
-                                    "Enter a Last Name!", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.BOTTOM, 0, 0);
-                            if (caPD != null) caPD.dismiss();
-                            toast.show();
-                        }
-                        if (validEmail && passMatch && validFname && validLname) {
-                            ParseUser currentUser = ParseUser.getCurrentUser();
+                Log.d("credential check", "about to begin");
 
-                            if (currentUser != null) currentUser.logOut();
+                if (!validEmail) {
+                    Log.d("credentials", "invalid email");
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Enter a valid email!", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    if (caPD != null) caPD.dismiss();
+                    toast.show();
+                }
+                else
+                {
+                    Log.d("credentials", "valid email");
+                }
+                if (!(Util.isPasswordValid(textPass1)
+                        && textPass1.equals(textPass2))) {
+                    Log.d("Password1Text", textPass1);
+                    Log.d("Password2Text", textPass2);
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Passwords don't match!", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    if (caPD != null) caPD.dismiss();
+                    toast.show();
+                    password1.setText("");
+                    password2.setText("");
+                }
+                else
+                {
+                    Log.d("credentials", "valid password");
+                    validPass = true;
+                }
+                if (textFname.length() > 0) {
+                    Log.d("credentials", "valid first name");
+                    validFname = true;
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Enter a First Name!", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    if (caPD != null) caPD.dismiss();
+                    toast.show();
+                }
+                if (textLname.length() > 0) {
+                    Log.d("credentials", "valid last name");
+                    validLname = true;
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Enter a Last Name!", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    if (caPD != null) caPD.dismiss();
+                    toast.show();
+                }
+                if (validEmail && validPass && validFname && validLname) {
+                    ParseUser currentUser = ParseUser.getCurrentUser();
+                    Log.d("new user", "valid credentials");
 
-                            ParseUser newUser = new ParseUser();
+                    if (currentUser != null) currentUser.logOut();
 
-                            newUser.setUsername(textEmail);
-                            newUser.put("firstname", textFname);
-                            newUser.put("lastname", textLname);
-                            newUser.put("ismanager", isManagerAccount);
-                            newUser.setPassword(textPass1);
+                    ParseUser newUser = new ParseUser();
 
-                            newUser.signUpInBackground(new SignUpCallback() {
-                                public void done(com.parse.ParseException e) {
-                                    if (e == null) {
-                                        Thread activitySwitch = new Thread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Intent intent = new Intent( getApplicationContext(),
-                                                        Login.class );
-                                                startActivity( intent );
-                                            }
-                                        });
-                                        activitySwitch.start();
-                                    } else {
-                                        e.printStackTrace();
+                    newUser.setUsername(textEmail);
+                    newUser.put("firstname", textFname);
+                    newUser.put("lastname", textLname);
+                    newUser.put("ismanager", isManagerAccount);
+                    newUser.setPassword(textPass1);
+                    Log.d("newuser", "about to signUpInBackground");
 
-                                        Toast toast;
-                                        switch (e.getCode()) {
+                    newUser.signUpInBackground(new SignUpCallback() {
+                        public void done(com.parse.ParseException e) {
+                            if (e == null) {
+                                Intent intent = new Intent(getApplicationContext(),
+                                        Login.class);
+                                startActivity(intent);
+                                if (caPD != null) caPD.dismiss();
+                            } else {
+                                e.printStackTrace();
 
-                                            case com.parse.ParseException.ACCOUNT_ALREADY_LINKED:
-                                                toast = Toast.makeText(getApplicationContext(),
-                                                        "Email already used, try another one.",
-                                                        Toast.LENGTH_LONG);
-                                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                                if (caPD != null) caPD.dismiss();
-                                                toast.show();
-                                                email.setText("");
+                                Toast toast;
+                                switch (e.getCode()) {
 
-                                            case com.parse.ParseException.USERNAME_TAKEN:
-                                                toast = Toast.makeText(getApplicationContext(),
-                                                        "Email already used, try another one.",
-                                                        Toast.LENGTH_LONG);
-                                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                                if (caPD != null) caPD.dismiss();
-                                                toast.show();
-                                                email.setText("");
+                                    case com.parse.ParseException.ACCOUNT_ALREADY_LINKED:
+                                        toast = Toast.makeText(getApplicationContext(),
+                                                "Email already used, try another one.",
+                                                Toast.LENGTH_LONG);
+                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                        if (caPD != null) caPD.dismiss();
+                                        toast.show();
+                                        email.setText("");
 
-                                            case com.parse.ParseException.CONNECTION_FAILED:
-                                                toast = Toast.makeText(getApplicationContext(),
-                                                        ("Connection failed, check internet connection "
-                                                                + " and try again!"), Toast.LENGTH_LONG);
-                                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                                if (caPD != null) caPD.dismiss();
-                                                toast.show();
-                                        }
-                                    }
+                                    case com.parse.ParseException.USERNAME_TAKEN:
+                                        toast = Toast.makeText(getApplicationContext(),
+                                                "Email already used, try another one.",
+                                                Toast.LENGTH_LONG);
+                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                        if (caPD != null) caPD.dismiss();
+                                        toast.show();
+                                        email.setText("");
+
+                                    case com.parse.ParseException.CONNECTION_FAILED:
+                                        toast = Toast.makeText(getApplicationContext(),
+                                                ("Connection failed, check internet connection "
+                                                        + " and try again!"), Toast.LENGTH_LONG);
+                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                        if (caPD != null) caPD.dismiss();
+                                        toast.show();
+
+                                    default:
+                                    toast = Toast.makeText(getApplicationContext(),
+                                            "Error, try again", Toast.LENGTH_LONG);
+                                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                    if (caPD != null ) caPD.dismiss();
+                                    toast.show();
                                 }
-                            });
-
+                            }
                         }
+                    });
 
-                    }
-                });
+                }
+                else
+                {
+                    Toast toast;
+                    if ( caPD != null ) caPD.dismiss();
+                    toast = Toast.makeText(getApplicationContext(),
+                            "Error, try again", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    if (caPD != null ) caPD.dismiss();
+                    toast.show();
+                }
+
             }
         });
 
@@ -202,6 +225,7 @@ public class CreateAccount extends Activity {
 
                     }
                 });
+                activitySwitch.start();
             }
         });
 
