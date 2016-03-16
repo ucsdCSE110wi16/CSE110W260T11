@@ -51,17 +51,27 @@ public class Util {
     public static String prettyHourMin( Date date )
     {
         int minutes = date.getMinutes();
+        String sMin = ( minutes == 0 ) ? "00" : ( "" + minutes );
+
         int hours = date.getHours();
         boolean isPm = (hours >= 12);
         hours = hours % 12;
         if ( hours == 0 ) hours = 12;
         String ampm = (isPm) ? "pm" : "am";
-        String timeString = "" + hours + ":" + minutes + " " + ampm;
+        String timeString = "" + hours + ":" + sMin + " " + ampm;
         return timeString;
     }
 
     public static boolean isPasswordValid(String password)
     {
         return password.length() >= 6;
+    }
+
+    public static String firstLetterCapitalize( String string )
+    {
+        if (string == null || string.length() == 0) {
+            return string;
+        }
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
 }

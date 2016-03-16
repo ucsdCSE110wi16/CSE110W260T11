@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.cse110devteam.Global.EmployeePagerAdapter;
 import com.cse110devteam.Global.TypefaceGenerator;
+import com.cse110devteam.Global.Util;
 import com.cse110devteam.R;
 import com.parse.ParseUser;
 
@@ -77,6 +78,12 @@ public class EmployeeMain extends FragmentActivity{
         } catch (Error e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Util.logOut();
     }
 }
 

@@ -3,21 +3,65 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/primary"
     android:paddingTop="32dp"
-    android:paddingBottom="32dp">
+    android:paddingLeft="18dp"
+    android:paddingRight="18dp"
+    >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/dialog_forgotpass_text"
-        android:textSize="18sp" />
+        android:text="@string/forgotpassworddialog"
+        android:textColor="@android:color/primary_text_dark"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"
+        />
+
     <EditText
         android:id="@+id/forgot_email_address"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/forgot_email_placeholder"
+        android:hint="Enter your email address"
         android:inputType="textEmailAddress"
         android:layout_gravity="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right"
+        >
+
+        <Button android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANCEL"
+            android:textColor="@android:color/secondary_text_light"
+            android:minWidth="80dp"
+            android:paddingTop="22dp"
+            android:paddingBottom="22dp"
+            style="?android:borderlessButtonStyle"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            />
+
+        <Button android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SUBMIT"
+            android:textColor="@android:color/secondary_text_light"
+            android:minWidth="80dp"
+            android:paddingTop="22dp"
+            android:paddingBottom="22dp"
+            style="?android:borderlessButtonStyle"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            />
+
+
+
+    </LinearLayout>
 
 
 </LinearLayout>

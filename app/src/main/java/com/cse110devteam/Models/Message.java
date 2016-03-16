@@ -1,8 +1,6 @@
-package com.cse110devteam.Global;
+package com.cse110devteam.Models;
 
 import android.graphics.Typeface;
-
-import java.util.Date;
 
 /**
  * Created by anthonyaltieri on 2/8/16.

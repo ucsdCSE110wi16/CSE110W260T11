@@ -1,24 +1,15 @@
 package com.cse110devteam.Activity;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.AssetManager;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.cse110devteam.Fragment.ChatFragment;
-import com.cse110devteam.Global.ContactInfo;
-import com.cse110devteam.Global.Shift;
+import com.cse110devteam.Models.Shift;
 import com.cse110devteam.Global.ShiftAdapter;
 import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.R;
@@ -59,7 +50,8 @@ public class ShiftList  extends Activity {
 
         setContentView(R.layout.shift_list);
 
-        mAdapter = new ShiftAdapter( getApplicationContext(), mShifts );
+        mAdapter = new ShiftAdapter( getApplicationContext(), mShifts, ShiftAdapter.TYPE_MANAGER,
+                user, business );
         mRecyclerView = ( RecyclerView ) findViewById( R.id.shiftlist );
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
@@ -152,11 +144,4 @@ public class ShiftList  extends Activity {
             }
         }
     }
-
-
-
-
-
-
-
 }

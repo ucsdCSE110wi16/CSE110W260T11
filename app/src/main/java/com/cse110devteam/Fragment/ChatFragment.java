@@ -1,6 +1,5 @@
 package com.cse110devteam.Fragment;
 
-import android.app.Activity;
 import android.content.res.AssetManager;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -14,28 +13,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cse110devteam.Global.ChatApplication;
-import com.cse110devteam.Global.Message;
+import com.cse110devteam.Models.Message;
 import com.cse110devteam.Global.MessageAdapter;
 import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.Global.Util;
 import com.cse110devteam.R;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
-import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,17 +51,24 @@ public class ChatFragment extends android.support.v4.app.Fragment{
     private VerticalSpaceItemDeocration mItemDecoration;
     private ArrayList<ParseObject> log = null;
 
+    RelativeLayout containerChatLoading;
+    TextView chatLoading;
+
     private EditText input;
     private ImageButton send;
 
     private ParseUser user;
+    private ParseObject business;
+    private ParseObject chatMain;
 
     private String businessId;
 
     private Typeface roboto;
     private Typeface robotoBlack;
     private Typeface robotoMedium;
+    private String newMessageSignature;
 
+    private boolean logLoaded;
 
     @Override
     public void onCreate(Bundle bundle){
@@ -77,13 +81,15 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         user = ParseUser.getCurrentUser();
         username = (String) user.get("firstname");
 
-        ParseObject business = (ParseObject) user.get("business");
+        business = (ParseObject) user.get("business");
         if ( business != null )
         {
             String businessId = business.getObjectId();
+            newMessageSignature = "new message:" + businessId;
+            socket.on( newMessageSignature, onNewMessage);
         }
 
-        socket.on("new message:" + businessId, onNewMessage);
+
         socket.on("user joined", onUserJoined);
         socket.on("user left", onUserLeft);
         socket.connect();
@@ -109,29 +115,37 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
         mItemDecoration = new VerticalSpaceItemDeocration( 40 );
-        mRecyclerView.addItemDecoration( mItemDecoration );
+        mRecyclerView.addItemDecoration(mItemDecoration);
 
+        chatMain = (ParseObject) user.get("chatMain");
 
-        ParseObject chatMain = (ParseObject) user.get( "chatMain" );
+        Log.v("chatMain", chatMain.toString() );
 
-        if ( chatMain != null)
-        {
-            if ( log == null )
-            {
-                try {
-                    log = (ArrayList<ParseObject>) chatMain.fetchIfNeeded().get("log");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                //I made this fix to prevent null object reference
-                if(log != null) {
+        chatLoading = ( TextView ) v.findViewById( R.id.chatloading );
+        containerChatLoading = ( RelativeLayout ) v.findViewById( R.id.container_chatloading );
 
-                    Log.d("log.size()", log.size() + "");
+        mRecyclerView.setVisibility( View.GONE );
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (chatMain != null) {
+                    if (log == null) {
+                        try {
+                            log = (ArrayList<ParseObject>) chatMain.fetchIfNeeded().get("log");
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     fillChat(log);
-                }
-            }
 
-        }
+                }
+                containerChatLoading.setVisibility(View.GONE);
+                chatLoading.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+            }
+        });
+
 
         input = (EditText) getActivity().findViewById(R.id.inputMessage);
         send = (ImageButton) getActivity().findViewById(R.id.send_button);
@@ -139,74 +153,82 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("send.OnClick", "Inside method");
-                // If no connection, immediately return
-                if (!socket.connected()) {
-                    Log.d("SOCKET ERROR:", "Socket not connected");
-                    return;
-                }
-
-                String message = input.getText().toString();
-                // If message is length 0 after trim return
-                if (message.trim().length() == 0) return;
-
-                /** json is a JSON object that contains the following keys
-                 *  message - The message that is being recieved
-                 *  username - The username of the sender
-                 *  businessId - The object id for the ParseObject business this
-                 *             chat is associated with
-                 *  userId - The object id for the ParseUser sending the message
-                 *  time - A JSON object with the following keys:
-                 *          isAM - boolean, true if it is in the AM
-                 *          hour - current hour in 12 hour am/pm format
-                 *          minute - current minute
-                 */
-                JSONObject json = new JSONObject();
-                try {
-                    json.put("message", message);
-                    json.put("username", username);
-                    ParseObject business = (ParseObject) user.get("business");
-                    businessId = business.getObjectId();
-                    json.put("businessId", businessId);
-                    json.put("userId", user.getObjectId());
-
-                    Date date = new Date();
-                    String timeString = Util.prettyHourMin( date );
-
-                    json.put("time", timeString);
-                } catch (JSONException e) {
-                    Log.d("JSONException", e.toString());
-                    e.printStackTrace();
-                }
-
-                try {
-                    socket.emit("new message", json);
-                } catch (Error e) {
-                    Log.d("ERROR new message: ", e.toString());
-                    e.printStackTrace();
-                }
-                input.setText("");
-
-                Date currentDate = new Date();
-                int hours = (currentDate.getHours() + 1) % 12;
-                int minutes = currentDate.getMinutes();
-                boolean isPm = (hours < 12);
-                String ampm = (isPm) ? "pm" : "am";
-                String timeString = "" + hours + ":" + minutes + " " + ampm;
-
-
-                final ParseObject chatMain = (ParseObject) user.get("chatMain");
-                final ParseObject messageObject = new ParseObject("Message");
-                messageObject.put("message", message);
-                messageObject.put("username", username);
-                messageObject.put("time", timeString);
-                messageObject.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        chatMain.add("log", messageObject);
-                        chatMain.saveInBackground();
+                if (business == null) {
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                            ("You are not a part of a business! Have your manager"
+                                    + " invite you to start chatting."), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    toast.show();
+                } else {
+                    Log.d("send.OnClick", "Inside method");
+                    // If no connection, immediately return
+                    if (!socket.connected()) {
+                        Log.d("SOCKET ERROR:", "Socket not connected");
+                        return;
                     }
-                });
+
+                    String message = input.getText().toString();
+                    // If message is length 0 after trim return
+                    if (message.trim().length() == 0) return;
+
+                    /** json is a JSON object that contains the following keys
+                     *  message - The message that is being recieved
+                     *  username - The username of the sender
+                     *  businessId - The object id for the ParseObject business this
+                     *             chat is associated with
+                     *  userId - The object id for the ParseUser sending the message
+                     *  time - A JSON object with the following keys:
+                     *          isAM - boolean, true if it is in the AM
+                     *          hour - current hour in 12 hour am/pm format
+                     *          minute - current minute
+                     */
+                    JSONObject json = new JSONObject();
+                    try {
+                        json.put("message", message);
+                        json.put("username", username);
+                        ParseObject business = (ParseObject) user.get("business");
+                        businessId = business.getObjectId();
+                        json.put("businessId", businessId);
+                        json.put("userId", user.getObjectId());
+
+                        Date date = new Date();
+                        String timeString = Util.prettyHourMin(date);
+
+                        json.put("time", timeString);
+                    } catch (JSONException e) {
+                        Log.d("JSONException", e.toString());
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        socket.emit("new message", json);
+                    } catch (Error e) {
+                        Log.d("ERROR new message: ", e.toString());
+                        e.printStackTrace();
+                    }
+                    input.setText("");
+
+                    Date currentDate = new Date();
+                    int hours = (currentDate.getHours() + 1) % 12;
+                    int minutes = currentDate.getMinutes();
+                    boolean isPm = (hours < 12);
+                    String ampm = (isPm) ? "pm" : "am";
+                    String timeString = "" + hours + ":" + minutes + " " + ampm;
+
+
+                    final ParseObject chatMain = (ParseObject) user.get("chatMain");
+                    final ParseObject messageObject = new ParseObject("Message");
+                    messageObject.put("message", message);
+                    messageObject.put("username", username);
+                    messageObject.put("time", timeString);
+                    messageObject.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            chatMain.add("log", messageObject);
+                            chatMain.saveInBackground();
+                        }
+                    });
+                }
             }
         });
     }
@@ -215,10 +237,11 @@ public class ChatFragment extends android.support.v4.app.Fragment{
     public void onDestroy(){
         super.onDestroy();
         socket.disconnect();
-        socket.off("new message:" + businessId, onNewMessage);
+        socket.off(newMessageSignature, onNewMessage);
         socket.off("user left", onUserLeft);
         socket.off("user joined", onUserJoined);
     }
+
 
     private void addMessage(String username, String message, String time){
         int type = ( username.equals( this.username ) )

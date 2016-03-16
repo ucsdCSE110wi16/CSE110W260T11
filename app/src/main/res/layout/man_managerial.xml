@@ -3,308 +3,326 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="#EEEEEE"
-        >
+        android:orientation="vertical">
 
         <RelativeLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:paddingTop="22dp"
-            android:paddingBottom="22dp"
+            android:layout_height="wrap_content"
             android:background="@color/accent"
-            >
-        <TextView android:id="@+id/header_shifts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set Shifts"
-        android:textColor="#FAFAFA"
-        android:textSize="38dp"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        />
+            android:paddingBottom="22dp"
+            android:paddingTop="22dp">
 
-       </RelativeLayout>
+            <TextView
+                android:id="@+id/header_shifts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Set Shifts"
+                android:textColor="#FAFAFA"
+                android:textSize="38dp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            >
+            android:layout_marginTop="12dp">
 
-            <Button android:id="@+id/btnShifts"
+            <Button
+                android:id="@+id/btnShifts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="22dp"
-                android:paddingBottom="22dp"
-                android:text="Go To Shift List"
-                android:layout_marginRight="22dp"
                 android:layout_marginLeft="22dp"
+                android:layout_marginRight="22dp"
                 android:backgroundTint="@color/button_dark"
-                android:textColor="#FAFAFA"
-                />
+                android:paddingBottom="22dp"
+                android:paddingTop="22dp"
+                android:text="Go To Shift List"
+                android:textColor="#FAFAFA" />
         </RelativeLayout>
 
 
-  <android.support.v7.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="12dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginLeft="10dp"
-    android:translationZ="3dp">
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="12dp"
+            android:translationZ="3dp">
 
 
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="22dp"
-    >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:orientation="vertical">
 
-   <RelativeLayout
-   android:layout_width="match_parent"
-   android:layout_height="wrap_content"
-   android:id="@+id/rv_sd">
+                <RelativeLayout
+                    android:id="@+id/rv_sd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                    <TextView android:id="@+id/text_sd"
-                       android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Choose a date"
-                         android:textColor="#333"
-                         android:textSize="16dp"
-                         android:layout_marginLeft="20dp" />
+                        android:layout_marginLeft="22dp"
+                        android:orientation="vertical">
 
-                    <RelativeLayout android:id="@+id/container_startdate"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:background="#BDBDBD"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="8dp"
-                        android:layout_below="@+id/text_sd"
-                        android:layout_alignLeft="@+id/text_sd">
-
-                        <TextView android:id="@+id/startdate"
+                        <TextView
+                            android:id="@+id/text_sd"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="03/03/2016"
-                            android:textColor="#FAFAFA"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp"
-                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="2dp"
+                            android:text="Choose a date"
+                            android:textColor="#333"
+                            android:textSize="16dp" />
+
+                        <RelativeLayout
+                            android:id="@+id/container_startdate"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/text_sd"
+                            android:layout_below="@+id/text_sd"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="2dp"
+                            android:background="#BDBDBD">
+
+                            <TextView
+                                android:id="@+id/startdate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:paddingBottom="12dp"
+                                android:paddingTop="12dp"
+                                android:text="03/03/2016"
+                                android:textColor="#FAFAFA" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+
+                    <Button
+                        android:id="@+id/btnStartDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="@color/button_dark"
+                        android:minWidth="130dp"
+                        android:paddingBottom="22dp"
+                        android:paddingTop="22dp"
+                        android:text="DATE"
+                        android:textColor="#FAFAFA" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rv_st"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="22dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/text_st"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Starting time"
+                            android:textColor="#333"
+                            android:textSize="16dp"
+                            android:gravity="center"
                             />
 
-                    </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/container_starttime"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/text_st"
+                            android:layout_below="@+id/text_st"
+                            android:layout_centerVertical="true"
+                            android:background="#BDBDBD">
+
+                            <TextView
+                                android:id="@+id/starttime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:paddingBottom="12dp"
+                                android:paddingTop="12dp"
+                                android:text="2:00pm"
+                                android:textColor="#FAFAFA"
+
+                                />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
 
 
-                     <Button
-                         android:id="@+id/btnStartDay"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="DATE"
-                         android:textColor="#FAFAFA"
-                         android:minWidth="130dp"
-                         android:paddingTop="22dp"
-                         android:paddingBottom="22dp"
-                         android:backgroundTint="@color/button_dark"
-                         android:layout_alignParentRight="true"
-                         android:layout_marginRight="12dp"
-                         />
+                    <Button
+                        android:id="@+id/btnStartTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="12dp"
+                        android:backgroundTint="@color/button_dark"
+                        android:minWidth="130dp"
+                        android:paddingBottom="22dp"
+                        android:paddingTop="22dp"
+                        android:layout_marginTop="8dp"
+                        android:text="START TIME"
+                        android:textColor="#FAFAFA" />
 
 
-                 </RelativeLayout>
+                </RelativeLayout>
 
-                 <RelativeLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_marginTop="22dp"
-                     android:id="@+id/rv_st">
+                <RelativeLayout
+                    android:id="@+id/rv_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="22dp"
+                    android:layout_marginTop="22dp"
 
-                     <TextView android:id="@+id/text_st"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="Starting time"
-                         android:textColor="#333"
-                         android:textSize="16dp"
-                         android:layout_marginLeft="20dp"
-                         />
+                    >
 
-                     <RelativeLayout android:id="@+id/container_starttime"
-                         android:layout_width="100dp"
-                         android:layout_height="wrap_content"
-                         android:background="#BDBDBD"
-                         android:layout_centerVertical="true"
-                         android:layout_below="@+id/text_st"
-                         android:layout_marginRight="8dp"
-                         android:layout_alignLeft="@+id/text_st"
-                         >
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="22dp"
+                        android:orientation="vertical">
 
-                         <TextView android:id="@+id/starttime"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:text="2:00pm"
-                             android:textColor="#FAFAFA"
-                             android:paddingTop="12dp"
-                             android:paddingBottom="12dp"
-                             android:layout_centerHorizontal="true"
-
-                             />
-
-                     </RelativeLayout>
+                        <TextView
+                            android:id="@+id/text_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Ending time"
+                            android:textColor="#333"
+                            android:textSize="16dp"
+                            android:gravity="center"
+                            />
 
 
-                     <Button
-                         android:id="@+id/btnStartTime"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="START TIME"
-                         android:textColor="#FAFAFA"
-                         android:minWidth="130dp"
-                         android:paddingTop="22dp"
-                         android:paddingBottom="22dp"
-                         android:backgroundTint="@color/button_dark"
-                         android:layout_alignParentRight="true"
-                         android:layout_marginRight="12dp"
-                         />
+                        <RelativeLayout
+                            android:id="@+id/container_endtime"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/text_et"
+                            android:layout_below="@id/text_et"
+                            android:layout_centerVertical="true"
+                            android:background="#BDBDBD">
+
+                            <TextView
+                                android:id="@+id/endtime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:paddingBottom="12dp"
+                                android:paddingTop="12dp"
+                                android:text="10:30pm"
+                                android:textColor="#FAFAFA"
+
+                                />
+
+                        </RelativeLayout>
+                    </LinearLayout>
 
 
-                 </RelativeLayout>
-
-                 <RelativeLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_marginTop="22dp"
-                     android:id="@+id/rv_et"
-                     android:layout_marginBottom="22dp"
-
-                     >
-
-                     <TextView android:id="@+id/text_et"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="Ending time"
-                         android:textColor="#333"
-                         android:textSize="16dp"
-                         android:layout_marginLeft="20dp"
-                         />
+                    <Button
+                        android:id="@+id/btnEnd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="12dp"
+                        android:backgroundTint="@color/button_dark"
+                        android:minWidth="130dp"
+                        android:paddingBottom="22dp"
+                        android:paddingTop="22dp"
+                        android:layout_marginTop="8dp"
+                        android:text="END TIME"
+                        android:textColor="#FAFAFA" />
 
 
-                     <RelativeLayout android:id="@+id/container_endtime"
-                         android:layout_width="100dp"
-                         android:layout_height="wrap_content"
-                         android:background="#BDBDBD"
-                         android:layout_centerVertical="true"
-                         android:layout_below="@id/text_et"
-                         android:layout_marginRight="8dp"
-                         android:layout_alignLeft="@+id/text_et"
-                         >
-
-                         <TextView android:id="@+id/endtime"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:text="10:30pm"
-                             android:textColor="#FAFAFA"
-                             android:paddingTop="12dp"
-                             android:paddingBottom="12dp"
-                             android:layout_centerHorizontal="true"
-
-                             />
-
-                     </RelativeLayout>
+                </RelativeLayout>
 
 
-                     <Button
-                         android:id="@+id/btnEnd"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="END TIME"
-                         android:textColor="#FAFAFA"
-                         android:minWidth="130dp"
-                         android:paddingTop="22dp"
-                         android:paddingBottom="22dp"
-                         android:backgroundTint="@color/button_dark"
-                         android:layout_alignParentRight="true"
-                         android:layout_marginRight="12dp"
-                         />
+            </LinearLayout>
 
+        </android.support.v7.widget.CardView>
 
-                 </RelativeLayout>
-
-
-
-                 </LinearLayout>
-
-             </android.support.v7.widget.CardView>
-
-             <RelativeLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="32dp"
-                 >
-
-                     <Button android:id="@+id/shift_save"
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:paddingTop="22dp"
-                         android:paddingBottom="22dp"
-                         android:text="SAVE SHIFT"
-                         android:layout_marginRight="22dp"
-                         android:layout_marginLeft="22dp"
-                         android:backgroundTint="@color/button_dark"
-                         android:textColor="#FAFAFA"
-                         />
-            </RelativeLayout>
         <RelativeLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:paddingTop="22dp"
-                     android:paddingBottom="22dp"
-                     android:layout_marginTop="14dp"
-                     android:background="@color/accent"
-                     >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp">
 
-                     <TextView android:id="@+id/header_invite"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="Invite Employees To Business"
-                         android:textColor="#FAFAFA"
-                         android:textSize="38dp"
-                         android:gravity="center"
-                         android:layout_centerHorizontal="true"
-                         android:textStyle="bold"
-                         />
+            <Button
+                android:id="@+id/shift_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="22dp"
+                android:backgroundTint="@color/button_dark"
+                android:paddingBottom="22dp"
+                android:paddingTop="22dp"
+                android:text="SAVE SHIFT"
+                android:textColor="#FAFAFA" />
+        </RelativeLayout>
 
-                 </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@color/accent"
+            android:paddingBottom="22dp"
+            android:paddingTop="22dp">
 
-             <RelativeLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="22dp"
-                 android:layout_marginBottom="12dp"
-                 >
+            <TextView
+                android:id="@+id/header_invite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="Invite Employees To Business"
+                android:textColor="#FAFAFA"
+                android:textSize="38dp"
+                android:textStyle="bold" />
 
-                 <Button android:id="@+id/btnInvite"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:paddingTop="22dp"
-                     android:paddingBottom="22dp"
-                     android:text="INVITE"
-                     android:layout_marginRight="22dp"
-                     android:layout_marginLeft="22dp"
-                     android:backgroundTint="@color/button_dark"
-                     android:textColor="#FAFAFA"
-                     />
-             </RelativeLayout>
+        </RelativeLayout>
 
-        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="22dp">
+
+            <Button
+                android:id="@+id/btnInvite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="22dp"
+                android:backgroundTint="@color/button_dark"
+                android:paddingBottom="22dp"
+                android:paddingTop="22dp"
+                android:text="INVITE"
+                android:textColor="#FAFAFA" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </ScrollView>

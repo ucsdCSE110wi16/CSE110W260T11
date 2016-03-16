@@ -18,6 +18,7 @@ import java.util.Locale;
 public class ManagerPagerAdapter extends FragmentPagerAdapter {
     private int NUM_ITEMS;
     boolean hasBusinessPage;
+    private Fragment schedule = null;
 
     public ManagerPagerAdapter(FragmentManager fm, int NUM_ITEMS) {
         super(fm);
@@ -29,7 +30,13 @@ public class ManagerPagerAdapter extends FragmentPagerAdapter {
     public android.support.v4.app.Fragment getItem(int position) {
         if(hasBusinessPage){
             switch (position){
-                case 0: return new ManSchedule();
+                case 0:
+                    if ( schedule == null )
+                    {
+                        schedule = new ManSchedule();
+
+                    }
+                    return schedule;
                 case 1: return new ManManagerial();
                 case 2: return new ManMessaging();
             }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.cse110devteam.Global.ManagerPagerAdapter;
 import com.cse110devteam.Global.TypefaceGenerator;
+import com.cse110devteam.Global.Util;
 import com.cse110devteam.R;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -29,6 +30,8 @@ public class ManagerMain  extends FragmentActivity {
     public static int HAS_BUSINESS_NUM_ITEMS = 3;
     public static int NO_BUSINESS_NUM_ITEMS = 1;
     private ViewPager mPager;
+
+    public int pagerPosition;
 
     Toolbar mToolbar;
     TextView title;
@@ -81,6 +84,7 @@ public class ManagerMain  extends FragmentActivity {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
                     mPager.setCurrentItem(tab.getPosition());
+                    pagerPosition = tab.getPosition();
                 }
 
                 @Override
@@ -94,12 +98,19 @@ public class ManagerMain  extends FragmentActivity {
                 }
             });
 
-            mPager.setCurrentItem(1);
             setTabs = true;
 
         }
+        mPager.setCurrentItem(1);
+        pagerPosition = 1;
+        mToolbar.showOverflowMenu();
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Util.logOut();
+    }
 }
 

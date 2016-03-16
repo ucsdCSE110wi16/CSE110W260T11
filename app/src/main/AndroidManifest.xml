@@ -42,16 +42,22 @@
         </activity>
 
         <activity android:name=".Activity.ManagerMain"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".Activity.Login"
+            >
 
         </activity>
 
         <activity android:name=".Activity.EmployeeMain"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".Activity.Login"
+            >
 
         </activity>
 
-        <activity android:name=".Activity.CreateBusinessPage">
+        <activity android:name=".Activity.CreateBusinessPage"
+            android:parentActivityName=".Activity.Login"
+            >
 
         </activity>
 
@@ -60,6 +66,10 @@
         </activity>
 
         <activity android:name=".Activity.ShiftList">
+
+        </activity>
+
+        <activity android:name=".Activity.DayShiftList">
 
         </activity>
     </application>

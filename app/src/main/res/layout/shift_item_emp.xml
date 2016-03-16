@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
-        <LinearLayout
+        <LinearLayout android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:orientation="vertical"
@@ -21,7 +21,7 @@
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             >
-            <RelativeLayout android:id="@+id/banner"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -150,7 +150,32 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="62dp">
 
+            <Button android:id="@+id/request"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="REQUEST SHIFT"
+                android:textColor="@android:color/holo_red_dark"
+                android:minWidth="200dp"
+                android:paddingTop="22dp"
+                android:paddingBottom="22dp"
+                style="?android:borderlessButtonStyle"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                />
+
+            <TextView android:id="@+id/shift_id"
+                android:layout_width="0.5dp"
+                android:layout_height="0.5dp"
+                android:text=""
+                android:visibility="gone"
+                />
+
+        </RelativeLayout>
 
 
     </LinearLayout>

@@ -187,13 +187,6 @@ public class CreateAccount extends Activity {
                                         toast.setGravity(Gravity.BOTTOM, 0, 0);
                                         if (caPD != null) caPD.dismiss();
                                         toast.show();
-
-                                    default:
-                                    toast = Toast.makeText(getApplicationContext(),
-                                            "Error, try again", Toast.LENGTH_LONG);
-                                    toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                    if (caPD != null ) caPD.dismiss();
-                                    toast.show();
                                 }
                             }
                         }
@@ -235,5 +228,19 @@ public class CreateAccount extends Activity {
     public void onPause() {
         super.onPause();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent( getApplicationContext(),
+                        Login.class );
+                startActivity( intent );
+            }
+        });
+        thread.start();
     }
 }

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.cse110devteam.Activity.ShiftList;
 import com.cse110devteam.Global.TypefaceGenerator;
+import com.cse110devteam.Global.Util;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -38,12 +40,9 @@ import android.view.View.OnClickListener;
 
 
 
-import com.cse110devteam.Global.Message;
+import com.cse110devteam.Models.Message;
 import com.cse110devteam.R;
 import com.parse.SaveCallback;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -144,12 +143,14 @@ public class ManManagerial extends Fragment{
                                                   int monthOfYear, int dayOfMonth) {
 
                                 ParseObject shift = new ParseObject( "Shift" );
-                                shiftStart.setYear(year);
+                                shiftStart.setYear(year - 1900);
                                 shiftStart.setMonth(monthOfYear);
                                 shiftStart.setDate(dayOfMonth);
 
-                                String setStartDate = monthOfYear + "/" + dayOfMonth + "/"
+                                String setStartDate = dayOfMonth + "/" + monthOfYear + "/"
                                         + year;
+
+                                Log.d( "shiftDateStart", setStartDate );
                                 startDate.setText( setStartDate );
 
 
@@ -180,19 +181,14 @@ public class ManManagerial extends Fragment{
                                                   int selectedminute) {
                                 //MAYBE do parse stuff here
 
-                                shiftStart.setHours( selectedhour );
-                                shiftStart.setHours(selectedminute);
+                                shiftStart.setHours(selectedhour);
+                                shiftStart.setMinutes(selectedminute);
 
-                                String ampm = ( selectedhour < 12 ) ? "am" : "pm";
-                                String hour = ( selectedhour == 0 )
-                                        ? "12" : Integer.toString( selectedhour );
-                                String min = ( selectedminute < 10 )
-                                        ? "0" + Integer.toString( selectedminute )
-                                        : Integer.toString( selectedminute );
+                                String sStart = Util.prettyHourMin( shiftStart );
 
-                                String setShiftStart = hour + ":" + min + ampm;
+                                Log.v("Start Time", "set time: " + sStart );
 
-                                startTime.setText( setShiftStart );
+                                startTime.setText( sStart );
 
                                 doneStartTime = true;
                             }
@@ -211,9 +207,9 @@ public class ManManagerial extends Fragment{
                     @Override
                     public void run() {
                         final ParseObject shift = new ParseObject( "Shift" );
-                        shift.put( "start", shiftStart );
-                        shift.put( "end", shiftEnd );
-                        shift.put( "business", business );
+                        shift.put("start", shiftStart);
+                        shift.put("end", shiftEnd);
+                        shift.put("business", business);
                         shift.saveInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
@@ -232,6 +228,9 @@ public class ManManagerial extends Fragment{
                     }
                 });
                 thread.start();
+                startDate.setText( "--/--/--" );
+                startTime.setText( "--:--" );
+                endTime.setText("--:--");
             }
         });
 
@@ -256,16 +255,11 @@ public class ManManagerial extends Fragment{
                                 shiftEnd.setHours(selectedhour);
                                 shiftEnd.setMinutes(selectedminute);
 
-                                String ampm = ( selectedhour < 12 ) ? "am" : "pm";
-                                String hour = ( selectedhour == 0 )
-                                        ? "12" : Integer.toString( selectedhour );
-                                String min = ( selectedminute < 10 )
-                                        ? "0" + Integer.toString( selectedminute )
-                                        : Integer.toString( selectedminute );
+                                String sEnd = Util.prettyHourMin( shiftEnd );
 
-                                String setShiftEnd = hour + ":" + min + ampm;
+                                Log.v("End Time", "set time: " + sEnd );
 
-                                endTime.setText( setShiftEnd );
+                                endTime.setText( sEnd );
 
                                 doneEndTime = true;
                             }

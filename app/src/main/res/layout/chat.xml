@@ -9,18 +9,43 @@
         android:id="@+id/recyclerview"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.88"
+        android:layout_weight="0.86"
         android:background="@color/accent"
         android:paddingTop="12dp"
         >
 
+
     </android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
+        android:id="@+id/container_chatloading"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.86"
+        android:background="@color/accent"
+        android:paddingLeft="22dp"
+        android:paddingRight="22dp"
+        >
+
+        <TextView android:id="@+id/chatloading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chat is loading, please wait..."
+            android:textSize="32sp"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:layout_centerInParent="true"
+            />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.12"
+        android:layout_height="62dp"
+        android:background="#FAFAFA"
         >
 
         <EditText android:id="@+id/inputMessage"

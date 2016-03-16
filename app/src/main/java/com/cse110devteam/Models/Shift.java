@@ -1,6 +1,5 @@
-package com.cse110devteam.Global;
+package com.cse110devteam.Models;
 
-import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -20,6 +19,7 @@ public class Shift {
     private Date end;
     private String firstname;
     private String lastname;
+    private String id;
 
     public Shift() {};
 
@@ -59,6 +59,11 @@ public class Shift {
         return end;
     }
 
+    public String getId()
+    {
+        return id;
+    }
+
     public String getFirstName;
 
     public static class Builder {
@@ -69,6 +74,7 @@ public class Shift {
         private Date mEnd;
         private String fName;
         private String lName;
+        private String mOid;
 
         public Builder( int status )
         {
@@ -77,15 +83,28 @@ public class Shift {
 
         public Builder employee( ParseUser employee )
         {
-            mEmployee = employee;
-            fName = ( String ) employee.get( "firstname" );
-            lName = ( String ) employee.get( "lastname" );
+            if ( employee == null )
+            {
+                mEmployee = null;
+            }
+            else
+            {
+                mEmployee = employee;
+                fName = (String) employee.get("firstname");
+                lName = (String) employee.get("lastname");
+            }
             return this;
         }
 
         public Builder business( ParseObject business )
         {
             mBusiness = business;
+            return this;
+        }
+
+        public Builder id( String oid )
+        {
+            mOid = oid;
             return this;
         }
 
@@ -111,6 +130,7 @@ public class Shift {
             shift.end = mEnd;
             shift.firstname = fName;
             shift.lastname = lName;
+            shift.id = mOid;
             return shift;
         }
 

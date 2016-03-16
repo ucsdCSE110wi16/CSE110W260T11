@@ -8,29 +8,66 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.6"
+        android:layout_height="match_parent"
         android:clickable="true"
         android:focusable="true">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loading Calendar..."
+            android:textColor="@android:color/tertiary_text_dark"
+            android:textSize="38sp"
+            android:layout_centerInParent="true"
+            />
+
+        <!--
         <CalendarView
-            android:id="@+id/employee_calendar"
+            android:id="@+id/manager_calendar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:clickable="true" />
+            -->
+
+        <LinearLayout android:id="@+id/calendar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_above="@+id/refresh"
+            >
+
+        </LinearLayout>
+
+
+        <Button android:id="@+id/refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="REFRESH"
+            android:paddingTop="22dp"
+            android:paddingBottom="22dp"
+            android:minWidth="200dp"
+            android:backgroundTint="@color/button_dark"
+            android:textColor="#FAFAFA"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            />
 
     </RelativeLayout>
+
+    <!--
     <ListView
-        android:id="@+id/employee_shift_list"
+        android:id="@+id/manager_shift_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="0.4"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_gravity="center_horizontal|center"
         android:clickable="true"
         android:focusable="true"
-        android:layout_weight="0.4"
         android:foreground="@color/abc_primary_text_material_light" />
+        -->
 
 </LinearLayout>

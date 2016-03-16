@@ -5,10 +5,13 @@ import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,11 +31,14 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by anthonyaltieri on 1/14/16.
  */
 public class Login extends Activity{
     private EditText email, password;
+    private CheckBox saveusername;
     private Button login;
     private Button forgotPassword;
     private Button createaccount;
@@ -40,6 +46,7 @@ public class Login extends Activity{
     private Socket mSocket;
     private String mUsername;
     private TextView header;
+
 
     ProgressDialog loginPD = null;
 
@@ -51,6 +58,8 @@ public class Login extends Activity{
         ChatApplication chatApp = (ChatApplication) getApplication();
         mSocket = chatApp.getSocket();
 
+        ParseUser.getCurrentUser().logOutInBackground();
+
         setContentView(R.layout.login);
         header = (TextView) findViewById(R.id.header);
         email = (EditText) findViewById(R.id.email);
@@ -59,96 +68,111 @@ public class Login extends Activity{
         login = (Button) findViewById(R.id.login);
         createaccount = (Button) findViewById(R.id.createaccount);
         attribution = (Button) findViewById(R.id.attribution);
+        saveusername = ( CheckBox ) findViewById( R.id.saveusername );
 
         email.setTypeface(TypefaceGenerator.get("roboto", getAssets()));
         password.setTypeface(TypefaceGenerator.get("roboto", getAssets()));
         login.setTypeface(TypefaceGenerator.get("robotoMedium", getAssets()));
         createaccount.setTypeface(TypefaceGenerator.get("robotoMedium", getAssets()));
 
-        /* BUTTON ONCLICK LISTENERS */
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                loginPD = new ProgressDialog( Login.this );
+
+                loginPD = new ProgressDialog(Login.this);
                 loginPD.setTitle("Logging In");
                 loginPD.setMessage("Please wait while you are logged in...");
                 loginPD.setIndeterminate(true);
                 loginPD.setCancelable(false);
                 loginPD.show();
 
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
                         // Email is not case-sensitive
                         final String textEmail = email.getText().toString().toLowerCase().trim();
                         String textPassword = password.getText().toString();
                         boolean validEmail = Util.isEmailValid(textEmail);
                         boolean validPassword = Util.isPasswordValid(textPassword);
-                        if( !validEmail ){
+                        if (!validEmail)
+                        {
                             Toast toast = Toast.makeText(getApplicationContext(),
-                                    "Enter an Email!", Toast.LENGTH_LONG);
+                                    "Enter an Email!", Toast.LENGTH_SHORT);
                             toast.setGravity(Gravity.BOTTOM, 0, 0);
-                            if ( loginPD != null ) loginPD.dismiss();
+                            if (loginPD != null) loginPD.dismiss();
                             toast.show();
                             email.setText("");
                         }
-                        if( !validPassword ){
+                        if (!validPassword)
+                        {
                             Toast toast = Toast.makeText(getApplicationContext(),
-                                    "Enter a valid password", Toast.LENGTH_LONG);
+                                    "Enter a valid password", Toast.LENGTH_SHORT);
                             toast.setGravity(Gravity.BOTTOM, 0, 0);
-                            if ( loginPD != null ) loginPD.dismiss();
+                            if (loginPD != null) loginPD.dismiss();
                             toast.show();
                             password.setText("");
                         }
-                        if(validEmail && validPassword){
+                        if (validEmail && validPassword)
+                        {
                             Toast toast;
                             boolean emailInSystem = emailInSystem(textEmail);
-                            if(!emailInSystem){
+                            if (!emailInSystem)
+                            {
                                 toast = Toast.makeText(getApplicationContext(),
                                         "Email not in registered!",
-                                        Toast.LENGTH_LONG);
+                                        Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                if ( loginPD != null ) loginPD.dismiss();
+                                if (loginPD != null) loginPD.dismiss();
                                 toast.show();
                                 return;
                             }
 
-                            ParseUser.logInInBackground(textEmail, textPassword,
-                                    new LogInCallback() {
-                                        @Override
-                                        public void done(final ParseUser user, ParseException e) {
-                                            if(user != null){
-                                                final ParseUser pU = ParseUser.getCurrentUser();
-                                                mUsername = pU.get("firsname") + " " + pU.get("lastname");
-                                                // Add user to chat server
-                                                mSocket.emit("add user", mUsername);
+                            ParseUser.logInInBackground(textEmail, textPassword, new LogInCallback()
+                            {
+                                @Override
+                                public void done(final ParseUser user, ParseException e)
+                                {
+                                    if (user != null)
+                                    {
+                                        final ParseUser pU = ParseUser.getCurrentUser();
+                                        mUsername = pU.get("firsname") + " " + pU.get("lastname");
+                                        // Add user to chat server
+                                        mSocket.emit("add user", mUsername);
 
-                                                if(user.getBoolean("ismanager")){
-                                                    Intent intent = new Intent(getApplicationContext(),
-                                                            ManagerMain.class);
-                                                    startActivity(intent);
-                                                    loginPD.dismiss();
-                                                } else {
-                                                    Intent intent = new Intent(getApplicationContext(),
-                                                            EmployeeMain.class);
-                                                    startActivity(intent);
-                                                    loginPD.dismiss();
-                                                }
-
-                                            } else {
-                                                Toast noPassToast;
-                                                if(e.getCode() == ParseException.OBJECT_NOT_FOUND){
-                                                    noPassToast = Toast.makeText(getApplicationContext(),
-                                                            "Password Incorrect!", Toast.LENGTH_LONG);
-                                                    noPassToast.setGravity(Gravity.BOTTOM, 0, 0);
-                                                    noPassToast.show();
-                                                    loginPD.dismiss();
-                                                } else {
-                                                    e.printStackTrace();
-                                                }
-                                            }
+                                        if (user.getBoolean("ismanager"))
+                                        {
+                                            Intent intent = new Intent(getApplicationContext(),
+                                                    ManagerMain.class);
+                                            startActivity(intent);
                                         }
-                                    });
+                                        else
+                                        {
+                                            Intent intent = new Intent(getApplicationContext(),
+                                                    EmployeeMain.class);
+                                            startActivity(intent);
+                                            loginPD.dismiss();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Toast noPassToast;
+                                        if (e.getCode() == ParseException.OBJECT_NOT_FOUND)
+                                        {
+                                            noPassToast = Toast.makeText(getApplicationContext(),
+                                                    "Password Incorrect!", Toast.LENGTH_SHORT);
+                                            noPassToast.setGravity(Gravity.BOTTOM, 0, 0);
+                                            loginPD.dismiss();
+                                            noPassToast.show();
+                                        }
+                                        else
+                                        {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+                            });
                         }
 
                     }
@@ -218,7 +242,14 @@ public class Login extends Activity{
 
     public static boolean emailInSystem(String username){
         ParseQuery<ParseUser> userList = ParseUser.getQuery();
+        Log.d("EmailInSystem", "username: " + username );
         userList.whereEqualTo("username", username);
+        try {
+            Log.d("userList.count()", "" + userList.count() );
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Log.d("ParseException", e.toString() );
+        }
         try{
             return (userList.count() != 0);
 
@@ -239,9 +270,5 @@ public class Login extends Activity{
         if ( loginPD == null ) return;
         loginPD.dismiss();
     }
-    public Context getContext() {
-        return (Context)this;
-    }
-
 
 }
