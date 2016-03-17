@@ -127,6 +127,9 @@ public class Login extends Activity{
                                 return;
                             }
 
+                            ChatApplication chatApplication = (ChatApplication) getApplication();
+                            chatApplication.loadedChat = false;
+
                             ParseUser.logInInBackground(textEmail, textPassword, new LogInCallback()
                             {
                                 @Override

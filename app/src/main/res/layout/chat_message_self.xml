@@ -48,6 +48,7 @@
                 android:text="12:32pm"
                 android:layout_marginTop="8dp"
                 android:gravity="center_horizontal"
+                android:visibility="gone"
                 android:layout_alignParentBottom="true"
                 />
 
