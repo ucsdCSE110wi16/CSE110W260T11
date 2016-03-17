@@ -419,7 +419,7 @@ public class ManManagerial extends Fragment{
             public void done(ParseObject object, ParseException e) {
                 HashMap<String, Object> params = new HashMap<String, Object>();
                 params.put("username", m_Text);
-                params.put("businessID", object);
+                params.put("businessID", object.getObjectId());
                 params.put("businessChat", chatMainOid);
                 ParseCloud.callFunctionInBackground("inviteEmployee", params, new
                         FunctionCallback<Object>() {

@@ -209,11 +209,7 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                     input.setText("");
 
                     Date currentDate = new Date();
-                    int hours = (currentDate.getHours() + 1) % 12;
-                    int minutes = currentDate.getMinutes();
-                    boolean isPm = (hours < 12);
-                    String ampm = (isPm) ? "pm" : "am";
-                    String timeString = "" + hours + ":" + minutes + " " + ampm;
+                    String timeString = Util.prettyHourMin( currentDate );
 
 
                     final ParseObject chatMain = (ParseObject) user.get("chatMain");
