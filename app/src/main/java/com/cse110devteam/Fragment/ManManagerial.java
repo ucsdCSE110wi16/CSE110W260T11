@@ -210,25 +210,36 @@ public class ManManagerial extends Fragment{
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        final ParseObject shift = new ParseObject( "Shift" );
-                        shift.put("start", shiftStart);
-                        shift.put("end", shiftEnd);
-                        shift.put("business", business);
-                        shift.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                business.add("shifts", shift);
-                                business.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                                                "Shift Saved!", Toast.LENGTH_LONG);
-                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                        toast.show();
-                                    }
-                                });
-                            }
-                        });
+                        if ( doneEndTime && doneStartDay && doneStartDay )
+                        {
+                            final ParseObject shift = new ParseObject( "Shift" );
+                            shift.put("start", shiftStart);
+                            shift.put("end", shiftEnd);
+                            shift.put("business", business);
+                            shift.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    business.add("shifts", shift);
+                                    business.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                                                    "Shift Saved!", Toast.LENGTH_LONG);
+                                            toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                            toast.show();
+                                        }
+                                    });
+                                }
+                            });
+
+                        }
+                        else
+                        {
+                            Toast toast = Toast.makeText( getActivity().getApplicationContext(),
+                                    "Enter in shift information!", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.BOTTOM,0,0);
+                            toast.show();
+                        }
                     }
                 });
                 thread.start();
@@ -313,7 +324,7 @@ public class ManManagerial extends Fragment{
                     public void onClick(DialogInterface dialog, int which) {
 
                         //this is when the employee enters e-mail
-                        m_Text = input.getText().toString();
+                        m_Text = input.getText().toString().toLowerCase().trim();
 
                         //check if the email is in the system
                         Toast toast;
@@ -374,11 +385,11 @@ public class ManManagerial extends Fragment{
 
         final View rootView = inflater.inflate(R.layout.man_managerial, container, false);
 
-
-
-
         return rootView;
     }
+
+
+
 
     private boolean emailInSystem(String username){
         ParseQuery<ParseUser> userList = ParseUser.getQuery();

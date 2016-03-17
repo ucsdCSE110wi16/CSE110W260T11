@@ -21,6 +21,7 @@ public class ChatApplication  extends Application{
     public static String TEST_URI_EMULATOR = "http://10.0.2.2:3620/";
     public static String TEST_URI_DEVICE = "http://localhost:3620/";
     public static String CHAT_SERVER_BASIC = "http://52.32.198.121:8080";
+    public boolean loadedChat = false;
 
 
     private Socket socket;

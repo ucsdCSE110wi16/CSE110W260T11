@@ -59,17 +59,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <CheckBox android:id="@+id/saveusername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save Username"
-            android:textColor="@android:color/primary_text_dark"
-            android:textColorHighlight="@android:color/primary_text_dark"
-            android:buttonTint="@android:color/primary_text_dark"
-            android:layout_alignParentTop="false"
-            android:layout_marginLeft="32dp"
-            />
-
         <Button android:id="@+id/login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

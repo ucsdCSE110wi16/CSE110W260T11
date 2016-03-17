@@ -38,7 +38,6 @@ import java.util.ArrayList;
  */
 public class Login extends Activity{
     private EditText email, password;
-    private CheckBox saveusername;
     private Button login;
     private Button forgotPassword;
     private Button createaccount;
@@ -68,7 +67,6 @@ public class Login extends Activity{
         login = (Button) findViewById(R.id.login);
         createaccount = (Button) findViewById(R.id.createaccount);
         attribution = (Button) findViewById(R.id.attribution);
-        saveusername = ( CheckBox ) findViewById( R.id.saveusername );
 
         email.setTypeface(TypefaceGenerator.get("roboto", getAssets()));
         password.setTypeface(TypefaceGenerator.get("roboto", getAssets()));

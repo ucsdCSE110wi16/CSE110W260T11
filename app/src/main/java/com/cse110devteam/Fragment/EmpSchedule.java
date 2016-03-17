@@ -34,6 +34,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -59,9 +60,12 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
 
     private ProgressDialog loadingCal;
 
+    private TextView behindCalendar;
+
     private Toolbar toolbar;
 
     private Button refresh;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,7 +84,7 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.manager_schedule , container, false);
+        View rootView = inflater.inflate(R.layout.employee_schedule, container, false);
         setHasOptionsMenu(true);
 
 
@@ -89,11 +93,22 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
             cdf.refreshView();
         }
 
+        behindCalendar = ( TextView ) rootView.findViewById( R.id.behindcal );
+
+        user = ParseUser.getCurrentUser();
+        business = (ParseObject) user.get("business");
+
+        if ( business == null )
+        {
+            behindCalendar.setText( "You must be a part of a business to sign up for shifts."
+                    + "Have your manager invite you." );
+        }
+
         refresh = ( Button ) rootView.findViewById( R.id.refresh );
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ( cdf != null )
+                if ( cdf != null && business != null )
                 {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -135,8 +150,6 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
         });
 
 
-        user = ParseUser.getCurrentUser();
-        business = (ParseObject) user.get("business");
 
         toolbar = (Toolbar) getActivity().findViewById( R.id.toolbar );
 
@@ -161,31 +174,37 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Business");
-                query.getInBackground(business.getObjectId(), new GetCallback<ParseObject>() {
-                    @Override
-                    public void done(ParseObject object, ParseException e) {
-                        if (e == null) {
-                            try {
-                                mShifts = (ArrayList<ParseObject>) object.fetchIfNeeded().get("shifts");
-                                paintCalendar(mShifts, cdf);
-                                FragmentTransaction t = getActivity().getSupportFragmentManager().beginTransaction();
-                                t.replace(R.id.calendar, cdf);
-                                t.commit();
-                            } catch (ParseException er) {
-                                Log.d("ParseException", er.toString());
-                                er.printStackTrace();
+                if ( business != null )
+                {
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Business");
+                    query.getInBackground(business.getObjectId(), new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject object, ParseException e) {
+                            if (e == null) {
+                                try {
+                                    mShifts = (ArrayList<ParseObject>) object.fetchIfNeeded().get("shifts");
+                                    Log.d("mShifts", mShifts + "");
+                                    Log.d("mShifts.size()", mShifts.size() + "");
+                                    paintCalendar(mShifts, cdf);
+                                    FragmentTransaction t = getActivity().getSupportFragmentManager().beginTransaction();
+                                    t.replace(R.id.calendar, cdf);
+                                    t.commit();
+                                } catch (ParseException er) {
+                                    Log.d("ParseException", er.toString());
+                                    er.printStackTrace();
+                                }
+
+
+
+                            } else {
+                                Log.d("query error", e.toString());
                             }
 
 
-
-                        } else {
-                            Log.d("query error", e.toString());
                         }
+                    });
 
-
-                    }
-                });
+                }
 
             }
         });
@@ -242,30 +261,37 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Business");
-                query.getInBackground(business.getObjectId(), new GetCallback<ParseObject>() {
-                    @Override
-                    public void done(ParseObject object, ParseException e) {
-                        if (e == null) {
-                            try {
-                                mShifts = (ArrayList<ParseObject>) object.fetchIfNeeded().get("shifts");
+                if ( business != null )
+                {
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Business");
+                    query.getInBackground(business.getObjectId(), new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject object, ParseException e) {
+                            if (e == null) {
+                                Log.d("object.getObjectID()", object.getObjectId());
+                                mShifts = (ArrayList<ParseObject>) object.get("shifts");
+                                Log.d("about to iterate through shift", "starting");
+                                for ( int i = 0 ; i < mShifts.size() ; i++ )
+                                {
+                                    Log.d("i:", i + "");
+                                    Log.d("mShifts.get(i).getObjectID()",
+                                            mShifts.get(i).getObjectId() + "");
+                                }
                                 paintCalendar(mShifts, cdf);
                                 FragmentTransaction t = getActivity().getSupportFragmentManager().beginTransaction();
                                 t.replace(R.id.calendar, cdf);
                                 t.commit();
-                            } catch (ParseException er) {
-                                Log.d("ParseException", er.toString());
-                                er.printStackTrace();
+
+
+                            } else {
+                                Log.d("query error", e.toString());
                             }
 
 
-                        } else {
-                            Log.d("query error", e.toString());
                         }
+                    });
 
-
-                    }
-                });
+                }
 
             }
         });
@@ -274,6 +300,7 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
     private void paintCalendar( ArrayList< ParseObject > mShifts, final CaldroidFragment caldroidFragment)
     {
         if ( mShifts == null ) return;
+        if ( business == null ) return;
 
 
         dateShiftMap = new HashMap<>();
@@ -281,79 +308,86 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
         // Add all of the shifts to the dateShiftMap
         for ( int i = 0 ; i < mShifts.size() ; i++ ) {
             ParseObject shift = mShifts.get(i);
+            Log.d("mShifts.size()", "" + mShifts.size() );
+            Log.d("mShifts.get(i).getobjectid()", mShifts.get(i).getObjectId() + "");
+            Log.d("i =", i + "");
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Shift");
             query.getInBackground(shift.getObjectId(), new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject object, ParseException e) {
-                    Date start = null;
-                    Date end = null;
-                    ParseUser employee = null;
-                    int status = -1;
-
-                    try {
-                        start = (Date) object.fetchIfNeeded().get("start");
-                        end = (Date) object.fetchIfNeeded().get("end");
-                        employee = (ParseUser) object.fetchIfNeeded().get("employee");
-                        status = (employee == null) ? Shift.VACANT : Shift.FILLED;
-                    } catch (ParseException pe) {
-                        Log.d("ParseException", pe.toString());
-                    }
-
-                    Shift shiftModel = new Shift.Builder(status)
-                            .business(business)
-                            .employee(employee)
-                            .start(start)
-                            .end(end)
-                            .build();
-
-                    int month = start.getMonth();
-                    int day = start.getDate();
-                    int year = start.getYear();
-
-                    Date key = new Date();
-                    key.setDate(day);
-                    key.setMonth(month);
-                    key.setYear(year);
-
-
-
-                    ArrayList<Shift> list = dateShiftMap.get(key);
-
-                    if (list == null) {
-                        list = new ArrayList<>();
-                        list.add(shiftModel);
-                        dateShiftMap.put(key, list);
-                    } else {
-                        list.add(shiftModel);
-                    }
-
-
-                    ColorDrawable vacant = new ColorDrawable(Color.parseColor("#4CAF50"));
-                    ColorDrawable filled = new ColorDrawable(Color.parseColor("#F44336"));
-
-                    // Iterate over every date and set color
-                    for (Date d : dateShiftMap.keySet() )
-
+                    if ( object != null )
                     {
-                        ArrayList<Shift> shiftsThisDay = dateShiftMap.get(d);
-                        boolean hasVacantShift = false;
-                        for (Shift s : shiftsThisDay) {
+                        Date start = null;
+                        Date end = null;
+                        ParseUser employee = null;
+                        int status = -1;
 
-                            if (s.getEmployee() == null) {
-                                hasVacantShift = true;
-                            }
-
+                        try {
+                            start = (Date) object.fetchIfNeeded().get("start");
+                            end = (Date) object.fetchIfNeeded().get("end");
+                            employee = (ParseUser) object.fetchIfNeeded().get("employee");
+                            status = (employee == null) ? Shift.VACANT : Shift.FILLED;
+                        } catch (ParseException pe) {
+                            Log.d("ParseException", pe.toString());
                         }
-                        if (hasVacantShift) {
-                            caldroidFragment.setBackgroundDrawableForDate(vacant, d);
-                            caldroidFragment.refreshView();
-                            Log.d("set vacant", "" + d.getDate() + "/" + d.getMonth() + "/" + d.getYear() );
+
+                        Shift shiftModel = new Shift.Builder(status)
+                                .business(business)
+                                .employee(employee)
+                                .start(start)
+                                .end(end)
+                                .build();
+
+                        int month = start.getMonth();
+                        int day = start.getDate();
+                        int year = start.getYear();
+
+                        Date key = new Date();
+                        key.setDate(day);
+                        key.setMonth(month);
+                        key.setYear(year);
+
+
+
+                        ArrayList<Shift> list = dateShiftMap.get(key);
+
+                        if (list == null) {
+                            list = new ArrayList<>();
+                            list.add(shiftModel);
+                            dateShiftMap.put(key, list);
                         } else {
-                            caldroidFragment.setBackgroundDrawableForDate(filled, d);
-                            caldroidFragment.refreshView();
-                            Log.d("set filled", "" + d.getDate() + "/" + d.getMonth() + "/" + d.getYear() );
+                            list.add(shiftModel);
                         }
+
+
+                        ColorDrawable vacant = new ColorDrawable(Color.parseColor("#4CAF50"));
+                        ColorDrawable filled = new ColorDrawable(Color.parseColor("#F44336"));
+
+                        // Iterate over every date and set color
+                        for (Date d : dateShiftMap.keySet() )
+
+                        {
+                            ArrayList<Shift> shiftsThisDay = dateShiftMap.get(d);
+                            boolean hasVacantShift = false;
+                            for (Shift s : shiftsThisDay) {
+
+                                if (s.getEmployee() == null) {
+                                    hasVacantShift = true;
+                                }
+
+                            }
+                            if (hasVacantShift) {
+                                caldroidFragment.setBackgroundDrawableForDate(vacant, d);
+                                caldroidFragment.refreshView();
+                                Log.d("set vacant", "" + d.getDate() + "/" + d.getMonth() + "/" + d.getYear() );
+                            } else {
+                                caldroidFragment.setBackgroundDrawableForDate(filled, d);
+                                caldroidFragment.refreshView();
+                                Log.d("set filled", "" + d.getDate() + "/" + d.getMonth() + "/" + d.getYear() );
+                            }
+                        }
+
                     }
                 }
 

@@ -1,5 +1,6 @@
 package com.cse110devteam.Models;
 
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -90,8 +91,12 @@ public class Shift {
             else
             {
                 mEmployee = employee;
-                fName = (String) employee.get("firstname");
-                lName = (String) employee.get("lastname");
+                try {
+                    fName = (String) employee.fetchIfNeeded().get("firstname");
+                    lName = (String) employee.fetchIfNeeded().get("lastname");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
             return this;
         }

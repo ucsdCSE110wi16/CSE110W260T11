@@ -82,39 +82,44 @@ public class DayShiftList extends Activity{
                             shiftQuery.getInBackground(shift.getObjectId(), new GetCallback<ParseObject>() {
                                 @Override
                                 public void done(ParseObject object, ParseException e) {
-                                    Date shiftStart = (Date) object.get( "start" );
-                                    int day = shiftStart.getDate();
-                                    int month = shiftStart.getMonth();
-                                    int year = shiftStart.getYear();
-
-                                    Log.d( "day", "" + day );
-                                    Log.d( "month", "" + month );
-                                    Log.d( "year", "" + year );
-                                    Log.d( "ssDay", "" + ssDay );
-                                    Log.d( "ssMonth", "" + ssMonth );
-                                    Log.d( "ssYear", "" + ssYear );
-
-                                    int type = Shift.FILLED;
-                                    if ( object.get( "employee" ) == null )
+                                    if ( object !=null )
                                     {
-                                        type = Shift.VACANT;
-                                    }
+                                        Date shiftStart = (Date) object.get( "start" );
+                                        int day = shiftStart.getDate();
+                                        int month = shiftStart.getMonth();
+                                        int year = shiftStart.getYear();
 
-                                    if ( ssDay == day && ssMonth == month && ssYear == year ) {
-                                        if (mShifts == null)
+                                        Log.d( "day", "" + day );
+                                        Log.d( "month", "" + month );
+                                        Log.d( "year", "" + year );
+                                        Log.d( "ssDay", "" + ssDay );
+                                        Log.d( "ssMonth", "" + ssMonth );
+                                        Log.d( "ssYear", "" + ssYear );
+
+                                        int type = Shift.FILLED;
+                                        if ( object.get( "employee" ) == null )
                                         {
-                                            mShifts = new ArrayList< Shift >();
+                                            type = Shift.VACANT;
                                         }
-                                        Shift shiftModel = new Shift.Builder( type )
-                                                .employee((ParseUser) object.get( "employee" ))
-                                                .business( business )
-                                                .start((Date) object.get( "start" ))
-                                                .end((Date) object.get( "end" ))
-                                                .build();
 
-                                        mShifts.add( shiftModel );
-                                        mAdapter.notifyItemInserted( mShifts.size() - 1 );
-                                        scrollToBottom();
+                                        if ( ssDay == day && ssMonth == month && ssYear == year ) {
+                                            if (mShifts == null)
+                                            {
+                                                mShifts = new ArrayList< Shift >();
+                                            }
+                                            Shift shiftModel = new Shift.Builder( type )
+                                                    .employee((ParseUser) object.get( "employee" ))
+                                                    .business( business )
+                                                    .id( object.getObjectId() )
+                                                    .start((Date) object.get( "start" ))
+                                                    .end((Date) object.get( "end" ))
+                                                    .build();
+
+                                            mShifts.add( shiftModel );
+                                            mAdapter.notifyItemInserted( mShifts.size() - 1 );
+                                            scrollToBottom();
+                                        }
+
                                     }
 
                                 }

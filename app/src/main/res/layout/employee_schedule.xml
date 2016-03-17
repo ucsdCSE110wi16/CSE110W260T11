@@ -12,12 +12,16 @@
         android:clickable="true"
         android:focusable="true">
 
-        <TextView
+        <TextView android:id="@+id/behindcal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Loading Calendar..."
+            android:text="No shifts have been made available"
             android:textColor="@android:color/tertiary_text_dark"
             android:textSize="38sp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:textAlignment="center"
+            android:gravity="center"
             android:layout_centerInParent="true"
             />
 

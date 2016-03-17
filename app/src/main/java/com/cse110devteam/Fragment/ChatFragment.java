@@ -25,8 +25,11 @@ import com.cse110devteam.Global.Util;
 import com.cse110devteam.R;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
+import com.parse.GetCallback;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -67,6 +70,7 @@ public class ChatFragment extends android.support.v4.app.Fragment{
     private Typeface robotoBlack;
     private Typeface robotoMedium;
     private String newMessageSignature;
+    private ChatApplication chatApp;
 
     private boolean logLoaded;
 
@@ -75,7 +79,7 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         super.onCreate(bundle);
 
         // Get the socket associated with the chat application
-        ChatApplication chatApp = (ChatApplication) getActivity().getApplication();
+        chatApp = (ChatApplication) getActivity().getApplication();
         socket = chatApp.getSocket();
 
         user = ParseUser.getCurrentUser();
@@ -119,7 +123,6 @@ public class ChatFragment extends android.support.v4.app.Fragment{
 
         chatMain = (ParseObject) user.get("chatMain");
 
-        Log.v("chatMain", chatMain.toString() );
 
         chatLoading = ( TextView ) v.findViewById( R.id.chatloading );
         containerChatLoading = ( RelativeLayout ) v.findViewById( R.id.container_chatloading );
@@ -129,16 +132,19 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (chatMain != null) {
-                    if (log == null) {
-                        try {
-                            log = (ArrayList<ParseObject>) chatMain.fetchIfNeeded().get("log");
-                        } catch (ParseException e) {
-                            e.printStackTrace();
+                if ( chatApp.loadedChat == false )
+                {
+                    if (chatMain != null) {
+                        if (log == null) {
+                            try {
+                                log = (ArrayList<ParseObject>) chatMain.fetchIfNeeded().get("log");
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                         }
+                        fillChat(log);
+                        chatApp.loadedChat = true;
                     }
-                    fillChat(log);
-
                 }
                 containerChatLoading.setVisibility(View.GONE);
                 chatLoading.setVisibility(View.GONE);
@@ -209,6 +215,8 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                     input.setText("");
 
                     Date currentDate = new Date();
+                    currentDate.setHours( currentDate.getHours() + 4 );
+                    currentDate.setMinutes( currentDate.getMinutes() - 34);
                     String timeString = Util.prettyHourMin( currentDate );
 
 
@@ -217,6 +225,10 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                     messageObject.put("message", message);
                     messageObject.put("username", username);
                     messageObject.put("time", timeString);
+                    ParseACL acl = new ParseACL();
+                    acl.setPublicReadAccess(true);
+                    acl.setPublicReadAccess(true);
+                    messageObject.setACL(acl);
                     messageObject.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
@@ -233,15 +245,19 @@ public class ChatFragment extends android.support.v4.app.Fragment{
     public void onDestroy(){
         super.onDestroy();
         socket.disconnect();
-        socket.off(newMessageSignature, onNewMessage);
+        if ( business != null )
+        {
+            socket.off(newMessageSignature, onNewMessage);
+        }
         socket.off("user left", onUserLeft);
         socket.off("user joined", onUserJoined);
     }
 
 
     private void addMessage(String username, String message, String time){
+        Log.d("adding message", "username: " + username + "  message: " + message);
         int type = ( username.equals( this.username ) )
-                ? Message.TYPE_MESSAGE_SELF : Message.TYPE_MESSAGE_OTHER;
+                ? Message.TYPE_MESSAGE_SELF : Message.TYPE_MESSAGE_SELF;
         mMessages.add(new Message.Builder(type)
                 .username(username)
                 .message(message)
@@ -250,7 +266,7 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                 .typefaceTime(robotoMedium)
                 .typefaceUsername(robotoBlack)
                 .build());
-        mAdapter.notifyItemInserted( mMessages.size() - 1 );
+        mAdapter.notifyItemInserted(mMessages.size() - 1);
         scrollToBottom();
     }
 
@@ -259,18 +275,35 @@ public class ChatFragment extends android.support.v4.app.Fragment{
 
         for ( int i = 0 ; i < log.size() ; i++ )
         {
-            ParseObject msg = log.get( i );
-            Log.d( "log.get(" + i + ") classname", msg.getClassName() );
-            Log.d( "log.get(" + i + ") oid", msg.getObjectId() );
-            try{
-                String message = msg.fetchIfNeeded().getString("message");
-                String usrname = msg.fetchIfNeeded().getString("username");
-                String time = msg.fetchIfNeeded().getString("time");
-                addMessage(usrname, message, time);
+            ParseObject msgobj = log.get( i );
+            Log.d("fillChat", msgobj.getObjectId() );
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Message");
+            final int finalI = i;
+            query.getInBackground(msgobj.getObjectId(), new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject msg, ParseException e) {
+                    if ( msg != null )
+                    {
+                        Log.d("log.get(" + finalI + ") classname", msg.getClassName());
+                        Log.d("log.get(" + finalI + ") oid", msg.getObjectId());
+                        String message = "ERROR: No message";
+                        String usrname = "Username";
+                        String time = "--:--..";
+                        try {
+                            message = msg.fetchIfNeeded().getString("message");
+                            usrname = msg.fetchIfNeeded().getString("username");
+                            time = msg.fetchIfNeeded().getString("time");
 
-            } catch (ParseException pe){
-                pe.printStackTrace();
-            }
+                        } catch (ParseException pe) {
+                            pe.printStackTrace();
+                        }
+                        addMessage(usrname, message, time);
+
+                    }
+
+                }
+            });
+
         }
     }
 

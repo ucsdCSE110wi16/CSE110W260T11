@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cse110devteam.Activity.CreateBusinessPage;
+import com.cse110devteam.Activity.Login;
 import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.R;
 import com.parse.ParseObject;
@@ -30,6 +31,13 @@ public class ManManagerialNoBusiness extends android.support.v4.app.Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        user = ParseUser.getCurrentUser();
+        ParseObject business = (ParseObject) user.get("business");
+        if ( business != null )
+        {
+            Intent intent = new Intent( getActivity().getApplicationContext(), Login.class );
+            startActivity( intent );
+        }
     }
 
 

@@ -86,7 +86,7 @@
                 <TextView android:id="@+id/firstname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Anthony"
+                    android:text=""
                     android:textSize="20dp"
                     android:textColor="@android:color/primary_text_light"
                     android:paddingLeft="22dp"
@@ -95,7 +95,7 @@
                 <TextView android:id="@+id/lastname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Altieri"
+                    android:text=""
                     android:textSize="20dp"
                     android:textColor="@android:color/primary_text_light"
                     android:paddingLeft="16dp"
@@ -169,10 +169,11 @@
                 />
 
             <TextView android:id="@+id/shift_id"
-                android:layout_width="0.5dp"
-                android:layout_height="0.5dp"
-                android:text=""
-                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="oid"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
                 />
 
         </RelativeLayout>
