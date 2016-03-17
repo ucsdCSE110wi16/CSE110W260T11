@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.cse110devteam.Activity.ShiftList;
 import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.Global.Util;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -46,6 +47,7 @@ import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -324,7 +326,16 @@ public class ManManagerial extends Fragment{
                         //Now, we know the email belongs to an employee. We check if the employee is already
                         //in the business page. Make a helper method
                         Toast toast2;
-                        if (alreadyInvited(ParseUser.getCurrentUser())) {
+                        ParseQuery<ParseUser> query = ParseUser.getQuery();
+                        query.whereEqualTo("username", m_Text);
+                        ParseUser employee = null;
+                        try {
+                            employee = query.getFirst();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (alreadyInvited(employee)) {
                             //The employee has already been invited, there is nothing to do
                             toast2 = Toast.makeText(getActivity().getApplicationContext(),
                                     "Employee has already been invited to the business page",
@@ -335,7 +346,7 @@ public class ManManagerial extends Fragment{
                             //Need to add the employee into the Business page (add into employee
                             //array)
                             Toast toast3;
-                            addToBusiness(ParseUser.getCurrentUser());
+                            addToBusiness(employee);
                             toast3 = Toast.makeText(getActivity().getApplicationContext(),
                                     "Employee successfully invited to the business page",
                                     Toast.LENGTH_LONG);
@@ -380,6 +391,9 @@ public class ManManagerial extends Fragment{
 
     private boolean alreadyInvited(ParseUser user){
 
+        if(user.get("businessName") == null) {
+            return false;
+        }
         if(user.get("businessName").toString().length()==0){
             //employee is not in a business page yet
             return false;
@@ -391,9 +405,19 @@ public class ManManagerial extends Fragment{
     }
 
     private void addToBusiness(ParseUser user){
-        ParseObject workplace = new ParseObject("business");
-            user.put("business", workplace );
 
+        ParseObject workplace = ParseUser.getCurrentUser().getParseObject("business");
+        try {
+            workplace.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("username", m_Text);
+        params.put("businessID", workplace.getObjectId());
+        params.put("businessName", workplace.getString("name"));
+        params.put("businessChat", workplace.getParseObject("chat"));
+        ParseCloud.callFunctionInBackground("inviteEmployee", params);
         return;
     }
 

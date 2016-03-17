@@ -78,6 +78,7 @@ public class CreateBusinessPage extends Activity{
         business.put("mainManager", mainManager);
         business.put("name", name);
         mainManager.put("business", business);
+        mainManager.put("businessName", name);
         business.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

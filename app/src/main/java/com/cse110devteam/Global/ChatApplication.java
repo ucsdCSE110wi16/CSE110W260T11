@@ -8,6 +8,7 @@ import android.util.Log;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import com.parse.Parse;
+import com.parse.ParseACL;
 import com.parse.ParseInstallation;
 
 import java.net.URISyntaxException;
@@ -36,6 +37,9 @@ public class ChatApplication  extends Application{
         super.onCreate();
         instance = this;
         Parse.initialize(this);
+        ParseACL defaultACL = new ParseACL();
+        defaultACL.setPublicWriteAccess(true);
+        ParseACL.setDefaultACL(defaultACL, true);
     }
 
     public Socket getSocket(){

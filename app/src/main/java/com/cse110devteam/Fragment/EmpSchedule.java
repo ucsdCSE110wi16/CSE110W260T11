@@ -83,7 +83,6 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
         View rootView = inflater.inflate(R.layout.manager_schedule , container, false);
         setHasOptionsMenu(true);
 
-        Log.d("onCreateView", "mark");
 
         if ( cdf != null )
         {
@@ -158,7 +157,6 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
         }
 
 
-        Log.d("business name", business.getObjectId());
 
         getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -169,7 +167,6 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
                     public void done(ParseObject object, ParseException e) {
                         if (e == null) {
                             try {
-                                Log.d("business name", object.getString("name"));
                                 mShifts = (ArrayList<ParseObject>) object.fetchIfNeeded().get("shifts");
                                 paintCalendar(mShifts, cdf);
                                 FragmentTransaction t = getActivity().getSupportFragmentManager().beginTransaction();
@@ -224,26 +221,22 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("onDestroy", "mark");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d("onStop", "mark");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d("onDestroyView", "mark");
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        Log.d("onResume", "mark");
 
 
         getActivity().runOnUiThread(new Runnable() {
@@ -255,7 +248,6 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
                     public void done(ParseObject object, ParseException e) {
                         if (e == null) {
                             try {
-                                Log.d("business name", object.getString("name"));
                                 mShifts = (ArrayList<ParseObject>) object.fetchIfNeeded().get("shifts");
                                 paintCalendar(mShifts, cdf);
                                 FragmentTransaction t = getActivity().getSupportFragmentManager().beginTransaction();
@@ -281,23 +273,19 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
 
     private void paintCalendar( ArrayList< ParseObject > mShifts, final CaldroidFragment caldroidFragment)
     {
-        Log.d("paintCalendar", "inside method");
         if ( mShifts == null ) return;
 
-        Log.d("mShifts is not null", "");
 
         dateShiftMap = new HashMap<>();
 
         // Add all of the shifts to the dateShiftMap
         for ( int i = 0 ; i < mShifts.size() ; i++ ) {
             ParseObject shift = mShifts.get(i);
-            Log.d("shift id", shift.getObjectId());
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Shift");
             query.getInBackground(shift.getObjectId(), new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject object, ParseException e) {
-                    Log.d("query done for", object.getObjectId() );
                     Date start = null;
                     Date end = null;
                     ParseUser employee = null;
@@ -328,10 +316,6 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
                     key.setMonth(month);
                     key.setYear(year);
 
-                    Log.d("paintCalendar", "");
-                    Log.d( "day", "" + day );
-                    Log.d( "month", "" + month );
-                    Log.d( "year", "" + year );
 
 
                     ArrayList<Shift> list = dateShiftMap.get(key);
@@ -344,7 +328,6 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
                         list.add(shiftModel);
                     }
 
-                    Log.d("dateShiftMap.keySet().size()", "" + dateShiftMap.keySet().size() );
 
                     ColorDrawable vacant = new ColorDrawable(Color.parseColor("#4CAF50"));
                     ColorDrawable filled = new ColorDrawable(Color.parseColor("#F44336"));
