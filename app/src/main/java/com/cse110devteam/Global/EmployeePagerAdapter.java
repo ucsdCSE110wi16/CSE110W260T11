@@ -15,6 +15,7 @@ import java.util.Locale;
  */
 public class EmployeePagerAdapter extends FragmentPagerAdapter {
     private int NUM_ITEMS;
+    private Fragment messaging;
 
     public EmployeePagerAdapter(FragmentManager fm, int NUM_ITEMS) {
         super(fm);
@@ -23,10 +24,18 @@ public class EmployeePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        switch (position){
-            default: return new EmpSchedule();
-            case 0: return new EmpSchedule();
-            case 1: return new EmpMessaging();
+        switch (position) {
+            default:
+                return new EmpSchedule();
+            case 0:
+                return new EmpSchedule();
+            case 1:
+                if (messaging == null)
+                {
+                    messaging = new EmpMessaging();
+                }
+
+                return messaging;
         }
     }
 

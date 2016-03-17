@@ -127,13 +127,13 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         chatLoading = ( TextView ) v.findViewById( R.id.chatloading );
         containerChatLoading = ( RelativeLayout ) v.findViewById( R.id.container_chatloading );
 
-        mRecyclerView.setVisibility( View.GONE );
 
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if ( chatApp.loadedChat == false )
                 {
+                    mRecyclerView.setVisibility( View.GONE );
                     if (chatMain != null) {
                         if (log == null) {
                             try {
@@ -145,10 +145,10 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                         fillChat(log);
                         chatApp.loadedChat = true;
                     }
+                    containerChatLoading.setVisibility(View.GONE);
+                    chatLoading.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
                 }
-                containerChatLoading.setVisibility(View.GONE);
-                chatLoading.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -216,7 +216,7 @@ public class ChatFragment extends android.support.v4.app.Fragment{
 
                     Date currentDate = new Date();
                     currentDate.setHours( currentDate.getHours() + 4 );
-                    currentDate.setMinutes( currentDate.getMinutes() - 34);
+                    currentDate.setMinutes( currentDate.getMinutes() - 28);
                     String timeString = Util.prettyHourMin( currentDate );
 
 
@@ -227,7 +227,7 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                     messageObject.put("time", timeString);
                     ParseACL acl = new ParseACL();
                     acl.setPublicReadAccess(true);
-                    acl.setPublicReadAccess(true);
+                    acl.setPublicWriteAccess(true);
                     messageObject.setACL(acl);
                     messageObject.saveInBackground(new SaveCallback() {
                         @Override
