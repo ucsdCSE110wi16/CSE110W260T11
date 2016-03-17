@@ -25,6 +25,8 @@ import android.widget.Toast;
 import com.cse110devteam.Activity.ShiftList;
 import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.Global.Util;
+import com.parse.FunctionCallback;
+import com.parse.GetCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -326,11 +328,11 @@ public class ManManagerial extends Fragment{
                         //Now, we know the email belongs to an employee. We check if the employee is already
                         //in the business page. Make a helper method
                         Toast toast2;
-                        ParseQuery<ParseUser> query = ParseUser.getQuery();
+                        ParseQuery query = ParseUser.getQuery();
                         query.whereEqualTo("username", m_Text);
                         ParseUser employee = null;
                         try {
-                            employee = query.getFirst();
+                            employee = (ParseUser) query.getFirst();
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
@@ -390,6 +392,7 @@ public class ManManagerial extends Fragment{
     }
 
     private boolean alreadyInvited(ParseUser user){
+        Log.d("alreadyInvited", user.getObjectId() + " current user: " + this.user.getObjectId() );
 
         if(user.get("businessName") == null) {
             return false;
@@ -406,18 +409,35 @@ public class ManManagerial extends Fragment{
 
     private void addToBusiness(ParseUser user){
 
-        ParseObject workplace = ParseUser.getCurrentUser().getParseObject("business");
-        try {
-            workplace.fetch();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("username", m_Text);
-        params.put("businessID", workplace.getObjectId());
-        params.put("businessName", workplace.getString("name"));
-        params.put("businessChat", workplace.getParseObject("chat"));
-        ParseCloud.callFunctionInBackground("inviteEmployee", params);
+        final ParseUser currentUser = ParseUser.getCurrentUser();
+        ParseObject chatMain = (ParseObject) currentUser.get( "chatMain" );
+        final String chatMainOid = chatMain.getObjectId();
+        final ParseObject workplace = (ParseObject) currentUser.get("business");
+        ParseQuery< ParseObject > query = ParseQuery.getQuery( "Business" );
+        query.getInBackground(workplace.getObjectId(), new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                HashMap<String, Object> params = new HashMap<String, Object>();
+                params.put("username", m_Text);
+                params.put("businessID", object);
+                params.put("businessChat", chatMainOid);
+                ParseCloud.callFunctionInBackground("inviteEmployee", params, new
+                        FunctionCallback<Object>() {
+                            @Override
+                            public void done(Object object, ParseException e) {
+                                if ( e == null )
+                                {
+                                    Log.d("callback", "done" );
+                                }
+                                else
+                                {
+                                    Log.d("error", e.toString() );
+                                }
+                            }
+                        });
+
+            }
+        });
         return;
     }
 
