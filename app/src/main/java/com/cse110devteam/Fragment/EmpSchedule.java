@@ -108,7 +108,7 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ( cdf != null && business != null )
+                if ( cdf != null && business != null  && getActivity() != null )
                 {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override

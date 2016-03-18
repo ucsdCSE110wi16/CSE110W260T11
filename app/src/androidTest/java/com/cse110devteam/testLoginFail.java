@@ -27,6 +27,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class testLoginFail {
     String username,password;
+    private String dummyEmail;
+    private String dummyPassword;
+    private String validPassword;
 
     @Rule
     public ActivityTestRule<Login> loginActivityTestRule = new ActivityTestRule<>(Login.class);
@@ -35,6 +38,9 @@ public class testLoginFail {
     public void initStrings() {
         username = "12345thisisatestingemail@test.com";
         password = "passworddoesnotexist";
+        dummyEmail = "thisemailshouldnotwork";
+        dummyPassword = "12345";
+        validPassword = "123456";
     }
 
     @Test
@@ -46,6 +52,41 @@ public class testLoginFail {
 
         // Below checks that if the app is still in the login screen
         // if so, then this test is passed
+        onView(withId(R.id.login)).check(matches(isDisplayed()));
+
+    }
+
+    @Test
+    public void invalidClearEditTexts_loginActivity() {
+        // Enter in dummy email and password
+        onView(withId(R.id.email)).perform(typeText(dummyEmail), closeSoftKeyboard());
+        onView(withId(R.id.password)).perform(typeText(dummyPassword), closeSoftKeyboard());
+
+        // Submit
+        onView(withId(R.id.login)).perform(click());
+
+        // Email and password fields should now be empty
+        onView(withId(R.id.email)).check(matches(withText("")));
+        onView(withId(R.id.password)).check(matches(withText("")));
+
+        // Check to see if app is still running
+        onView(withId(R.id.login)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void invalidClearOnlyEmail_loginActivity(){
+        // Enter in dummy email and valid password
+        onView(withId(R.id.email)).perform(typeText(dummyEmail), closeSoftKeyboard());
+        onView(withId(R.id.password)).perform(typeText(validPassword), closeSoftKeyboard());
+
+        // Submit
+        onView(withId(R.id.login)).perform(click());
+
+        // Email should be cleared but password is still there
+        onView(withId(R.id.email)).check(matches(withText("")));
+        onView(withId(R.id.password)).check(matches(withText(validPassword)));
+
+        // Check to see if app is still running
         onView(withId(R.id.login)).check(matches(isDisplayed()));
 
     }

@@ -27,7 +27,7 @@ public class testEmailVerification {
 
     @Test
     public void testEmailVerifier() {
-        assertTrue(Login.emailInSystem("vidurbutalia@gmail.com"));
+        assertTrue(Login.emailInSystem("AnthonyRAltieri@gmail.com"));
 
     }
 }

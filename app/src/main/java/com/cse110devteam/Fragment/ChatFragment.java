@@ -83,14 +83,15 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         socket = chatApp.getSocket();
 
         user = ParseUser.getCurrentUser();
-        username = (String) user.get("firstname");
+        if ( user != null ) {
+            username = (String) user.get("firstname");
 
-        business = (ParseObject) user.get("business");
-        if ( business != null )
-        {
-            String businessId = business.getObjectId();
-            newMessageSignature = "new message:" + businessId;
-            socket.on( newMessageSignature, onNewMessage);
+            business = (ParseObject) user.get("business");
+            if (business != null) {
+                String businessId = business.getObjectId();
+                newMessageSignature = "new message:" + businessId;
+                socket.on(newMessageSignature, onNewMessage);
+            }
         }
 
 
@@ -114,6 +115,7 @@ public class ChatFragment extends android.support.v4.app.Fragment{
     @Override
     public void onViewCreated(View v, Bundle bundle){
         super.onViewCreated(v, bundle);
+
         mAdapter = new MessageAdapter(getActivity().getApplicationContext(), mMessages);
         mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

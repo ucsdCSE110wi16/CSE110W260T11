@@ -242,6 +242,7 @@ public class Login extends Activity{
     };
 
     public static boolean emailInSystem(String username){
+        username = username.toLowerCase();
         ParseQuery<ParseUser> userList = ParseUser.getQuery();
         Log.d("EmailInSystem", "username: " + username );
         userList.whereEqualTo("username", username);
