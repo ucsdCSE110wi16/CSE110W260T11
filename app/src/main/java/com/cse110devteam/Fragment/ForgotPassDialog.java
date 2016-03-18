@@ -29,18 +29,12 @@ public class ForgotPassDialog extends DialogFragment {
     private Button submit;
     private Button cancel;
 
-    ParseUser user;
-    String email;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder( getActivity() );
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.dialog_forgotpass, null);
-
-        user = ParseUser.getCurrentUser();
-        email = (String) user.get( "username" );
-
 
         submit = ( Button ) view.findViewById(R.id.submit);
         cancel = ( Button ) view.findViewById( R.id.cancel );
@@ -52,17 +46,7 @@ public class ForgotPassDialog extends DialogFragment {
             public void onClick(View v) {
                 String input = forgotEmail.getText().toString();
 
-                if ( input.equals( email ) )
-                {
-                    Toast toast = Toast.makeText( getActivity().getApplicationContext(),
-                            ( "You cannot invite yourself, enter an email associated with an"
-                            + " employee account." ), Toast.LENGTH_LONG );
-                    toast.setGravity( Gravity.BOTTOM, 0, 0 );
-                    toast.show();
-                }
-                else
-                {
-                    ParseUser.requestPasswordResetInBackground(input, new
+                ParseUser.requestPasswordResetInBackground(input, new
                             RequestPasswordResetCallback() {
                         @Override
                         public void done(ParseException e) {
@@ -85,7 +69,7 @@ public class ForgotPassDialog extends DialogFragment {
                         }
                     });
 
-                }
+
             }
         });
 
