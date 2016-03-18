@@ -172,6 +172,7 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                                     + " invite you to start chatting."), Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.BOTTOM, 0, 0);
                     toast.show();
+                    input.setText("");
                 } else {
                     Log.d("send.OnClick", "Inside method");
                     // If no connection, immediately return
