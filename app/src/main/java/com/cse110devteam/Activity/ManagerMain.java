@@ -1,5 +1,6 @@
 package com.cse110devteam.Activity;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -111,6 +112,14 @@ public class ManagerMain  extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         Util.logOut();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        Intent intent = new Intent( getApplicationContext(), Login.class );
+        startActivity( intent );
     }
 }
 

@@ -130,13 +130,14 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
                                             toast.setGravity( Gravity.BOTTOM, 0, 0 );
                                             toast.show();
                                         } catch (ParseException er) {
-                                            Log.d("ParseException", er.toString());
+                                            Log.d("ERROR [fetching from shifts] refresh onclick", er.toString());
                                             er.printStackTrace();
                                         }
 
 
                                     } else {
-                                        Log.d("query error", e.toString());
+                                        Log.d("Refresh", "In onclick listener");
+                                        Log.d("ERROR [query business]", "bid: " + business.getObjectId() + " " + e.toString());
                                     }
 
 
@@ -183,21 +184,20 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
                             if (e == null) {
                                 try {
                                     mShifts = (ArrayList<ParseObject>) object.fetchIfNeeded().get("shifts");
-                                    Log.d("mShifts", mShifts + "");
-                                    Log.d("mShifts.size()", mShifts.size() + "");
                                     paintCalendar(mShifts, cdf);
                                     FragmentTransaction t = getActivity().getSupportFragmentManager().beginTransaction();
                                     t.replace(R.id.calendar, cdf);
                                     t.commit();
                                 } catch (ParseException er) {
-                                    Log.d("ParseException", er.toString());
+                                    Log.d("ERROR [fetching from shifts] onCreateView", er.toString());
                                     er.printStackTrace();
                                 }
 
 
 
                             } else {
-                                Log.d("query error", e.toString());
+                                Log.d("EmpSchedule", "In body of onCreateView");
+                                Log.d("ERROR [query business]", "bid: " + business.getObjectId() + e.toString());
                             }
 
 
@@ -271,20 +271,25 @@ public class EmpSchedule extends android.support.v4.app.Fragment {
                                 Log.d("object.getObjectID()", object.getObjectId());
                                 mShifts = (ArrayList<ParseObject>) object.get("shifts");
                                 Log.d("about to iterate through shift", "starting");
-                                for ( int i = 0 ; i < mShifts.size() ; i++ )
+                                if ( mShifts != null )
                                 {
-                                    Log.d("i:", i + "");
-                                    Log.d("mShifts.get(i).getObjectID()",
-                                            mShifts.get(i).getObjectId() + "");
+                                    for ( int i = 0 ; i < mShifts.size() ; i++ )
+                                    {
+                                        Log.d("i:", i + "");
+                                        Log.d("mShifts.get(i).getObjectID()",
+                                                mShifts.get(i).getObjectId() + "");
+                                    }
+                                    paintCalendar(mShifts, cdf);
+                                    FragmentTransaction t = getActivity()
+                                            .getSupportFragmentManager()
+                                            .beginTransaction();
+                                    t.replace(R.id.calendar, cdf);
+                                    t.commit();
                                 }
-                                paintCalendar(mShifts, cdf);
-                                FragmentTransaction t = getActivity().getSupportFragmentManager().beginTransaction();
-                                t.replace(R.id.calendar, cdf);
-                                t.commit();
 
 
                             } else {
-                                Log.d("query error", e.toString());
+                                Log.d("query error [business]", e.toString());
                             }
 
 

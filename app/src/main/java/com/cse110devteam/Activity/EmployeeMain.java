@@ -46,7 +46,7 @@ public class EmployeeMain extends FragmentActivity{
 
             mPager = (ViewPager) findViewById(R.id.pager);
             mPager.setAdapter(new EmployeePagerAdapter(getSupportFragmentManager(), NUM_ITEMS));
-            mPager.setCurrentItem(1);
+            mPager.setCurrentItem(0);
 
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
             title = (TextView) findViewById(R.id.title);
@@ -62,6 +62,7 @@ public class EmployeeMain extends FragmentActivity{
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
                     mPager.setCurrentItem(tab.getPosition());
+                    mPager.setCurrentItem(tab.getPosition());
                 }
 
                 @Override
@@ -74,6 +75,7 @@ public class EmployeeMain extends FragmentActivity{
                     // Nothing
                 }
             });
+
 
         } catch (Error e){
             e.printStackTrace();

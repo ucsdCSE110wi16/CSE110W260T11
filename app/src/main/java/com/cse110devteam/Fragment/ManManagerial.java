@@ -27,6 +27,7 @@ import com.cse110devteam.Global.TypefaceGenerator;
 import com.cse110devteam.Global.Util;
 import com.parse.FunctionCallback;
 import com.parse.GetCallback;
+import com.parse.ParseACL;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -146,19 +147,31 @@ public class ManManagerial extends Fragment{
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                ParseObject shift = new ParseObject( "Shift" );
                                 shiftStart.setYear(year - 1900);
                                 shiftStart.setMonth(monthOfYear);
                                 shiftStart.setDate(dayOfMonth);
 
-                                String setStartDate = dayOfMonth + "/" + monthOfYear + "/"
-                                        + year;
+                                Date today = new Date();
+                                today.setDate( today.getDate() - 1 );
 
-                                Log.d( "shiftDateStart", setStartDate );
-                                startDate.setText( setStartDate );
+                                if ( shiftStart.before( today ) )
+                                {
+                                    Toast toast = Toast.makeText( getActivity()
+                                            .getApplicationContext(), "You cannot pick a past date",
+                                            Toast.LENGTH_SHORT );
+                                    toast.setGravity( Gravity.BOTTOM, 0, 0 );
+                                    toast.show();
+                                }
+                                else
+                                {
+                                    String setStartDate = dayOfMonth + "/" + monthOfYear + "/"
+                                            + year;
+                                    Log.d("shiftDateStart", setStartDate);
+                                    startDate.setText(setStartDate);
+                                    doneStartDay = true;
 
+                                }
 
-                                doneStartDay = true;
                             }
                         }, mYear, mMonth, mDay);
                 dpd.show();
@@ -188,11 +201,11 @@ public class ManManagerial extends Fragment{
                                 shiftStart.setHours(selectedhour);
                                 shiftStart.setMinutes(selectedminute);
 
-                                String sStart = Util.prettyHourMin( shiftStart );
+                                String sStart = Util.prettyHourMin(shiftStart);
 
-                                Log.v("Start Time", "set time: " + sStart );
+                                Log.v("Start Time", "set time: " + sStart);
 
-                                startTime.setText( sStart );
+                                startTime.setText(sStart);
 
                                 doneStartTime = true;
                             }
@@ -201,6 +214,10 @@ public class ManManagerial extends Fragment{
             }
 
         });
+
+        final Toast toast = Toast.makeText( getActivity().getApplicationContext(),
+                "Enter in shift information!", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.BOTTOM, 0, 0);
 
         btnSaveShift = (Button) getActivity().findViewById(R.id.shift_save);
         btnSaveShift.setTypeface(robotoMedium);
@@ -213,6 +230,10 @@ public class ManManagerial extends Fragment{
                         if ( doneEndTime && doneStartDay && doneStartDay )
                         {
                             final ParseObject shift = new ParseObject( "Shift" );
+                            ParseACL acl = new ParseACL();
+                            acl.setPublicReadAccess( true );
+                            acl.setPublicWriteAccess(true);
+                            shift.setACL(acl);
                             shift.put("start", shiftStart);
                             shift.put("end", shiftEnd);
                             shift.put("business", business);
@@ -231,13 +252,13 @@ public class ManManagerial extends Fragment{
                                     });
                                 }
                             });
+                            doneEndTime = false;
+                            doneStartDay = false;
+                            doneStartTime = false;
 
                         }
                         else
                         {
-                            Toast toast = Toast.makeText( getActivity().getApplicationContext(),
-                                    "Enter in shift information!", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.BOTTOM,0,0);
                             toast.show();
                         }
                     }

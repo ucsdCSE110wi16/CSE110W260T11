@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.cse110devteam.Global.User;
 import com.cse110devteam.R;
 import com.parse.Parse;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -75,6 +76,10 @@ public class CreateBusinessPage extends Activity{
 
     private void createBusiness(String name, final ParseObject mainManager){
         final ParseObject business = new ParseObject("Business");
+        ParseACL acl = new ParseACL();
+        acl.setPublicReadAccess( true );
+        acl.setPublicWriteAccess( true );
+        business.setACL( acl );
         business.put("mainManager", mainManager);
         business.put("name", name);
         mainManager.put("business", business);
@@ -93,6 +98,10 @@ public class CreateBusinessPage extends Activity{
 
     private void createBusinessChat(final ParseObject business, final ParseObject mainManger){
         final ParseObject businessChat = new ParseObject("BusinessChat");
+        ParseACL acl = new ParseACL();
+        acl.setPublicReadAccess( true );
+        acl.setPublicWriteAccess( true );
+        businessChat.setACL( acl );
         businessChat.put("business", business);
         business.put("chat", businessChat);
         business.saveInBackground();
@@ -112,6 +121,10 @@ public class CreateBusinessPage extends Activity{
 
     private void createChatRoom(final ParseObject businessChat, final ParseObject mainManager){
         final ParseObject chatRoom = new ParseObject("ChatRoom");
+        ParseACL acl = new ParseACL();
+        acl.setPublicReadAccess( true );
+        acl.setPublicWriteAccess( true );
+        chatRoom.setACL( acl );
         chatRoom.put("type", "main");
         ArrayList<ParseObject> rooms = new ArrayList<ParseObject>();
         rooms.add( chatRoom );

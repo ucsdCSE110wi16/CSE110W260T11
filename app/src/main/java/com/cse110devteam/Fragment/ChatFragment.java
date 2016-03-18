@@ -131,14 +131,14 @@ public class ChatFragment extends android.support.v4.app.Fragment{
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if ( chatApp.loadedChat == false )
-                {
-                    mRecyclerView.setVisibility( View.GONE );
+                if ( !chatApp.loadedChat ) {
+                    mRecyclerView.setVisibility(View.GONE);
                     if (chatMain != null) {
                         if (log == null) {
                             try {
                                 log = (ArrayList<ParseObject>) chatMain.fetchIfNeeded().get("log");
                             } catch (ParseException e) {
+                                Log.d("Error", "Attempt to get log from chatMain");
                                 e.printStackTrace();
                             }
                         }
@@ -151,6 +151,11 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                 }
             }
         });
+        if ( chatApp.loadedChat )
+        {
+            containerChatLoading.setVisibility(View.GONE);
+
+        }
 
 
         input = (EditText) getActivity().findViewById(R.id.inputMessage);
@@ -199,43 +204,34 @@ public class ChatFragment extends android.support.v4.app.Fragment{
 
                         Date date = new Date();
                         String timeString = Util.prettyHourMin(date);
-
+                        Log.d("timeString", timeString);
                         json.put("time", timeString);
+
+                        final ParseObject chatMain = (ParseObject) user.get("chatMain");
+                        final ParseObject messageObject = new ParseObject("Message");
+                        messageObject.put("message", message);
+                        messageObject.put("username", username);
+                        messageObject.put("time", timeString);
+                        ParseACL acl = new ParseACL();
+                        acl.setPublicReadAccess(true);
+                        acl.setPublicWriteAccess(true);
+                        messageObject.setACL(acl);
+                        messageObject.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                chatMain.add("log", messageObject);
+                                chatMain.saveInBackground();
+                            }
+                        });
+                        socket.emit("new message", json);
                     } catch (JSONException e) {
-                        Log.d("JSONException", e.toString());
+                        Log.d("JSONException [message creation]", e.toString());
                         e.printStackTrace();
                     }
 
-                    try {
-                        socket.emit("new message", json);
-                    } catch (Error e) {
-                        Log.d("ERROR new message: ", e.toString());
-                        e.printStackTrace();
-                    }
                     input.setText("");
 
-                    Date currentDate = new Date();
-                    currentDate.setHours( currentDate.getHours() + 4 );
-                    currentDate.setMinutes( currentDate.getMinutes() - 28);
-                    String timeString = Util.prettyHourMin( currentDate );
 
-
-                    final ParseObject chatMain = (ParseObject) user.get("chatMain");
-                    final ParseObject messageObject = new ParseObject("Message");
-                    messageObject.put("message", message);
-                    messageObject.put("username", username);
-                    messageObject.put("time", timeString);
-                    ParseACL acl = new ParseACL();
-                    acl.setPublicReadAccess(true);
-                    acl.setPublicWriteAccess(true);
-                    messageObject.setACL(acl);
-                    messageObject.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            chatMain.add("log", messageObject);
-                            chatMain.saveInBackground();
-                        }
-                    });
                 }
             }
         });
@@ -295,6 +291,7 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                             time = msg.fetchIfNeeded().getString("time");
 
                         } catch (ParseException pe) {
+                            Log.d("Error", "getting message,username, and time from message object");
                             pe.printStackTrace();
                         }
                         addMessage(usrname, message, time);
@@ -369,7 +366,6 @@ public class ChatFragment extends android.support.v4.app.Fragment{
                     } catch (JSONException e) {
                         return;
                     }
-                    // TODO: Update list of users in chat
                 }
             });
         }

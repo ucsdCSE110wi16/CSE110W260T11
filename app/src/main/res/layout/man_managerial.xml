@@ -3,7 +3,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#EEEEEE"
+    >
 
 
     <LinearLayout
@@ -16,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/accent"
-            android:paddingBottom="22dp"
-            android:paddingTop="22dp">
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp">
 
             <TextView
                 android:id="@+id/header_shifts"
@@ -26,7 +28,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="Set Shifts"
                 android:textColor="#FAFAFA"
-                android:textSize="38dp"
+                android:textSize="28dp"
                 android:textStyle="bold" />
 
         </RelativeLayout>
@@ -288,8 +290,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:background="@color/accent"
-            android:paddingBottom="22dp"
-            android:paddingTop="22dp">
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp">
 
             <TextView
                 android:id="@+id/header_invite"
@@ -299,7 +301,7 @@
                 android:gravity="center"
                 android:text="Invite Employees To Business"
                 android:textColor="#FAFAFA"
-                android:textSize="38dp"
+                android:textSize="28dp"
                 android:textStyle="bold" />
 
         </RelativeLayout>

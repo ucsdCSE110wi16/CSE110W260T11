@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cse110devteam.Activity.DayShiftList;
+import com.cse110devteam.Global.ChatApplication;
 import com.cse110devteam.Models.Shift;
 import com.cse110devteam.R;
 import com.parse.FindCallback;
@@ -244,36 +245,40 @@ public class ManSchedule extends android.support.v4.app.Fragment {
         Log.d("onResume", "mark");
 
 
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Business");
-                query.getInBackground(business.getObjectId(), new GetCallback<ParseObject>() {
-                    @Override
-                    public void done(ParseObject object, ParseException e) {
-                        if (e == null) {
-                            try {
-                                mShifts = (ArrayList<ParseObject>) object.fetchIfNeeded().get("shifts");
-                                paintCalendar(mShifts, cdf);
-                                FragmentTransaction t = getActivity().getSupportFragmentManager().beginTransaction();
-                                t.replace(R.id.calendar, cdf);
-                                t.commit();
-                            } catch (ParseException er) {
-                                Log.d("ParseException", er.toString());
-                                er.printStackTrace();
+        if ( getActivity() != null )
+        {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Business");
+                    query.getInBackground(business.getObjectId(), new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject object, ParseException e) {
+                            if (e == null) {
+                                try {
+                                    mShifts = (ArrayList<ParseObject>) object.fetchIfNeeded().get("shifts");
+                                    paintCalendar(mShifts, cdf);
+                                    FragmentTransaction t = getActivity().getSupportFragmentManager().beginTransaction();
+                                    t.replace(R.id.calendar, cdf);
+                                    t.commit();
+                                } catch (ParseException er) {
+                                    Log.d("ParseException", er.toString());
+                                    er.printStackTrace();
+                                }
+
+
+                            } else {
+                                Log.d("query error", e.toString());
                             }
 
 
-                        } else {
-                            Log.d("query error", e.toString());
                         }
+                    });
 
+                }
+            });
 
-                    }
-                });
-
-            }
-        });
+        }
     }
 
     private void paintCalendar( ArrayList< ParseObject > mShifts, final CaldroidFragment caldroidFragment)
